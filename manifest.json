@@ -1,0 +1,106 @@
+{
+	"name": "PegaDevTools",
+	"description": "Pega Developer Toolkit",
+	"version": "0.7",
+	"permissions": [
+		"activeTab",
+		"tabs",
+		"contextMenus",
+		"storage",
+		"declarativeContent",
+		"notifications"
+	],
+	"background": {
+		"scripts": ["background.js"],
+		"persistent": false
+	},
+	"options_ui": {
+		"page": "settings.html",
+		"open_in_tab": true
+	},
+	"page_action": {
+	  "default_popup": "popup.html"
+	},
+	"icons": {
+		"128": "icon.png"
+	},
+	"manifest_version": 2,
+	"content_scripts": 
+    [
+		{
+			"matches":["*://*/prweb/*"],
+			"exclude_globs": ["*blank.htm*"],
+			"css":["resources/shared.css"],
+			"js":["resources/jquery-3.4.1.min.js", "resources/shared.js"],
+			"all_frames": true,
+			"match_about_blank": true,
+			"run_at": "document_end"
+		},
+		{
+            "matches":["*://*/prweb/*/!*!STANDARD*", "*://*/prweb/app/*!STANDARD*"],
+			"exclude_matches":["*://*/prweb/*pyActivity=*"],
+			"exclude_globs": ["*agile*"],
+            "js":["resources/jquery-3.4.1.min.js", "resources/shared.js", "devstudio.js"],
+			"css":["devstudio.css"],
+            "run_at": "document_end"
+		},
+		{
+            "matches":["*://*/prweb/*action=openRuleSpecific*portalName=Developer*"],
+			"all_frames": true,
+            "js":["resources/jquery-3.4.1.min.js", "devstudio_rule.js"],
+            "run_at": "document_end"
+        },		
+		{
+			"matches":["*://*/prweb/*landingAction=openlanding*harnessName=pzDataTypeOverview*"],
+			"all_frames": true,
+            "js":["resources/jquery-3.4.1.min.js", "devstudio_data.js"],
+            "run_at": "document_end"
+		},
+		{
+			"matches":["*://*/prweb/*openRuleSpecific*openHandle=RULE-DECLARE-PAGES*"],
+			"all_frames": true,
+            "js":["resources/jquery-3.4.1.min.js", "devstudio/datapage.js"],
+            "run_at": "document_end"
+		},
+        {
+			"matches":["*://*/prweb/*harnessName=pzClipboard*", "*://*/prweb/*pyActivity=pzGetClipboardPages*", "*://*/prweb/*pyPreActivity=pzGetClipboardPages*"],
+            "js":["resources/jquery-3.4.1.min.js", "resources/jquery.filtertable.min.js", "resources/shared.js", "clipboard.js"],
+			"css":["clipboard.css"],
+            "run_at": "document_end"
+		},
+        {
+            "matches":["*://*/prweb/*pyStream=TraceMain*"],
+			"js":["resources/jquery-3.4.1.min.js", "tracer_menuRow.js"],
+			"css": ["tracer/menuRow.css"],
+			"all_frames": true,
+            "run_at": "document_end"
+        },
+        {
+            "matches":["*://*/prweb/*pyStream=TraceEvents*"],
+            "js":["resources/jquery-3.4.1.min.js", "resources/jquery.filtertable.min.js", "tracer_event.js"],
+			"all_frames": true,
+			"match_about_blank": true,
+            "run_at": "document_end"
+        },		
+        {
+			"matches":["*://*/prweb/*/*pyStream=TraceMain&pzPrimaryPageName=D_pzTracerSettingsForRequestor*"],
+            "js":["resources/jquery-3.4.1.min.js", "resources/jquery.filtertable.min.js", "tracer_page.js"],
+			"all_frames": true,
+			"match_about_blank": true,
+            "run_at": "document_end"
+        },
+        {
+			"matches":["*://*/prweb/*/*pyStream=TraceOptionsDialog*"],
+            "js":["resources/jquery-3.4.1.min.js", "tracer_options.js"],
+			"all_frames": true,
+			"match_about_blank": true,
+            "run_at": "document_end"
+        }
+    ],
+	"web_accessible_resources": [
+		"resources/*",
+		"clipboard/*",
+		"tracer/*",
+		"devstudio.css"
+	]
+}

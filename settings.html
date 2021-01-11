@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Pega Dev Tools Extension Options</title>
+	<script src="resources\jscolor.js"></script>
+	<script src="resources\jquery-3.4.1.min.js"></script>
+	<style>
+		input#site {
+			width: 240px;
+			margin: 2px 5px;
+		}
+
+		input#label {
+			width: 80px;
+			margin: 2px 5px;
+		}
+
+		button.jscolor {
+			border: 2px solid black;
+			width: 65px;
+		}
+
+		button {
+			margin: 5px;
+		}
+	</style>
+	<link rel="stylesheet" href="resources\shared.css" />
+</head>
+
+<body>
+	<div class="PDRrow">
+		<div class="PDTcolumn">
+			<h2>Settings</h2>
+			<input type="checkbox" id="useSiteLabelForBrowserTitle"><label for="useSiteLabelForBrowserTitle">Use site label for browser title?</label><br />
+			<input type="checkbox" id="hideEnvironmentHeader"><label for="hideEnvironmentHeader">Hide OOTB environment header</label><br />
+			
+			<h3>Disable components</h3>
+			<p>When you don't like a feature or it breaks Dev Studio you disable it instead of the whole extension</p>
+
+			<input type="checkbox" id="disableClipboard"><label for="disableClipboard">Clipboard</label><br />
+			<input type="checkbox" id="disableTracer"><label for="disableTracer">Tracer</label><br />
+			<input type="checkbox" id="disableDevStudioCustomization"><label for="disableDevStudioCustomization">Dev Studio customizations</label><br />
+
+			<div id="settingsStatus"></div>
+			<button id="saveSettings">Save settings</button>
+		</div>
+
+		<div class="PDTcolumn">
+			<h2>Site config <button id="addSite">+ Add site</button></h2>
+			
+			<div id="siteConfig">
+			</div>
+
+
+			<div id="status"></div>
+			<button id="saveSiteConfig">Save site configuration</button>
+
+		</div>
+		<div class="PDTcolumn">
+			<h2>About</h2>
+			<div>
+				<p>Author: Marcin Lesniak</p>
+				<p>PegaDevTools - v 0.7 prerelease</p>
+				<p>Will be published at http://marcinlesniak.pl/PegaDevTools in Jan 2021</p>
+			</div>
+		</div>
+	</div>
+	<script src="settings.js"></script>
+</body>
+
+</html>

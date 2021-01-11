@@ -1,0 +1,1 @@
+//jQuery("div.dialogDataContainer table table table").eq(1).filterTable();

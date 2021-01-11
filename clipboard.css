@@ -1,0 +1,19 @@
+.layout-noheader-default > div.layout-body {
+	padding: 0;
+}
+
+p.filter-table {
+	margin: 0;
+}
+
+.layout-noheader-alternate {
+	margin: 0 !important;
+}
+
+div#EXPAND-OUTERFRAME {
+	margin: 0 !important;
+}
+
+span.heading_2 {
+	font-weight: bold !important;
+}

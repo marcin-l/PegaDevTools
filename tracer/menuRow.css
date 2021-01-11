@@ -1,0 +1,8 @@
+/* trim tracer logo and td it's contained in to make space for additional buttons */
+div.tracerLogoImage {
+    width: 23px;
+}
+
+table.tracertop td[valign=top] {
+    width: 25px;
+}

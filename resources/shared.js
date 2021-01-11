@@ -1,0 +1,63 @@
+window.browser = (function () {
+	return window.msBrowser ||
+	  window.browser ||
+	  window.chrome;
+  })();
+  
+
+if($('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle').length) {
+	//change order to match Dev Studio
+	var tracerRef = $('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle div:has(i.pi-tracer)');
+	$('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle div:has(i.pi-clipboard)').before(tracerRef);
+
+	//add text
+	$('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle div:has(i.pi-tracer) button').append("Tracer");
+	$('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle div:has(i.pi-clipboard) button').append("Clipboard");
+	$('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle div:has(i.pi-inspect) button').append("Live UI");
+}
+
+var copyToClipboard = function copyToClipboard(textContent) {
+    // create hidden text element, if it doesn't already exist
+    var targetId = "_hiddenCopyText_";
+    var target = document.createElement("textarea");
+    target.style.position = "absolute";
+    target.style.left = "-9999px";
+    target.style.top = "0";
+    target.id = targetId;
+    document.body.appendChild(target);
+    target.textContent = textContent;
+
+    // select the content
+    var currentFocus = document.activeElement;
+    target.focus();
+    target.setSelectionRange(0, target.value.length);
+
+    // copy the selection
+    var succeed;
+    try {
+        succeed = document.execCommand("copy");
+    } catch (e) {
+        succeed = false;
+    }
+    // restore original focus
+    if (currentFocus && typeof currentFocus.focus === "function") {
+        currentFocus.focus();
+    }
+
+    target.textContent = "";
+    return succeed;
+}
+
+function appendScript(appendedScript) {
+	var script = document.createElement('script');
+	script.textContent = appendedScript;
+	(document.head || window.documentElement).appendChild(script);
+}
+
+function injectScript(aBasePath, aScriptURL) {
+	var scriptEl = document.createElement("script");
+	scriptEl.src = aBasePath + aScriptURL;
+	scriptEl.async = false;
+
+	(document.body || document.head || document.documentElement).appendChild(scriptEl);
+}

@@ -1,0 +1,9 @@
+.Temporary_top_tabs .Temporary_top_tabsList span#TABANCHOR,.Temporary_top_tabs .Temporary_top_tabsList span#TABANCHOR:hover,.Temporary_top_tabs .Temporary_top_tabsList .selected span#TABANCHOR,.Temporary_top_tabs .Temporary_top_tabsList .selected span#TABANCHOR:hover,.Temporary_top_tabs .Temporary_top_tabsList a#TABANCHOR,.Temporary_top_tabs .Temporary_top_tabsList a#TABANCHOR:hover,.Temporary_top_tabs .Temporary_top_tabsList .selected a#TABANCHOR,.Temporary_top_tabs .Temporary_top_tabsList .selected a#TABANCHOR:hover {
+    padding-left: 7px !important;
+}
+
+
+.header-layout.flex.content>.flex.content-item.system-search, .header-layout.flex.content>.flex.content-item.with-icon {
+    border-right-width: 0 !important;
+    margin: 0 !important;
+}

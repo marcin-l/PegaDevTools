@@ -13,3 +13,4 @@ If you found a bug or have a new idea/feature for the extension, [you can report
 
 ## Credits
 
+Tracer feature to navigate to first Error and Message is based on Piotr Olejniczak's idea.

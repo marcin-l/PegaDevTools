@@ -37,7 +37,7 @@
 			"run_at": "document_end"
 		},
 		{
-            "matches":["*://*/prweb/*/!*!STANDARD*", "*://*/prweb/app/*!STANDARD*"],
+			"matches":["*://*/prweb/*/!*!STANDARD*", "*://*/prweb/app/*!STANDARD*"],
 			"exclude_matches":["*://*/prweb/*pyActivity=*"],
 			"exclude_globs": ["*agile*"],
             "js":["resources/jquery-3.4.1.min.js", "resources/shared.js", "devstudio.js"],
@@ -57,7 +57,7 @@
             "run_at": "document_end"
 		},
 		{
-			"matches":["*://*/prweb/*openRuleSpecific*openHandle=RULE-DECLARE-PAGES*"],
+			"matches":["*://*/prweb/*openRuleSpecific*openHandle=RULE-DECLARE-PAGES*", "*://*/prweb/*openRule*objClass=Rule-Declare-Pages*"],
 			"all_frames": true,
             "js":["resources/jquery-3.4.1.min.js", "devstudio/datapage.js"],
             "run_at": "document_end"

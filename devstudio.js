@@ -86,6 +86,6 @@ if (document.querySelector("span#TABANCHOR span.textIn") && document.querySelect
 		DataInspectorButton.innerHTML = DataInspectorButton.innerHTML.replace("Live Data", "");
 
 
-}  // END are we in dev studio?
+}  // END "are we in dev studio?"
 
 

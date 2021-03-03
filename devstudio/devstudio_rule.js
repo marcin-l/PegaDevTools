@@ -51,4 +51,22 @@ script = document.createElement('script');
 script.textContent = CopyNameAndClass;
 (document.head || window.documentElement).appendChild(script);
 
+//TODO: open rule class in app explorer
+
+
+
+function openRuleClassInAppExplorer() {
+    showRuleInAppExplorer("Rule-HTML-Section", "RULE-OBJ-CLASS");
+}
+
+if (document.querySelectorAll("div.dataValueRead span.workarea_header_titles").length > 0)
+    var ruleClassName = document.querySelectorAll("div.dataValueRead span.workarea_header_titles")[0];
+if (ruleClassName) {
+    ruleClassName.insertAdjacentHTML("beforeend", ' <i id="PegaDevToolsRuleDropdownCaret" class="pi pi-caret-down pi-right" ></i><div id="PegaDevToolsRuleDropdown" style="display:none">Show in App Explorer</div>');
+    document.getElementById('PegaDevToolsRuleDropdownCaret').addEventListener('click', function () { toggleElem(document.getElementById('PegaDevToolsRuleDropdown'))});
+    document.getElementById('PegaDevToolsRuleDropdown').addEventListener('click', openRuleClassInAppExplorer);
+}
+
+
+//TODO copy class name
 $('a.custom_RuleOpener').eq(0).after('<a class="rule-details" style="margin-top:0; margin-bottom:0;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopyNameAndClass()"><i  class="icons pi pi-copy" id="CopyNameAndClass" alt="Copy name and class"></i></a>');

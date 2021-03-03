@@ -6,9 +6,12 @@ function addpyWorkPageLink() {
 	$("#devToolsGoToWorkPage").remove();
 
 	var pyWorkPage = $("#gridNode li.gridRow ul li").has("span[title^='pyWorkPage']")[0];
-	if (pyWorkPage) {
+	if (pyWorkPage) {		
 		$("header").append("<b><a id='devToolsGoToWorkPage' class='Explorer_action'>pyWorkPage</a></b>");
 		$("#devToolsGoToWorkPage").click(function () { $("#gridNode li.gridRow ul li").has("span[title^='pyWorkPage']").first().trigger("click"); });
+		let clsname = extractClassName($("#gridNode li.gridRow ul li span[title^='pyWorkPage']")[0].title);
+		if(clsname)
+			$("header").append(' <i class="dark_background_label_dataLabelForRead">(' + clsname + ')</i>');
 		console.log('PDT pyWorkPage found');
 	} else {
 		pyWorkPage = $("#gridNode li.gridRow ul li").has("span[title^='RH_1']")[0];
@@ -30,6 +33,9 @@ function addnewAssignPage() {
 	if (newAssignPage) {
 		$("header").append(" <a id='devToolsGoToAssignPage' class='Explorer_action'>newAssignPage</a>");
 		$("#devToolsGoToAssignPage").click(function () { $("#gridNode li.gridRow ul li").has("span[title^='newAssignPage']").first().trigger("click"); });
+		let clsname = extractClassName($("#gridNode li.gridRow ul li span[title^='newAssignPage']")[0].title);
+		if(clsname)
+			$("header").append(' <i class="dark_background_label_dataLabelForRead">(' + clsname + ')</i>');
 	}
 }
 

@@ -1,19 +1,19 @@
 window.browser = (function () {
-	return window.msBrowser ||
-	  window.browser ||
-	  window.chrome;
-  })();
-  
+    return window.msBrowser ||
+        window.browser ||
+        window.chrome;
+})();
 
-if($('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle').length) {
-	//change order to match Dev Studio
-	var tracerRef = $('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle div:has(i.pi-tracer)');
-	$('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle div:has(i.pi-clipboard)').before(tracerRef);
 
-	//add text
-	$('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle div:has(i.pi-tracer) button').append("Tracer");
-	$('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle div:has(i.pi-clipboard) button').append("Clipboard");
-	$('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle div:has(i.pi-inspect) button').append("Live UI");
+if ($('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle').length) {
+    //change order to match Dev Studio
+    var tracerRef = $('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle div:has(i.pi-tracer)');
+    $('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle div:has(i.pi-clipboard)').before(tracerRef);
+
+    //add text
+    $('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle div:has(i.pi-tracer) button').append("Tracer");
+    $('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle div:has(i.pi-clipboard) button').append("Clipboard");
+    $('div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle div:has(i.pi-inspect) button').append("Live UI");
 }
 
 var copyToClipboard = function copyToClipboard(textContent) {
@@ -49,15 +49,56 @@ var copyToClipboard = function copyToClipboard(textContent) {
 }
 
 function appendScript(appendedScript) {
-	var script = document.createElement('script');
-	script.textContent = appendedScript;
-	(document.head || window.documentElement).appendChild(script);
+    var script = document.createElement('script');
+    script.textContent = appendedScript;
+    (document.head || window.documentElement).appendChild(script);
 }
 
 function injectScript(aBasePath, aScriptURL) {
-	var scriptEl = document.createElement("script");
-	scriptEl.src = aBasePath + aScriptURL;
-	scriptEl.async = false;
+    var scriptEl = document.createElement("script");
+    scriptEl.src = aBasePath + aScriptURL;
+    scriptEl.async = false;
 
-	(document.body || document.head || document.documentElement).appendChild(scriptEl);
+    (document.body || document.head || document.documentElement).appendChild(scriptEl);
 }
+
+
+function extractClassName(sinput) {
+    if (sinput) {
+        var idx = sinput.indexOf('(');
+        sinput = sinput.substring(idx != -1 ? idx + 1 : 0);
+        if (sinput[sinput.length - 1] === ')')
+            sinput = sinput.substring(0, sinput.length - 1);
+        if (sinput.includes('Work-'))
+            sinput = sinput.split('Work-')[1];
+        else if (sinput.includes('Assign-'))
+            sinput = sinput.split('Assign-')[1];
+        return sinput;
+    }
+}
+
+
+
+// Show an element
+var showElem = function (elem) {
+    elem.style.display = 'block';
+};
+
+// Hide an element
+var hideElem = function (elem) {
+    elem.style.display = 'none';
+};
+
+// Toggle element visibility
+var toggleElem = function (elem) {
+
+    // If the element is visible, hide it
+    if (window.getComputedStyle(elem).display === 'block') {
+        hide(elem);
+        return;
+    }
+
+    // Otherwise, show it
+    show(elem);
+
+};

@@ -7,6 +7,7 @@
 		"tabs",
 		"contextMenus",
 		"storage",
+		"declarativeContent",
 		"notifications"
 	],
 	"background": {
@@ -39,7 +40,7 @@
 			"matches":["*://*/prweb/*/!*!STANDARD*", "*://*/prweb/app/*!STANDARD*"],
 			"exclude_matches":["*://*/prweb/*pyActivity=*"],
 			"exclude_globs": ["*agile*"],
-            "js":["resources/jquery-3.4.1.min.js", "devstudio/devstudio.js"],
+            "js":["resources/jquery-3.4.1.min.js", "resources/shared.js", "devstudio/devstudio.js"],
 			"css":["devstudio/devstudio.css"],
             "run_at": "document_end"
 		},
@@ -63,7 +64,7 @@
 		},
         {
 			"matches":["*://*/prweb/*harnessName=pzClipboard*", "*://*/prweb/*pyActivity=pzGetClipboardPages*", "*://*/prweb/*pyPreActivity=pzGetClipboardPages*"],
-            "js":["resources/jquery-3.4.1.min.js", "resources/jquery.filtertable.min.js", "clipboard/clipboard.js"],
+            "js":["resources/jquery-3.4.1.min.js", "resources/jquery.filtertable.min.js", "resources/shared.js", "clipboard/clipboard.js"],
 			"css":["clipboard/clipboard.css"],
             "run_at": "document_end"
 		},
@@ -101,10 +102,5 @@
 		"clipboard/*",
 		"tracer/*",
 		"devstudio/*"
-	],
-	"browser_specific_settings": {
-		"edge": {
-		  "browser_action_next_to_addressbar": true
-		}
-	}
+	]
 }

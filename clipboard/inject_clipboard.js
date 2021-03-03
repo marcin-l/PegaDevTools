@@ -1,5 +1,5 @@
 //TODO: rework jQuery to vanilla js
-//TODO: encapsulate extracting value by name - to be used in dynamic config of observer properties
+//TODO: encapsulate extracting value by name - to be used in dynamic config of observed properties
 
 function handleRightPanelChange() {
     return new Promise(() => {

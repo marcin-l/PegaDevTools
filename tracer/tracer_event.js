@@ -1,9 +1,3 @@
-function injectStyles(rule) {
-  var div = $("<div />", {
-    html: '&shy;<style>' + rule + '</style>'
-  }).appendTo("body");
-};
-
 //FEATURE mark row on right-click
 $("div#traceEvent-CONTAINER").on("contextmenu", "td#eventLineNumber", function (evt) { evt.preventDefault(); $(this).toggleClass("PegaDevToolsTextRed"); });
 

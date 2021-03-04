@@ -77,28 +77,27 @@ function extractClassName(sinput) {
     }
 }
 
-
-
 // Show an element
 var showElem = function (elem) {
     elem.style.display = 'block';
 };
 
-// Hide an element
-var hideElem = function (elem) {
+
+var hideElem = function (elem) { //hide an element
     elem.style.display = 'none';
 };
 
-// Toggle element visibility
-var toggleElem = function (elem) {
-
-    // If the element is visible, hide it
-    if (window.getComputedStyle(elem).display === 'block') {
+var toggleElem = function (elem) { //toggle element visibility
+    if (window.getComputedStyle(elem).display === 'block') { //if the element is visible, hide it
         hide(elem);
         return;
     }
-
-    // Otherwise, show it
-    show(elem);
-
+    show(elem);//otherwise show it
 };
+
+function injectStyles(rule) {
+    $("<div />", {
+      html: '&shy;<style>' + rule + '</style>'
+    }).appendTo("body");
+}
+  

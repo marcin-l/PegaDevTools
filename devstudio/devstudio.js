@@ -1,8 +1,9 @@
 (function ($) {
 
 })(jQuery);
-//potrzebny observer???
 
+//TODO: FEATURE: copy ruleset version list pager on top of the list
+//observer needed?
 var rsvPager = jQuery("div[editaction=pzRuleset_ShowRuleSetVersion] div.gridActionBottom");
 if (rsvPager) {
 	jQuery("div[editaction=pzRuleset_ShowRuleSetVersion]").prepend(rsvPager);

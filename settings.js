@@ -21,7 +21,7 @@ function saveSiteConfig() {
   window.browser.storage.sync.set({
     siteConfig: siteConfig
   }, function () {
-    // Update status to let user know options were saved
+    //update status to let user know options were saved
     var status = document.getElementById('status');
     status.textContent = 'Site configuration saved';
     setTimeout(function () {
@@ -34,6 +34,9 @@ function saveSettings() {
   let settings = new Object();
   settings.useSiteLabelForBrowserTitle = document.querySelector("input#useSiteLabelForBrowserTitle").checked;
   settings.hideEnvironmentHeader = document.querySelector("input#hideEnvironmentHeader").checked;
+  settings.clipboard = new Object();
+  settings.clipboard.split5050 = document.querySelector("input#clipboardSplit5050").checked;
+  settings.clipboard.disabled = document.querySelector("input#disableClipboard").checked;
   console.log(settings);
 
   window.browser.storage.sync.set({
@@ -61,7 +64,8 @@ function restore_options() {
     });
     document.querySelector("input#useSiteLabelForBrowserTitle").checked = (data.settings.useSiteLabelForBrowserTitle)?data.settings.useSiteLabelForBrowserTitle:"";
     document.querySelector("input#hideEnvironmentHeader").checked = data.settings.hideEnvironmentHeader;
-    
+    document.querySelector("input#clipboardSplit5050").checked = (data.settings.clipboard.split5050)?data.settings.clipboard.split5050:"";
+    document.querySelector("input#disableClipboard").checked = (data.settings.clipboard.disabled)?data.settings.clipboard.disabled:"";
   });
 }
 document.addEventListener('DOMContentLoaded', restore_options);

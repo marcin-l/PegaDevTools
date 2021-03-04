@@ -7,6 +7,9 @@
 	"settings": {
 		"files.associations": {
 			"*.yaml": "home-assistant"
-		}
+		},
+		"cSpell.words": [
+			"tabanchor"
+		]
 	}
 }

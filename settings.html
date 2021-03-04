@@ -32,18 +32,27 @@
 	<div class="PDRrow">
 		<div class="PDTcolumn">
 			<h2>Settings</h2>
-			<input type="checkbox" id="useSiteLabelForBrowserTitle"><label for="useSiteLabelForBrowserTitle">Use site label for browser title?</label><br />
-			<input type="checkbox" id="hideEnvironmentHeader"><label for="hideEnvironmentHeader">Hide OOTB environment header</label><br />
-			
-			<h3>Disable components</h3>
-			<p>When you don't like a feature or it breaks Dev Studio you disable it instead of the whole extension</p>
+				<input type="checkbox" id="useSiteLabelForBrowserTitle"><label for="useSiteLabelForBrowserTitle">Use site label for browser title?</label><br />
+				<input type="checkbox" id="hideEnvironmentHeader"><label for="hideEnvironmentHeader">Hide OOTB environment header</label><br />
+				
 
-			<input type="checkbox" id="disableClipboard"><label for="disableClipboard">Clipboard</label><br />
-			<input type="checkbox" id="disableTracer"><label for="disableTracer">Tracer</label><br />
-			<input type="checkbox" id="disableDevStudioCustomization"><label for="disableDevStudioCustomization">Dev Studio customizations</label><br />
+			<h3>Clipboard</h2>
+				<input type="checkbox" id="clipboardSplit5050"><label for="clipboardSplit5050">Make clipboard tree navigation wider (50%)</label><br />
+
+			<h3>Disable components</h3>
+			<p>When you don't like a feature or it breaks Dev Studio you can disable it instead of the whole extension</p>
+
+				<input type="checkbox" id="disableClipboard"><label for="disableClipboard">Clipboard</label><br />
+				<input type="checkbox" id="disableTracer" disabled><label for="disableTracer">Tracer</label><br />
+				<input type="checkbox" id="disableDevStudioCustomization" disabled><label for="disableDevStudioCustomization">Dev Studio customizations</label><br />
 
 			<div id="settingsStatus"></div>
 			<button id="saveSettings">Save settings</button>
+		</div>
+
+		<div class="PDTcolumn">
+
+
 		</div>
 
 		<div class="PDTcolumn">
@@ -61,8 +70,8 @@
 			<h2>About</h2>
 			<div>
 				<p>Author: Marcin Lesniak</p>
-				<p>PegaDevTools - v 0.7 prerelease</p>
-				<p>Will be published at http://marcinlesniak.pl/PegaDevTools in Jan 2021</p>
+				<p>PegaDevTools - v 0.8 prerelease</p>
+				<p>Visit https://github.com/marcin-l/PegaDevTools</p>
 			</div>
 		</div>
 	</div>

@@ -24,6 +24,50 @@
 		button {
 			margin: 5px;
 		}
+
+		hr {
+			padding: 0px;
+			margin: 0px;
+		}
+
+		.tooltip {
+			position: relative;
+			display: inline-block;
+			border-bottom: 1px dotted black;
+		}
+
+		.tooltip .tooltiptext {
+			visibility: hidden;
+			width: 120px;
+			background-color: #555;
+			color: #fff;
+			text-align: center;
+			border-radius: 6px;
+			padding: 5px;
+			position: absolute;
+			z-index: 1;
+			bottom: 125%;
+			left: 50%;
+			margin-left: -60px;
+			opacity: 0;
+			transition: opacity 0.3s;
+		}
+
+		.tooltip .tooltiptext::after {
+			content: "";
+			position: absolute;
+			top: 100%;
+			left: 50%;
+			margin-left: -5px;
+			border-width: 5px;
+			border-style: solid;
+			border-color: #555 transparent transparent transparent;
+		}
+
+		.tooltip:hover .tooltiptext {
+			visibility: visible;
+			opacity: 1;
+		}
 	</style>
 	<link rel="stylesheet" href="resources\shared.css" />
 </head>
@@ -32,19 +76,65 @@
 	<div class="PDRrow">
 		<div class="PDTcolumn">
 			<h2>Settings</h2>
-				<input type="checkbox" id="useSiteLabelForBrowserTitle"><label for="useSiteLabelForBrowserTitle">Use site label for browser title?</label><br />
-				<input type="checkbox" id="hideEnvironmentHeader"><label for="hideEnvironmentHeader">Hide OOTB environment header</label><br />
-				
+			<input type="checkbox" id="useSiteLabelForBrowserTitle"><label for="useSiteLabelForBrowserTitle">Use site
+				label for browser title?</label><br />
+			<input type="checkbox" id="hideEnvironmentHeader"><label for="hideEnvironmentHeader">Hide OOTB environment
+				header</label><br />
 
-			<h3>Clipboard</h2>
-				<input type="checkbox" id="clipboardSplit5050"><label for="clipboardSplit5050">Make clipboard tree navigation wider (50%)</label><br />
+			<h3>Dev studio
+				<hr />
+			</h3>
+			<span>
+				<input type="checkbox" id="devstudioCloseTabMiddleClick"><label for="devstudioCloseTabMiddleClick" class="tooltip">Close
+					tabs with middle click
+					<span class="tooltiptext">known issue: might not work already opened tabs when you reload the browser window</span>
+				</label><br />
+				<input type="checkbox" id="devstudioHideCloseButton">
+					<label for="devstudioHideCloseButton" class="tooltip">Hide close button
+						<span class="tooltiptext">allows to fit more tabs on the screen at once</span>
+					</label>
+					<br />
+				<input type="checkbox" id="devstudioLongerRuleNames"><label for="devstudioLongerRuleNames"
+					class="tooltip">Allow longer rule names<span class="tooltiptext">By default rule names in tabs are trimmed to 14 characters, making it sometimes difficult to know which rule is open. <br/ >This option increases length to 20 characters.</span></label><br />
+			</span>
 
-			<h3>Disable components</h3>
-			<p>When you don't like a feature or it breaks Dev Studio you can disable it instead of the whole extension</p>
+			<!-- <h3>Tracer
+				<hr />
+			</h3>
+			<span>
+				Open:
+				<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenDefault"><label
+						for="tracerOpenDefault">in a <b>popup</b> (default Pega behavior)</label></div>
+				<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenTab"><label for="tracerOpenTab">in
+						new <b>tab</b></label> and open property windows in <select id="tracerOpenPagesBehavior">
+						<option value="popup">popup (default)</option>
+						<option value="tab">tab</option>
+					</select></div>
+				<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenWindowedTab" disabled><label
+						for="tracerOpenWindowedTab">in new window with tabs</label></div>
+			</span> -->
+
+			<h3>Clipboard
+				<hr />
+			</h3>
+			<span>
+				<input type="checkbox" id="clipboardSplit5050"><label for="clipboardSplit5050">Make clipboard tree
+					navigation wider (50%)</label><br />
+			</span>
+
+			<h3>Disable components
+				<hr />
+			</h3>
+			<span>
+				<p>When you don't like a feature or it breaks Dev Studio you can disable it instead of the whole
+					extension</p>
 
 				<input type="checkbox" id="disableClipboard"><label for="disableClipboard">Clipboard</label><br />
-				<input type="checkbox" id="disableTracer" disabled><label for="disableTracer">Tracer</label><br />
-				<input type="checkbox" id="disableDevStudioCustomization" disabled><label for="disableDevStudioCustomization">Dev Studio customizations</label><br />
+				<input type="checkbox" id="disableTracer"><label for="disableTracer">Tracer</label><br />
+				<input type="checkbox" id="disableDevStudioCustomization" disabled><label
+					for="disableDevStudioCustomization">Dev Studio customizations</label><br />
+
+			</span>
 
 			<div id="settingsStatus"></div>
 			<button id="saveSettings">Save settings</button>
@@ -57,7 +147,7 @@
 
 		<div class="PDTcolumn">
 			<h2>Site config <button id="addSite">+ Add site</button></h2>
-			
+
 			<div id="siteConfig">
 			</div>
 
@@ -70,8 +160,19 @@
 			<h2>About</h2>
 			<div>
 				<p>Author: Marcin Lesniak</p>
-				<p>PegaDevTools - v 0.8 prerelease</p>
-				<p>Visit https://github.com/marcin-l/PegaDevTools</p>
+				<p>PegaDevTools - v 0.9 prerelease</p>
+				<p>
+					Visit <a
+						href="https://github.com/marcin-l/PegaDevTools">https://github.com/marcin-l/PegaDevTools</a>
+				</p>
+				<p>
+					There is a list of <a href="https://github.com/marcin-l/PegaDevTools/issues">Known Issues</a>
+					(things to be fixed and features to be implemented).
+				</p>
+				<p>
+					If you found a bug or have a new idea/feature for the extension, <a
+						href="https://github.com/marcin-l/PegaDevTools/issues/new">you can report them</a>.
+				</p>
 			</div>
 		</div>
 	</div>

@@ -9,12 +9,10 @@ if (rsvPager) {
 	jQuery("div[editaction=pzRuleset_ShowRuleSetVersion]").prepend(rsvPager);
 }
 
-// BEGIN are we in dev studio?
-if (document.querySelector("span#TABANCHOR span.textIn") && document.querySelector("span#TABANCHOR span.textIn").innerText == "Home") {
-
+function applyPDTCustomization() {
 	/**** HEADER/TOP ****/
 
-	//FEATURE: shorten home tab name
+	//FEATURE: shorten Home tab name
 	document.querySelector("span#TABANCHOR span.textIn").innerText = "H";
 
 	//document.querySelector("span#TABANCHOR span.textIn").eq(0).replaceWith('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 14 14" style="display: inline; vertical-align: middle; margin-right: 3px;" xml:space="preserve"><style type="text/css">.st0{fill-rule:evenodd;clip-rule:evenodd;}</style><path class="st0" d="M13.9,7.8c-0.2,0.2-0.5,0.2-0.6,0l-1.9-2l0,7.8c0,0.2-0.2,0.4-0.4,0.4L3,14c-0.2,0-0.4-0.2-0.4-0.4l0-7.8  l-1.9,2c-0.2,0.2-0.5,0.2-0.6,0C0,7.5,0,7.3,0.1,7.1l6.6-7C6.8,0,6.9,0,7,0c0.1,0,0.2,0,0.3,0.1l6.5,7C14,7.3,14,7.6,13.9,7.8z   M7,1.1L3.4,4.9C3.5,5,3.5,5.1,3.5,5.2l0,7.9l7,0l0-7.9c0-0.1,0-0.2,0.1-0.3L7,1.1z"></path></svg>')
@@ -32,43 +30,75 @@ if (document.querySelector("span#TABANCHOR span.textIn") && document.querySelect
 	//FEATURE: shortcuts to Logs in header
 	$("div.create-case").append('<div id="PegaDevToolsLogLink"><a href="#" onclick="pd(event);" class="Header_nav margin-1x" role="menuitem" data-ctl="" data-click="[[&quot;openLandingPage&quot;,[&quot;System: Operations&quot;,&quot;Display&quot;,{&quot;harnessName&quot;:&quot;pzLPSystemOperationsClusterManagement&quot;,&quot;className&quot;:&quot;Pega-Landing-System-Operations&quot;,&quot;model&quot;:&quot;pzInitializeSystemOperationsLandingPage&quot;,&quot;page&quot;:&quot;&quot;,&quot;readOnly&quot;:&quot;false&quot;,&quot;contentID&quot;:&quot;a61bd6ee-9e44-4219-814e-2ba0edb7f7c1&quot;,&quot;dynamicContainerID&quot;:&quot;&quot;},{&quot;levelA&quot;:&quot;&quot;,&quot;levelB&quot;:&quot;&quot;,&quot;levelC&quot;:&quot;Logs&quot;}]]]"><span class="menu-item-title-wrap" data-click=".">Logs<span></a></div>');
 
-	//get label and color config
-	window.browser.storage.sync.get(["siteConfig", "settings"],
-		function (data) {
-			console.log(data.siteConfig);
-			//find config for current url
-			$(data.siteConfig).each(function (index, site) {
-				if (window.location.href.includes(site.site)) {
-					if (site.label) {
-						if (data.settings && data.settings.useSiteLabelForBrowserTitle) {
-							var newTitle = site.label + " Pega";
-							if (site.version)
-								newTitle += " " + site.version.slice(0, 1) + "." + site.version.slice(1, 2);
-							parent.document.title = newTitle;
-						}
+	//FEATURE: environment indicator
+	function siteConfigCallback(siteConfig, globalConfig) {
+		if (siteConfig && siteConfig.label) {
+			if (globalConfig.settings && globalConfig.settings.useSiteLabelForBrowserTitle) {
+				var newTitle = siteConfig.label + " Pega";
+				if (siteConfig.version)
+					newTitle += " " + siteConfig.version.slice(0, 1) + "." + siteConfig.version.slice(1, 2);
+				parent.document.title = newTitle;
+			}
 
-						var productionEnvElement = document.querySelector("div[data-ui-meta*='D_pzGetCurrentSystemRecord.pyActiveProductionLevelName']");
-						if (productionEnvElement) {
-							productionEnvElement.insertAdjacentHTML("afterend", "<div style='color: white; text-shadow: black 0px 0px 6px;background-color:#" + site.color + ";border:2px solid;border-top-style:none; border-right-style:none;margin: 0 0 4px 0;font-weight: bold;border-color:#" + site.color + "; padding:6px'>" + site.label + "</ div>");
-							productionEnvElement.closest('div[bsimplelayout="true"]').style.paddingRight = "0"
-						}
-						else {
-							document.querySelector("div#PegaDevToolsSearchAllOptionsLink").insertAdjacentHTML("beforebegin", "<div style='color:#" + site.color + ";border:2px solid; margin:inherit;margin-right: 7px;padding:3px'>" + site.label + "</ div>");
-						}
+			var productionEnvElement = document.querySelector("div[data-ui-meta*='D_pzGetCurrentSystemRecord.pyActiveProductionLevelName']");
+			if (productionEnvElement) {
+				productionEnvElement.insertAdjacentHTML("afterend", "<div style='color: white; text-shadow: black 0px 0px 6px;background-color:#" + siteConfig.color + ";border:2px solid;border-top-style:none; border-right-style:none;margin: 0 0 4px 0;font-weight: bold;border-color:#" + siteConfig.color + "; padding:6px'>" + siteConfig.label + "</ div>");
+				productionEnvElement.closest('div[bsimplelayout="true"]').style.paddingRight = "0"
+			}
+			else {
+				document.querySelector("div#PegaDevToolsSearchAllOptionsLink").insertAdjacentHTML("beforebegin", "<div style='color:#" + siteConfig.color + ";border:2px solid; margin:inherit;margin-right: 7px;padding:3px'>" + siteConfig.label + "</ div>");
+			}
 
-						if(data.settings && data.settings.hideEnvironmentHeader) {
-							if(productionEnvElement)
-								productionEnvElement.style.display = "none";
-						}
+			if (globalConfig.settings && globalConfig.settings.hideEnvironmentHeader) {
+				if (productionEnvElement)
+					productionEnvElement.style.display = "none";
+			}
 
-						if(site.useColorTop) {
-							document.querySelector('div[data-portalharnessinsname="Data-Portal-DesignerStudio!pzStudio"]').style.cssText = "border-top: 2px; border-top-style: solid; border-color: #" + site.color;
-						}
-					}
+			if (siteConfig.useColorTop) {
+				document.querySelector('div[data-portalharnessinsname="Data-Portal-DesignerStudio!pzStudio"]').style.cssText = "border-top: 2px; border-top-style: solid; border-color: #" + siteConfig.color;
+			}
+		}
+
+		if (globalConfig && globalConfig.settings) {
+			let settings = globalConfig.settings;
+			//FEATURE: open tracer in tab
+			alterTracerOpenBehavior(settings.tracer.openBehavior);
+
+			if (settings.devstudio) {
+				//FEATURE: hide close button
+				if (settings.devstudio.hideCloseButton)
+					injectStyles("div.tStrCntr ul #close {display: none}");
+
+				if(settings.devstudio.longerRuleNames) {
+					//inject script which will apply it for newly opened tabs
+					injectScript(chrome.extension.getURL("/js/"), "makeRuleNamesLonger.js");
+					injectStyles(".Temporary_top_tabs .Temporary_top_tabsList LI span#TABANCHOR { padding-right: 4px !important; padding-left: 4px; !important}");
 				}
-				return;
-			});
-		});
+
+				//FEATURE: close tab on middle click 
+				if (settings.devstudio.closeTabMiddleClick) {
+					//inject script which will apply it for newly opened tabs
+					injectScript(chrome.extension.getURL("/js/"), "closeTabMiddleClick.js");
+
+					// apply for existing tabs
+					document.querySelector("div.tStrCntr ul table#RULE_KEY span[data-stl='1']").forEach(function (elem) {
+						elem.addEventListener("mousedown", function (e) {
+							console.log(e);
+							if (e && (e.which == 2 || e.button == 4))
+								this.parentNode.parentNode.querySelector('#close').click();
+						})
+					})
+				}
+
+			}
+		}
+	}
+
+	//TODO: alter to opposite behavior on right click
+	document.querySelector('div.tracer a').addEventListener("contextmenu", function (e) { e.srcElement.click(); })
+
+	siteConfig(siteConfigCallback);
+
 
 	/**** FOOTER ****/
 
@@ -83,10 +113,31 @@ if (document.querySelector("span#TABANCHOR span.textIn") && document.querySelect
 
 	//FEATURE: shorten Live Data
 	var DataInspectorButton = document.querySelector("div a[data-test-id='DataInspectorButton']");
-	if (DataInspectorButton)
+	if (DataInspectorButton) {
 		DataInspectorButton.innerHTML = DataInspectorButton.innerHTML.replace("Live Data", "");
+		//TODO:
+		//replaceInnerHTML(DataInspectorButton, DataInspectorButton.innerHTML.replace("Live Data", ""));
+	}
+} //END applyPDTCustomization()
 
 
-}  // END "are we in dev studio?"
+function alterTracerOpenBehavior(tracerOpenBehavior) {
+	if (tracerOpenBehavior === "tracerOpenDefault")
+		return;
+	else if (tracerOpenBehavior === "tracerOpenTab" || tracerOpenBehavior === "tracerOpenWindowedTab") {
+		let tracerDivContent = document.querySelector("div.tracer span");
+		if (tracerDivContent) {
+			let tracerDivContentHTML = tracerDivContent.innerHTML;
+			if (tracerOpenBehavior === "tracerOpenTab")
+				tracerDivContentHTML = tracerDivContentHTML.replace("location=0", "location=1").replace("menubar=0", "menubar=1").replace("toolbar=0", "toolbar=1").replace("status=0", "status=1");
+			tracerDivContent.innerHTML = tracerDivContentHTML;
+		}
+	}
+}
 
-
+// BEGIN are we in dev studio?
+console.log("Checking if in DEV studio");
+if (isInDevStudio()) {
+	console.log("In DEV studio - applying customizations");
+	applyPDTCustomization();
+}

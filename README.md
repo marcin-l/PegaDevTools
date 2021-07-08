@@ -1,5 +1,6 @@
 # PegaDevTools
 Pega 8 Developer extension for chromium-based browsers
+Will also work in Firefox with some quirks
 
 ## Introduction
 PDT is browser-only (i.e. no Pega ruleset deployment is required) productivity tool.
@@ -11,7 +12,7 @@ If you found a bug or have a new idea/feature for the extension, [you can report
 
 
 ## How too use
-* Download the extension using green button "Code" -> "Download ZIP"
+* Download (or clone) the extension using green button "Code" -> "Download ZIP"
 * Unpack downloaded zip file
 * Go to Chrome/Edge settings
 * Click "Extensions"

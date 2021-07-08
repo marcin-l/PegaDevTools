@@ -37,7 +37,18 @@ function saveSettings() {
   settings.clipboard = new Object();
   settings.clipboard.split5050 = document.querySelector("input#clipboardSplit5050").checked;
   settings.clipboard.disabled = document.querySelector("input#disableClipboard").checked;
+  settings.tracer = new Object();
+  settings.tracer.disabled = document.querySelector("input#disableTracer").checked;
+  settings.tracer.openBehavior = document.querySelector("input[name=tracerOpenBehavior]:checked").id;
+
+  settings.devstudio = new Object();
+  settings.devstudio.disabled = document.querySelector("input#disableDevStudioCustomization").checked;
+  settings.devstudio.closeTabMiddleClick = document.querySelector("input#devstudioCloseTabMiddleClick").checked;
+  settings.devstudio.hideCloseButton = /*settings.devstudio.closeTabMiddleClick &&*/ document.querySelector("input#devstudioHideCloseButton").checked;
+  settings.devstudio.longerRuleNames = document.querySelector("input#devstudioLongerRuleNames").checked;
+
   console.log(settings);
+
 
   window.browser.storage.sync.set({
     settings: settings
@@ -66,6 +77,14 @@ function restore_options() {
     document.querySelector("input#hideEnvironmentHeader").checked = data.settings.hideEnvironmentHeader;
     document.querySelector("input#clipboardSplit5050").checked = (data.settings.clipboard.split5050)?data.settings.clipboard.split5050:"";
     document.querySelector("input#disableClipboard").checked = (data.settings.clipboard.disabled)?data.settings.clipboard.disabled:"";
+    document.querySelector("input#disableTracer").checked = (data.settings.tracer.disabled)?data.settings.tracer.disabled:"";
+    if(data.settings.tracer.openBehavior) document.getElementById(data.settings.tracer.openBehavior).checked = true;
+
+    document.querySelector("input#disableDevStudioCustomization").checked = (data.settings.devstudio.disabled)?data.settings.devstudio.disabled:"";
+    document.querySelector("input#devstudioCloseTabMiddleClick").checked = (data.settings.devstudio.closeTabMiddleClick)?data.settings.devstudio.closeTabMiddleClick:"";
+    document.querySelector("input#devstudioHideCloseButton").checked = (data.settings.devstudio.hideCloseButton)?data.settings.devstudio.hideCloseButton:"";
+    document.querySelector("input#devstudioLongerRuleNames").checked = (data.settings.devstudio.longerRuleNames)?data.settings.devstudio.longerRuleNames:"";
+
   });
 }
 document.addEventListener('DOMContentLoaded', restore_options);

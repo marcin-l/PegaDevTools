@@ -25,10 +25,6 @@ function setTitle() {
 	}
 }
 
-$('#Pause').click(function () { setTitle(); });
-
-setTitle();
-
 var errorIndex = 0, messageIndex = 0, accessDeniedIndex;
 var errorList = [], messagesList = [], accessDeniedList = [];
 
@@ -65,115 +61,141 @@ function updateAccessDeniedCount(count) {
 	document.querySelector("button#btnPDTMAccessDenied").textContent = ' AccessDeny(' + count + ')';
 }
 
-$.get(chrome.runtime.getURL("tracer/tracer_button.html"), function (data) {
-	//add buttons from html
-	$('table.tracertop table tr').eq(2).prepend(data);
+function siteConfigCallback(siteConfig, globalConfig) {
+	if (!globalConfig.settings || (globalConfig.settings && globalConfig.settings.tracer.disabled)) {
+		console.log('PDT tracer disabled');
+	} else {
+		console.log('PDT tracer');
 
-	//TODO
-	document.querySelector("button#btnPDTErrors").oncontextmenu = function () {
-		var offset = this.getBoundingClientRect().left;
-		var errorListDropdown = window.parent.frames[1].document.querySelector('div.dropdown-content');
-		if (errorListDropdown) {
-			Array.prototype.forEach.call( errorListDropdown.querySelectorAll("a"), function( node ) {
-				node.parentNode.removeChild( node );
-			});
-			errorListDropdown.style.display = "block";
-			errorListDropdown.style.left = offset;
-
-			for(var rslt in getErrorList()) {
-				var elem = document.createElement("a");
-				elem.textContent = rslt.parent.querySelector("td#eventLineNumber").title;
-				errorListDropdown.appendChild(elem);
+		if (siteConfig && siteConfig.label) {
+			var headerButtonsElement = document.querySelector('table.tracertop tr');
+			if (headerButtonsElement) {
+				headerButtonsElement.insertAdjacentHTML("beforeend", "<td style='width:30px;color: white; text-shadow: black 0px 0px 6px;background-color:#" + siteConfig.color + ";border:2px solid;border-top-style:none; border-right-style:none;margin: 0 0 4px 0;font-weight: bold;border-color:#" + siteConfig.color + "; padding:6px'>" + siteConfig.label + "</ td>");
 			}
-			elem = document.createElement("a");
-			elem.textContent = "Close";
-			elem.onclick = function() { document.querySelector('div.dropdown-content').style.display = "none"}; 
-			return false;
-		}
-		else
-			console.log("[PDT] tracer dropdown not found");
-	};
 
-	/* #region Errors buttons */
-	document.querySelector("button#btnPDTErrors").onclick = function () {
-		errorList = getErrorList();
-		if (errorList.length) {
-			errorList[errorList.length - 1].scrollIntoView(false);
-		}
-		updateErrorCount(errorList.length);
-	};
-
-
-	document.querySelector("button#btnPDTErrorsPrev").onclick = function () {
-		errorList = getErrorList();
-		if (errorList.length) {
-			errorIndex += 1;
-			if (errorIndex >= errorList.length) {
-				errorIndex = 0;
+			if (siteConfig.useColorTop) {
+				document.querySelector('table.tracertop').style.cssText = "border-top: #" + siteConfig.color + " 2px solid";
 			}
-			errorList[errorIndex].scrollIntoView(false, {behavior: "smooth"});
-			updateErrorCount(errorList.length, errorIndex+1);
-		} else {
-			updateErrorCount(errorList.length);
 		}
-	};
+		$('#Pause').click(function () { setTitle(); });
 
-	document.querySelector("button#btnPDTErrorsNext").onclick = function () {
-		errorList = getErrorList();
-		if (errorList.length) {
-			errorIndex -= 1;
-			if (errorIndex < 0) {
-				errorIndex = errorList.length - 1;
-			}
-			errorList[errorIndex].scrollIntoView(false, {behavior: "smooth"});
-			updateErrorCount(errorList.length, errorIndex+1);
-		} else {
-			updateErrorCount(errorList.length);
-		}
+		setTitle();
+
+		$.get(chrome.runtime.getURL("tracer/tracer_button.html"), function (data) {
+			//add buttons from html
+			$('table.tracertop table tr').eq(2).prepend(data);
 		
-	};
-	/* #endregion */
+			//TODO
+			document.querySelector("button#btnPDTErrors").oncontextmenu = function () {
+				var offset = this.getBoundingClientRect().left;
+				var errorListDropdown = window.parent.frames[1].document.querySelector('div.dropdown-content');
+				if (errorListDropdown) {
+					Array.prototype.forEach.call( errorListDropdown.querySelectorAll("a"), function( node ) {
+						node.parentNode.removeChild( node );
+					});
+					errorListDropdown.style.display = "block";
+					errorListDropdown.style.left = offset;
+		
+					for(var rslt in getErrorList()) {
+						var elem = document.createElement("a");
+						elem.textContent = rslt.parent.querySelector("td#eventLineNumber").title;
+						errorListDropdown.appendChild(elem);
+					}
+					elem = document.createElement("a");
+					elem.textContent = "Close";
+					elem.onclick = function() { document.querySelector('div.dropdown-content').style.display = "none"}; 
+					return false;
+				}
+				else
+					console.log("[PDT] tracer dropdown not found");
+			};
+		
+			/* #region Errors buttons */
+			document.querySelector("button#btnPDTErrors").onclick = function () {
+				errorList = getErrorList();
+				if (errorList.length) {
+					errorList[errorList.length - 1].scrollIntoView(false);
+				}
+				updateErrorCount(errorList.length);
+			};
+		
+		
+			document.querySelector("button#btnPDTErrorsPrev").onclick = function () {
+				errorList = getErrorList();
+				if (errorList.length) {
+					errorIndex += 1;
+					if (errorIndex >= errorList.length) {
+						errorIndex = 0;
+					}
+					errorList[errorIndex].scrollIntoView(false, {behavior: "smooth"});
+					updateErrorCount(errorList.length, errorIndex+1);
+				} else {
+					updateErrorCount(errorList.length);
+				}
+			};
+		
+			document.querySelector("button#btnPDTErrorsNext").onclick = function () {
+				errorList = getErrorList();
+				if (errorList.length) {
+					errorIndex -= 1;
+					if (errorIndex < 0) {
+						errorIndex = errorList.length - 1;
+					}
+					errorList[errorIndex].scrollIntoView(false, {behavior: "smooth"});
+					updateErrorCount(errorList.length, errorIndex+1);
+				} else {
+					updateErrorCount(errorList.length);
+				}
+				
+			};
+			/* #endregion */
+		
+			/* #region Messages buttons */
+			document.querySelector("button#btnPDTMessages").onclick = function () {
+				messagesList = getMessagesList();
+				if (messagesList.length) {
+					messagesList[messagesList.length - 1].scrollIntoView(false);
+				}
+				updateMessageCount(messagesList.length);
+			};
+		
+			document.querySelector("button#btnPDTMessagesPrev").onclick = function () {
+				messagesList = getMessagesList();
+				if (messagesList.length) {
+					messageIndex += 1;
+					if (messageIndex >= messagesList.length) {
+						messageIndex = 0;
+					}
+					messagesList[messageIndex].scrollIntoView(false, {behavior: "smooth"});
+					updateMessageCount(messagesList.length, messageIndex + 1);
+				}
+				else
+					updateMessageCount(messagesList.length);
+			};
+		
+			document.querySelector("button#btnPDTMessagesNext").onclick = function () {
+				messagesList = getMessagesList();
+				if (messagesList.length) {
+					messageIndex -= 1;
+					if (messageIndex < 0) {
+						messageIndex = messagesList.length - 1;
+					}
+					messagesList[messageIndex].scrollIntoView(false, {behavior: "smooth"});
+					updateMessageCount(messagesList.length, messageIndex + 1);
+				}
+				else
+					updateMessageCount(messagesList.length);
+			};
+			/* #endregion */
+		});		
 
-	/* #region Messages buttons */
-	document.querySelector("button#btnPDTMessages").onclick = function () {
-		messagesList = getMessagesList();
-		if (messagesList.length) {
-			messagesList[messagesList.length - 1].scrollIntoView(false);
-		}
-		updateMessageCount(messagesList.length);
-	};
+	}
+}
 
-	document.querySelector("button#btnPDTMessagesPrev").onclick = function () {
-		messagesList = getMessagesList();
-		if (messagesList.length) {
-			messageIndex += 1;
-			if (messageIndex >= messagesList.length) {
-				messageIndex = 0;
-			}
-			messagesList[messageIndex].scrollIntoView(false, {behavior: "smooth"});
-			updateMessageCount(messagesList.length, messageIndex + 1);
-		}
-		else
-			updateMessageCount(messagesList.length);
-	};
+siteConfig(siteConfigCallback);
 
-	document.querySelector("button#btnPDTMessagesNext").onclick = function () {
-		messagesList = getMessagesList();
-		if (messagesList.length) {
-			messageIndex -= 1;
-			if (messageIndex < 0) {
-				messageIndex = messagesList.length - 1;
-			}
-			messagesList[messageIndex].scrollIntoView(false, {behavior: "smooth"});
-			updateMessageCount(messagesList.length, messageIndex + 1);
-		}
-		else
-			updateMessageCount(messagesList.length);
-	};
-	/* #endregion */
-});
-
-
+//TODO: 
+//displayPage = new Function('pageXML','pageName','pagePropertyName', displayPage.toString().match(/{([\s\S]*)}/)[1].replace('window.open(strURL,strForm,"status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=yes"  + strFeatures)', "window.open(strURL,'_blank')"));
 //TODO:  Access Deny list
 //window.parent.frames[1].document.querySelectorAll('td[title="Access Denied"]')
 

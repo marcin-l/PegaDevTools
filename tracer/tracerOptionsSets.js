@@ -22,7 +22,6 @@ function stoppedTyping(){
 	}
 }
 
-
 document.getElementById("addConfigProfile").addEventListener("click", addOptionsSet);
 document.getElementById("PDTConfigurationProfilesTab").addEventListener("click", togglePDTConfigurationProfiles);
 document.getElementById("PDTConfigurationProfilesContentTitle").addEventListener("click", togglePDTConfigurationProfiles);

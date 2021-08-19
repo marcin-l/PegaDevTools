@@ -78,7 +78,7 @@ function restore_options() {
     document.querySelector("input#clipboardSplit5050").checked = (data.settings.clipboard.split5050)?data.settings.clipboard.split5050:"";
     document.querySelector("input#disableClipboard").checked = (data.settings.clipboard.disabled)?data.settings.clipboard.disabled:"";
     document.querySelector("input#disableTracer").checked = (data.settings.tracer.disabled)?data.settings.tracer.disabled:"";
-    if(data.settings.tracer.openBehavior) document.getElementById(data.settings.tracer.openBehavior).checked = true;
+    //if(data.settings.tracer.openBehavior) document.getElementById(data.settings.tracer.openBehavior).checked = true;
 
     document.querySelector("input#disableDevStudioCustomization").checked = (data.settings.devstudio.disabled)?data.settings.devstudio.disabled:"";
     document.querySelector("input#devstudioCloseTabMiddleClick").checked = (data.settings.devstudio.closeTabMiddleClick)?data.settings.devstudio.closeTabMiddleClick:"";
@@ -97,8 +97,8 @@ function addSite() {
   newOptionsHtml += '<input id="site" placeholder="domain"></input>';
   newOptionsHtml += '<input id="label" placeholder="DEV, STG, UAT"></input>';
   newOptionsHtml += '<button id="color" class="jscolor">Pick a color</button>';
-  newOptionsHtml += '<input id="useColorTop" type="checkbox"></input>';
-  newOptionsHtml += '<select id="version"><option value="" disabled selected hidden>Select</option><option value=""></option><option value="7">Pega 7</option><option value="81">Pega 8.1</option><option value="82">Pega 8.2</option><option value="83">Pega 8.3</option><option value="84">Pega 8.4</option><option value="85">Pega 8.5</option></select>';
+  newOptionsHtml += '<input id="useColorTop" type="checkbox"></input><span class="tooltip">?<span class="tooltiptext">Show thin color bar at the top </span></span>&nbsp;';
+  newOptionsHtml += '<select id="version"><option value="" disabled selected hidden>Select</option><option value=""></option><option value="7">Pega 7</option><option value="81">Pega 8.1</option><option value="82">Pega 8.2</option><option value="83">Pega 8.3</option><option value="84">Pega 8.4</option><option value="85">Pega 8.5</option><option value="86">Pega 8.6</option><option value="87">Pega 8.7</option></select>';
   newOptionsHtml += '&nbsp;<a href="#">remove</a></div>';
   $("#siteConfig").append(newOptionsHtml);
   jscolor.installByClassName('jscolor');

@@ -3,7 +3,9 @@ const containerTabList = document.querySelector("div.tStrCntr ul");
 const containerTabListCallback = function (mutationsList, observer) {
 	mutationsList.forEach((mutation) => {
 		mutation.addedNodes.forEach((node) => {
-			if (node.nodeName == "LI") {
+			//console.log(node.nodeName);
+			if (node.nodeName == "LI") {	//rule name
+				
 				node.querySelectorAll("table#RULE_KEY span[data-stl='1']").forEach(function (elem) {
 					elem.addEventListener("mousedown", function (e) {
 						//console.log(e);
@@ -12,7 +14,18 @@ const containerTabListCallback = function (mutationsList, observer) {
 					})
 				}
 				);
+			
 			}
+			if (node.nodeName == "svg") {	//icon
+				node.addEventListener("mousedown", function (e) {
+						//console.log(e);
+						if (e && (e.which == 2 || e.button == 4))
+							this.parentNode.parentNode.querySelector('#close').click();
+					}
+			
+				);	
+			}
+
 		}
 		);
 	});

@@ -62,7 +62,8 @@ function applyPDTCustomization() {
 		if (globalConfig && globalConfig.settings) {
 			let settings = globalConfig.settings;
 			//FEATURE: open tracer in tab
-			alterTracerOpenBehavior(settings.tracer.openBehavior);
+			if(settings.tracer.openBehavior)
+				alterTracerOpenBehavior(settings.tracer.openBehavior);
 
 			if (settings.devstudio) {
 				//FEATURE: hide close button
@@ -81,14 +82,15 @@ function applyPDTCustomization() {
 					injectScript(chrome.extension.getURL("/js/"), "closeTabMiddleClick.js");
 
 					// apply for existing tabs
-					document.querySelector("div.tStrCntr ul table#RULE_KEY span[data-stl='1']").forEach(function (elem) {
-						elem.addEventListener("mousedown", function (e) {
-							console.log(e);
-							if (e && (e.which == 2 || e.button == 4))
-								this.parentNode.parentNode.querySelector('#close').click();
-						})
-					})
-				}
+					//TODO: probavly not needed, to be removed
+					// document.querySelectorAll("div.tStrCntr ul table#RULE_KEY span[data-stl='1'], div.tStrCntr ul table#RULE_KEY svg").forEach(function (elem) {
+					// 	elem.addEventListener("mousedown", function (e) {
+					// 		console.log(e);
+					// 		if (e && (e.which == 2 || e.button == 4))
+					// 			this.parentNode.parentNode.querySelector('#close').click();
+					// 	})
+					// })
+				};
 
 			}
 		}
@@ -122,7 +124,7 @@ function applyPDTCustomization() {
 
 
 function alterTracerOpenBehavior(tracerOpenBehavior) {
-	if (tracerOpenBehavior === "tracerOpenDefault")
+	if (tracerOpenBehavior === "tracerOpenDefault" || !tracerOpenBehavior)
 		return;
 	else if (tracerOpenBehavior === "tracerOpenTab" || tracerOpenBehavior === "tracerOpenWindowedTab") {
 		let tracerDivContent = document.querySelector("div.tracer span");

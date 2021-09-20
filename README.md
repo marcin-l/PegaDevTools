@@ -4,6 +4,7 @@ Will also work in Firefox with some quirks
 
 ## Introduction
 PDT is browser-only (i.e. no Pega ruleset deployment is required) productivity tool.
+Ckeck out the feature list in the [Wiki](https://github.com/marcin-l/PegaDevTools/wiki). More detailed descriptions will soon be available.
 
 ## Issues and feature requests
 There is a list of [Known Issues](https://github.com/marcin-l/PegaDevTools/issues) (things to be fixed and features to be implemented).
@@ -11,7 +12,7 @@ There is a list of [Known Issues](https://github.com/marcin-l/PegaDevTools/issue
 If you found a bug or have a new idea/feature for the extension, [you can report them](https://github.com/marcin-l/PegaDevTools/issues/new).
 
 
-## How too use
+## How to use
 * Download (or clone) the extension using green button "Code" -> "Download ZIP"
 * Unpack downloaded zip file
 * Go to Chrome/Edge settings

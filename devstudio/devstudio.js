@@ -1,3 +1,5 @@
+console.log("PDT: devstudio/devstudio.js");
+
 (function ($) {
 
 })(jQuery);
@@ -18,8 +20,10 @@ function applyPDTCustomization() {
 	//document.querySelector("span#TABANCHOR span.textIn").eq(0).replaceWith('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 14 14" style="display: inline; vertical-align: middle; margin-right: 3px;" xml:space="preserve"><style type="text/css">.st0{fill-rule:evenodd;clip-rule:evenodd;}</style><path class="st0" d="M13.9,7.8c-0.2,0.2-0.5,0.2-0.6,0l-1.9-2l0,7.8c0,0.2-0.2,0.4-0.4,0.4L3,14c-0.2,0-0.4-0.2-0.4-0.4l0-7.8  l-1.9,2c-0.2,0.2-0.5,0.2-0.6,0C0,7.5,0,7.3,0.1,7.1l6.6-7C6.8,0,6.9,0,7,0c0.1,0,0.2,0,0.3,0.1l6.5,7C14,7.3,14,7.6,13.9,7.8z   M7,1.1L3.4,4.9C3.5,5,3.5,5.1,3.5,5.2l0,7.9l7,0l0-7.9c0-0.1,0-0.2,0.1-0.3L7,1.1z"></path></svg>')
 
 	//FEATURE: shorten Application label and make it bold
-	document.querySelector("div.current-application label").innerText = "App:";
-	document.querySelector("div.current-application div a").style.fontWeight = "bolder";
+	if(document.querySelector("div.current-application label").innerText) {
+		document.querySelector("div.current-application label").innerText = "App:";
+		document.querySelector("div.current-application div a").style.fontWeight = "bolder";
+	}
 
 	//FEATURE: shortcuts to Search all options
 	$("div.create-case").append('<div id="PegaDevToolsSearchAllOptionsLink"><a href="#" onclick="pd(event);" class="Header_nav margin-1x" role="menuitem" data-ctl="" data-click="[[&quot;runScript&quot;,[&quot;pega.ui.commandpalette.toggle()&quot;]]]"><span class="menu-item-title-wrap" data-click="."><span class="menu-item-title" data-click="..">Search</span></span></a></div>');
@@ -60,10 +64,14 @@ function applyPDTCustomization() {
 		}
 
 		if (globalConfig && globalConfig.settings) {
-			let settings = globalConfig.settings;
-			//FEATURE: open tracer in tab
-			if(settings.tracer.openBehavior)
-				alterTracerOpenBehavior(settings.tracer.openBehavior);
+			var settings = globalConfig.settings; 
+		}
+		if(settings) {
+			if(settings.tracer) {
+				//FEATURE: open tracer in tab
+				if(settings.tracer.openBehavior)
+					alterTracerOpenBehavior(settings.tracer.openBehavior);
+			}
 
 			if (settings.devstudio) {
 				//FEATURE: hide close button
@@ -82,7 +90,7 @@ function applyPDTCustomization() {
 					injectScript(chrome.extension.getURL("/js/"), "closeTabMiddleClick.js");
 
 					// apply for existing tabs
-					//TODO: probavly not needed, to be removed
+					//TODO: probably not needed -- to be removed
 					// document.querySelectorAll("div.tStrCntr ul table#RULE_KEY span[data-stl='1'], div.tStrCntr ul table#RULE_KEY svg").forEach(function (elem) {
 					// 	elem.addEventListener("mousedown", function (e) {
 					// 		console.log(e);
@@ -90,7 +98,11 @@ function applyPDTCustomization() {
 					// 			this.parentNode.parentNode.querySelector('#close').click();
 					// 	})
 					// })
-				};
+				}
+
+				if(settings.devstudio.checkoutIndicator) {
+					showCheckoutIndicator();
+				}
 
 			}
 		}
@@ -135,6 +147,32 @@ function alterTracerOpenBehavior(tracerOpenBehavior) {
 			tracerDivContent.innerHTML = tracerDivContentHTML;
 		}
 	}
+}
+
+//TODO: single observer for middle click, check-out indicator and others?
+function showCheckoutIndicator() {
+	const containerTabListIndicator = document.querySelector("div.tStrCntr ul");
+	if(containerTabListIndicator) {
+		const containerTabListCallbackIndicator = function (mutationsList, observer) {
+			mutationsList.forEach((mutation) => {
+				mutation.addedNodes.forEach((node) => {
+					if (DEBUG) console.log(node.nodeName);
+					document.querySelectorAll("iframe").forEach((iframe) => {
+						if (iframe.contentWindow.document.querySelectorAll("button[title^='Check in']").length > 0)
+							var elem = document.querySelector("div.tStrCntr ul li[aria-label='" + iframe.title + "'] td span");
+						if (elem && !elem.innerText.startsWith("*")) {
+							elem.innerText = "*" + elem.innerText;
+							if (DEBUG) console.log(iframe.title);
+						}
+					}
+					);
+				});
+			});
+		}
+		const containerTabListIndicatorObserver = new MutationObserver(containerTabListCallbackIndicator);
+		containerTabListIndicatorObserver.observe(containerTabListIndicator, { childList: true, subtree: true });
+	}
+
 }
 
 // BEGIN are we in dev studio?

@@ -63,6 +63,7 @@ function siteConfigCallback(siteConfig, globalConfig) {
 
 		addpyWorkPageLink();
 		addnewAssignPage();
+		injectScript(chrome.extension.getURL("/resources/"), "jquery-3.4.1.min.js");
 		injectScript(chrome.extension.getURL("/resources/"), "jquery.filtertable.min.js");
 		injectScript(chrome.extension.getURL("/clipboard/"), "inject_clipboard.js");
 

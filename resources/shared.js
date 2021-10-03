@@ -1,9 +1,12 @@
+console.log("PDT: resources/shared.js");
+
 window.browser = (function () {
     return window.msBrowser ||
         window.browser ||
         window.chrome;
 })();
 
+const DEBUG = false;
 
 if ($('body[class^="channels-express"] div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle').length) {
     //change order to match Dev Studio
@@ -62,6 +65,12 @@ function injectScript(aBasePath, aScriptURL) {
     (document.body || document.head || document.documentElement).appendChild(scriptEl);
 }
 
+function executeScript(injectedCode) {
+    var scriptEl = document.createElement("script");
+    scriptEl.appendChild(document.createTextNode('('+ injectedCode +')();'));
+    (document.body || document.head || document.documentElement).appendChild(scriptEl);
+}
+
 function extractClassName(sinput) {
     if (sinput) {
         var idx = sinput.indexOf('(');
@@ -100,7 +109,6 @@ function injectStyles(rule) {
     }).appendTo("body");
 }
 
-
 function replaceInnerHTML(elem, html) {
     const parser = new DOMParser()
     const parsed = parser.parseFromString(html, `text/html`)
@@ -114,14 +122,16 @@ function siteConfig(callback) {
             console.log(data);
             //find config for current url
             var configForSiteFound = false;
-            for(let i = 0; i < data.siteConfig.length; i++) {
-                if (window.location.href.includes(data.siteConfig[i].site)) {
-                    callback(data.siteConfig[i], data);
-                    configForSiteFound = true;
-                    break;
-                }                
+            if(data.siteConfig) {
+                for(let i = 0; i < data.siteConfig.length; i++) {
+                    if (window.location.href.includes(data.siteConfig[i].site)) {
+                        callback(data.siteConfig[i], data);
+                        configForSiteFound = true;
+                        break;
+                    }                
+                }
             }
-            if(configForSiteFound == false)
+            if(!configForSiteFound)
                 callback(null, data);
             // $(data.siteConfig).each(function (index, site) {
             //     if (window.location.href.includes(site.site)) {

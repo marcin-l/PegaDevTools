@@ -1,4 +1,4 @@
-console.log("devstudio/datapage.js");
+console.log("PDT: devstudio/datapage.js");
 
 var CopyDPCall = function CopyDPCall(nocopy) {
 	dpCallString = document.querySelector("span[title='Page Name']").innerText + "[";

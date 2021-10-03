@@ -24,17 +24,24 @@
 		"128": "icon.png"
 	},
 	"manifest_version": 2,
-	"content_scripts": 
+	"content_scripts":
     [
 		{
 			"matches":["*://*/prweb/*"],
 			"exclude_globs": ["*blank.htm*"],
 			"css":["resources/shared.css"],
-			"js":["resources/jquery-3.4.1.min.js", "resources/shared.js"],
+			"js":["resources/jquery-3.4.1.min.js", "resources/shared.js", "resources/sub.js"],
 			"all_frames": true,
 			"match_about_blank": true,
 			"run_at": "document_end"
 		},
+		{
+			"matches":["*://*/prweb/*"],
+			"exclude_globs": ["*blank.htm*"],
+			"js":["resources/main.js"],
+			"match_about_blank": false,
+			"run_at": "document_end"
+		},		
 		{
 			"matches":["*://*/prweb/*!STANDARD*", "*://*/prweb/*/app/*!STANDARD*", "*://*/prweb/app/*!OpenPortal_Developer*"],
 			"exclude_globs": ["*agile*"],
@@ -101,10 +108,5 @@
 		"tracer/*",
 		"devstudio/*",
 		"js/*"
-	],
-	"browser_specific_settings": {
-		"edge": {
-		  "browser_action_next_to_addressbar": true
-		}
-	}
+	]
 }

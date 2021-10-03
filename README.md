@@ -7,6 +7,8 @@ PDT is browser-only (i.e. no Pega ruleset deployment is required) development pr
 
 List of PDT features will be available in the [Wiki](https://github.com/marcin-l/PegaDevTools/wiki) (ETA Sep 2021).
 
+Check out the feature list in the [Wiki](https://github.com/marcin-l/PegaDevTools/wiki). More detailed descriptions will soon be available.
+
 ## Issues and feature requests
 There is a list of [Known Issues](https://github.com/marcin-l/PegaDevTools/issues) (things to be fixed and features to be implemented).
 

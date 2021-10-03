@@ -5,8 +5,6 @@ Will also work in Firefox with some quirks.
 ## Introduction
 PDT is browser-only (i.e. no Pega ruleset deployment is required) development productivity tool.
 
-List of PDT features will be available in the [Wiki](https://github.com/marcin-l/PegaDevTools/wiki) (ETA Sep 2021).
-
 Check out the feature list in the [Wiki](https://github.com/marcin-l/PegaDevTools/wiki). More detailed descriptions will soon be available.
 
 ## Issues and feature requests

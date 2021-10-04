@@ -47,6 +47,7 @@ function saveSettings() {
   settings.devstudio.hideCloseButton = /*settings.devstudio.closeTabMiddleClick &&*/ document.querySelector("input#devstudioHideCloseButton").checked;
   settings.devstudio.longerRuleNames = document.querySelector("input#devstudioLongerRuleNames").checked;
   settings.devstudio.checkoutIndicator = document.querySelector("input#devstudioCheckoutIndicator").checked;
+  settings.devstudio.copypzinskey = document.querySelector("input#devstudioCopypzInsKey").checked;
   
   console.log(settings);
 
@@ -86,6 +87,8 @@ function restore_options() {
     document.querySelector("input#devstudioHideCloseButton").checked = (data.settings.devstudio.hideCloseButton)?data.settings.devstudio.hideCloseButton:"";
     document.querySelector("input#devstudioLongerRuleNames").checked = (data.settings.devstudio.longerRuleNames)?data.settings.devstudio.longerRuleNames:"";
     document.querySelector("input#devstudioCheckoutIndicator").checked = (data.settings.devstudio.devstudioCheckoutIndicator)?data.settings.devstudio.devstudioCheckoutIndicator:"";
+    document.querySelector("input#devstudioCopypzInsKey").checked = (data.settings.devstudio.copypzinskey)?data.settings.devstudio.copypzinskey:"";
+    copypzinskey
   });
 }
 document.addEventListener('DOMContentLoaded', restore_options);

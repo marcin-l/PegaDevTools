@@ -88,7 +88,6 @@ function restore_options() {
     document.querySelector("input#devstudioLongerRuleNames").checked = (data.settings.devstudio.longerRuleNames)?data.settings.devstudio.longerRuleNames:"";
     document.querySelector("input#devstudioCheckoutIndicator").checked = (data.settings.devstudio.devstudioCheckoutIndicator)?data.settings.devstudio.devstudioCheckoutIndicator:"";
     document.querySelector("input#devstudioCopypzInsKey").checked = (data.settings.devstudio.copypzinskey)?data.settings.devstudio.copypzinskey:"";
-    copypzinskey
   });
 }
 document.addEventListener('DOMContentLoaded', restore_options);

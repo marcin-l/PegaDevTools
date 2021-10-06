@@ -52,10 +52,11 @@ function handleRightPanelChange() {
 }
 
 
-
-var origprocessActionGridDetail_Success = pega.ui.Doc.prototype.processActionGridDetail_Success;
-pega.ui.Doc.prototype.processActionGridDetail_Success = function() {        
-    origprocessActionGridDetail_Success.apply(this, arguments);
-    handleRightPanelChange();
-}
+if(pega && pega.ui && pega.ui.Doc) {
+	var origprocessActionGridDetail_Success = pega.ui.Doc.prototype.processActionGridDetail_Success;
+	pega.ui.Doc.prototype.processActionGridDetail_Success = function() {        
+    	origprocessActionGridDetail_Success.apply(this, arguments);
+    	handleRightPanelChange();
+	
+}}
 

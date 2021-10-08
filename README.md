@@ -5,8 +5,6 @@ Will also work in Firefox with some quirks.
 ## Introduction
 PDT is browser-only (i.e. no Pega ruleset deployment is required) development productivity tool.
 
-List of PDT features will be available in the [Wiki](https://github.com/marcin-l/PegaDevTools/wiki) (ETA Sep 2021).
-
 Check out the feature list in the [Wiki](https://github.com/marcin-l/PegaDevTools/wiki). More detailed descriptions will soon be available.
 
 ## Issues and feature requests
@@ -15,13 +13,14 @@ There is a list of [Known Issues](https://github.com/marcin-l/PegaDevTools/issue
 If you found a bug or have a new idea/feature for the extension, [you can report them](https://github.com/marcin-l/PegaDevTools/issues/new).
 
 ## How to use
-* Download (or clone) the extension using green button "Code" -> "Download ZIP"
+* Download (or clone) the extension using green button **Code -> Download ZIP**
 * Unpack downloaded zip file
 * Go to Chrome/Edge settings
-* Click "Extensions"
-* Enable "Developer mode"
-* Click on Load Unpacked and select your unpacked zip file directory
-* Extension will be installed. Goto Extension Options to set up your development environments.
+* Click **Extensions**
+* Enable **Developer mode**
+* Click on **Load Unpacked** and select your unpacked zip file directory
+* Extension will be installed
+* Go to **Extension Options** to set up your development environments and turn on features
 
 ## Credits
 

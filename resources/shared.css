@@ -164,3 +164,6 @@ margin: 4px;
 	  width: 100%;
 	}
   }
+
+  /*** table ***/
+  tr.evenRow.striped, tr.oddRow.striped { background-color: #f2f2f2 !important; }

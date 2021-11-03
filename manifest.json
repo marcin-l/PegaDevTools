@@ -43,7 +43,7 @@
 			"run_at": "document_end"
 		},		
 		{
-			"matches":["*://*/prweb/*!STANDARD*", "*://*/prweb/*/app/*!STANDARD*", "*://*/prweb/app/*!OpenPortal_Developer*"],
+			"matches":["*://*/prweb/*!STANDARD*", "*://*/prweb/*/app/*!STANDARD*", "*://*/prweb/*app/*!OpenPortal_Developer*"],
 			"exclude_globs": ["*agile*"],
             "js":["resources/jquery-3.4.1.min.js", "devstudio/devstudio.js"],
 			"css":["devstudio/devstudio.css"],

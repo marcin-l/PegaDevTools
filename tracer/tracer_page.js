@@ -9,6 +9,7 @@ function waitUntilRender() {
     mainDiv = document.querySelector("div#MainDiv");
     if (mainDiv) {
         addPageNavigation();
+        addSearch();
     } else {
         tries = tries + 1;
         console.log(tries);
@@ -72,6 +73,10 @@ function addPageNavigation() {
     } else {
         return false;
     }
+}
+
+function addSearch() {
+    $('table#mainTable').filterTable({label:"Search:", placeholder:"properties and values"});
 }
 
 if (!waitUntilRender()) {

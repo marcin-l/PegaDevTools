@@ -2,6 +2,7 @@
 
 })(jQuery);
 
+//FEATURE: add link to pyWorkPage or RH_1 to header
 function addpyWorkPageLink() {
 	$("#devToolsGoToWorkPage").remove();
 
@@ -26,6 +27,7 @@ function addpyWorkPageLink() {
 	}
 }
 
+//FEATURE: add link to newAssignPage to header
 function addnewAssignPage() {
 	$("#devToolsGoToAssignPage").remove();
 
@@ -39,6 +41,7 @@ function addnewAssignPage() {
 	}
 }
 
+//get config
 function siteConfigCallback(siteConfig, globalConfig) {
 	if (!globalConfig.settings || (globalConfig.settings && globalConfig.settings.clipboard.disabled)) {
 		console.log('PDT clipboard disabled');
@@ -79,7 +82,7 @@ function siteConfigCallback(siteConfig, globalConfig) {
 				addedGoToWorkPage.focus();
 		}, 2000);
 
-
+		//FEATURE: split clipboard panels 50/50
 		if (globalConfig.settings.clipboard.split5050) {
 			injectStyles(`/** makes clipboard panels split 50/50 **/
 			.flex.screen-layout-header_left > .screen-layout-region-main-sidebar1 {

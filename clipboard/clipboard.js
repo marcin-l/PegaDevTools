@@ -1,24 +1,22 @@
-(function ($) {
-
-})(jQuery);
-
 //FEATURE: add link to pyWorkPage or RH_1 to header
 function addpyWorkPageLink() {
-	$("#devToolsGoToWorkPage").remove();
+	jQuery("#devToolsGoToWorkPage").remove();
 
-	var pyWorkPage = $("#gridNode li.gridRow ul li").has("span[title^='pyWorkPage']")[0];
+	var pyWorkPage = jQuery("#gridNode li.gridRow ul li").has("span[title^='pyWorkPage']")[0];
 	if (pyWorkPage) {
-		$("header").append("<b><a id='devToolsGoToWorkPage' class='Explorer_action'>pyWorkPage</a></b>");
-		$("#devToolsGoToWorkPage").click(function () { $("#gridNode li.gridRow ul li").has("span[title^='pyWorkPage']").first().trigger("click"); });
-		let clsname = extractClassName($("#gridNode li.gridRow ul li span[title^='pyWorkPage']")[0].title);
+		jQuery("header").append("<b><a id='devToolsGoToWorkPage' class='Explorer_action'>pyWorkPage</a></b>");
+		jQuery("#devToolsGoToWorkPage").click(function () { jQuery("#gridNode li.gridRow ul li").has("span[title^='pyWorkPage']").first().trigger("click"); });
+		var title = jQuery("#gridNode li.gridRow ul li span[title^='pyWorkPage']")[0].title;
+		let clsname = extractClassName(title);
+		let clsnamefull = extractClassName(title, true);
 		if (clsname)
-			$("header").append(' <i class="dark_background_label_dataLabelForRead">(' + clsname + ')</i>');
+			jQuery("header").append(' <i class="dark_background_label_dataLabelForRead" title="' + clsnamefull + '">(' + clsname + ')</i>');
 		console.log('PDT pyWorkPage found');
 	} else {
-		pyWorkPage = $("#gridNode li.gridRow ul li").has("span[title^='RH_1']")[0];
+		pyWorkPage = jQuery("#gridNode li.gridRow ul li").has("span[title^='RH_1']")[0];
 		if (pyWorkPage) {
-			$("header").append("<a id='devToolsGoToWorkPage' class='Explorer_action'>RH_1</a>");
-			$("#devToolsGoToWorkPage").click(function () { $("#gridNode li.gridRow ul li").has("span[title^='RH_1']").first().trigger("click"); });
+			jQuery("header").append("<a id='devToolsGoToWorkPage' class='Explorer_action'>RH_1</a>");
+			jQuery("#devToolsGoToWorkPage").click(function () { jQuery("#gridNode li.gridRow ul li").has("span[title^='RH_1']").first().trigger("click"); });
 			console.log('PDT RH_1 found');
 		}
 		else {
@@ -29,15 +27,15 @@ function addpyWorkPageLink() {
 
 //FEATURE: add link to newAssignPage to header
 function addnewAssignPage() {
-	$("#devToolsGoToAssignPage").remove();
+	jQuery("#devToolsGoToAssignPage").remove();
 
-	var newAssignPage = $("#gridNode li.gridRow ul li").has("span[title^='newAssignPage']")[0];
+	var newAssignPage = jQuery("#gridNode li.gridRow ul li").has("span[title^='newAssignPage']")[0];
 	if (newAssignPage) {
-		$("header").append(" <a id='devToolsGoToAssignPage' class='Explorer_action'>newAssignPage</a>");
-		$("#devToolsGoToAssignPage").click(function () { $("#gridNode li.gridRow ul li").has("span[title^='newAssignPage']").first().trigger("click"); });
-		let clsname = extractClassName($("#gridNode li.gridRow ul li span[title^='newAssignPage']")[0].title);
+		jQuery("header").append(" <a id='devToolsGoToAssignPage' class='Explorer_action'>newAssignPage</a>");
+		jQuery("#devToolsGoToAssignPage").click(function () { jQuery("#gridNode li.gridRow ul li").has("span[title^='newAssignPage']").first().trigger("click"); });
+		let clsname = extractClassName(jQuery("#gridNode li.gridRow ul li span[title^='newAssignPage']")[0].title);
 		if (clsname)
-			$("header").append(' <i class="dark_background_label_dataLabelForRead">(' + clsname + ')</i>');
+			jQuery("header").append(' <i class="dark_background_label_dataLabelForRead" title="' + clsname + '">(' + clsname + ')</i>');
 	}
 }
 
@@ -64,17 +62,19 @@ function siteConfigCallback(siteConfig, globalConfig) {
 			}
 		}
 
-		addpyWorkPageLink();
-		addnewAssignPage();
+
 		injectScript(chrome.extension.getURL("/resources/"), "jquery-3.4.1.min.js");
 		injectScript(chrome.extension.getURL("/resources/"), "jquery.filtertable.min.js");
+
+		addpyWorkPageLink();
+		addnewAssignPage();
 		injectScript(chrome.extension.getURL("/clipboard/"), "inject_clipboard.js");
 
 		//remove unnecessary space in right panel
-		$("div[node_name='pzClipboardToolbarWrapper'] > div").css("margin", 0)
+		jQuery("div[node_name='pzClipboardToolbarWrapper'] > div").css("margin", 0)
 
-		$("div[node_name='pzClipboardRight'] div.layout_body");
-		$("div[node_name='pzClipboardRight'] div[section_index='4'].layout-body").css("padding-top", 0);
+		//jQuery("div[node_name='pzClipboardRight'] div.layout_body");
+		jQuery("div[node_name='pzClipboardRight'] div[section_index='4'].layout-body").css("padding-top", 0);
 
 		setTimeout(() => {
 			var addedGoToWorkPage = document.querySelector("#devToolsGoToWorkPage");

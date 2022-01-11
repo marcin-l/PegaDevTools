@@ -1,22 +1,24 @@
 //TODO: rework jQuery to vanilla js
 //TODO: encapsulate extracting value by name - to be used in dynamic config of observed properties
 
+$.noConflict();
+
 function handleRightPanelChange() {
     return new Promise(() => {
 		//handle pyWorkPage and RH_1
-		if($(".heading_2").length>0 && $(".heading_2")[0].textContent == 'pyWorkPage') {
-			var elem = $('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pyStatusWork"});
+		if(jQuery(".heading_2").length>0 && jQuery(".heading_2")[0].textContent == 'pyWorkPage') {
+			var elem = jQuery('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pyStatusWork"});
 			if(elem.length > 0) {
 				var status = elem.next()[0].innerText;
 				if(status)
-					$(".heading_2").append(" (<i>" + status + "</i>)");
+					jQuery(".heading_2").append(" (<i>" + status + "</i>)");
 			}
 		}
 		//handle newAssignPage
-		else if($(".heading_2").length > 0 && $(".heading_2")[0].textContent == 'newAssignPage') {
+		else if(jQuery(".heading_2").length > 0 && jQuery(".heading_2")[0].textContent == 'newAssignPage') {
 			var addedText = "";
 			var addedTextTooltip = "";
-			var napelem = $('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pxObjClass"});
+			var napelem = jQuery('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pxObjClass"});
 			if(napelem.length > 0) {
 				var cls = napelem.next()[0].innerText;
 				if(cls) {
@@ -26,26 +28,29 @@ function handleRightPanelChange() {
 					addedText += cls;					
 				}
 			}
-			napelem = $('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pxAssignedOperatorID"});
+			napelem = jQuery('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pxAssignedOperatorID"});
 				if(napelem.length > 0) {
 				var op = napelem.next()[0].innerText;
 				if(op)
 					addedText += ": " + op;
 			}
 			if(cls)
-				$(".heading_2").append(" (<i>" + addedText + "</i>)");
+				jQuery(".heading_2").append(" (<i>" + addedText + "</i>)");
 		}
 		else { //handle all the rest
-			var clselem = $('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pxObjClass"});
+			var clselem = jQuery('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pxObjClass"});
 			if(clselem.length > 0) {
 				var cls = clselem.next()[0].innerText;
 				if(cls) {
-					$(".heading_2").append(" (<i" + addedTextTooltip ? "title='"+ addedTextTooltip + "'" :  "" + ">" + cls + "</i>)");
+					jQuery(".heading_2").append(" (<i" + addedTextTooltip ? "title='"+ addedTextTooltip + "'" :  "" + ">" + cls + "</i>)");
 				}
 			}
 		}
-		if($('table.gridTable') && $('table.gridTable').eq(2)) {
-			$('table.gridTable').eq(2).filterTable({label:"Search:", placeholder:"properties and values", minRows:7, quickListClear:"clear"});
+		if(jQuery('table.gridTable') && jQuery('table.gridTable').eq(2)) {
+			//immediately invoked function expression to avoid "$" conflicts using plugins
+			(function( $ ) {
+				$('table.gridTable').eq(2).filterTable({label:"Search:", placeholder:"properties and values", minRows:7, quickListClear:"clear"});
+			})( jQuery );
 			var addedFilterInput = document.querySelector("p.filter-table input");
 			if(addedFilterInput)
 				addedFilterInput.focus();
@@ -54,7 +59,7 @@ function handleRightPanelChange() {
 }
 
 function stripeTable(table) {
-	$(table).find('tr').removeClass('striped').filter(':visible:even').addClass('striped');
+	jQuery(table).find('tr').removeClass('striped').filter(':visible:even').addClass('striped');
 };
 
 if(pega && pega.ui && pega.ui.Doc) {

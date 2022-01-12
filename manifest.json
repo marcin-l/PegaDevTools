@@ -62,6 +62,12 @@
             "run_at": "document_end"
 		},
 		{
+			"matches":["*://*/prweb/*openRuleByClassAndName*objClass=Rule-Obj-Flow*"],
+			"all_frames": true,
+            "js":["devstudio/devstudio_flow.js"],
+            "run_at": "document_end"
+		},		
+		{
 			"matches":["*://*/prweb/*openRuleSpecific*openHandle=RULE-DECLARE-PAGES*", "*://*/prweb/*openRule*objClass=Rule-Declare-Pages*"],
 			"all_frames": true,
             "js":["resources/jquery-3.4.1.min.js", "devstudio/datapage.js"],
@@ -73,8 +79,8 @@
 			"css":["clipboard/clipboard.css"],
             "run_at": "document_end"
 		},
-        {
-            "matches":["*://*/prweb/*pyStream=TraceMain*"],
+		{
+            "matches":["*://*/prweb/*pyStream=TraceMain*", "*://*/prweb/*Data-TRACERSettings.pzStartTracerSession*"],
 			"js":["resources/jquery-3.4.1.min.js", "tracer/tracer_menuRow.js"],
 			"css": ["tracer/menuRow.css"],
 			"all_frames": true,

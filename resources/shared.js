@@ -64,6 +64,13 @@ function injectScript(aBasePath, aScriptURL) {
 
     (document.body || document.head || document.documentElement).appendChild(scriptEl);
 }
+//inject script to toggle sidebar using keyboard shortcut
+function injectSidebarToggle() {
+    injectScript(
+    chrome.extension.getURL("/js/"),
+        "sidebarToggle.js"
+    );
+}
 
 function executeScript(injectedCode) {
     var scriptEl = document.createElement("script");
@@ -71,12 +78,14 @@ function executeScript(injectedCode) {
     (document.body || document.head || document.documentElement).appendChild(scriptEl);
 }
 
-function extractClassName(sinput) {
+function extractClassName(sinput, getFull) {
     if (sinput) {
         var idx = sinput.indexOf('(');
         sinput = sinput.substring(idx != -1 ? idx + 1 : 0);
         if (sinput[sinput.length - 1] === ')')
             sinput = sinput.substring(0, sinput.length - 1);
+        if(getFull)
+            return sinput;
         if (sinput.includes('Work-'))
             sinput = sinput.split('Work-')[1];
         else if (sinput.includes('Assign-'))

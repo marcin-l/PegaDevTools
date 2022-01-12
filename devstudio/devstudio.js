@@ -112,32 +112,32 @@ function applyPDTCustomization() {
           );
 
           // apply for existing tabs
-          //TODO: probably not needed -- to be removed
-          // document.querySelectorAll("div.tStrCntr ul table#RULE_KEY span[data-stl='1'], div.tStrCntr ul table#RULE_KEY svg").forEach(function (elem) {
-          // 	elem.addEventListener("mousedown", function (e) {
-          // 		console.log(e);
-          // 		if (e && (e.which == 2 || e.button == 4))
-          // 			this.parentNode.parentNode.querySelector('#close').click();
-          // 	})
-          // })
+          document.querySelectorAll("div.tStrCntr ul table#RULE_KEY span[data-stl='1'], div.tStrCntr ul table#RULE_KEY svg").forEach(function (elem) {
+          	elem.addEventListener("mousedown", function (e) {
+          		console.log(e);
+          		if (e && (e.which == 2 || e.button == 4))
+          			this.parentNode.parentNode.querySelector('#close').click();
+          	})
+          })
         }
 
         if (settings.devstudio.checkoutIndicator) {
           showCheckoutIndicator();
         }
 
-		addHeaderShortcuts();
-		customizeText();
+        addHeaderShortcuts();
+        customizeText();
+        injectSidebarToggle();
       }
     }
   }
 
-  //TODO: alter to opposite behavior on right click
-  document
-    .querySelector("div.tracer a")
-    .addEventListener("contextmenu", function (e) {
-      e.srcElement.click();
-    });
+  // //TODO: alter to opposite behavior on right click
+  // document
+  //   .querySelector("div.tracer a")
+  //   .addEventListener("contextmenu", function (e) {
+  //     e.srcElement.click();
+  //   });
 
   siteConfig(siteConfigCallback);
 
@@ -272,3 +272,4 @@ if (isInDevStudio()) {
   console.log("In DEV studio - applying customizations");
   applyPDTCustomization();
 }
+

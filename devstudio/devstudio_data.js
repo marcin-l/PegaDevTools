@@ -29,3 +29,5 @@ appendScript(CopyClassName);
 // (document.head || window.documentElement).appendChild(script);
 $('div[node_name="pzDataTypeKeysAndDescription"] a').eq(1).after('<a class="rule-details" style="margin-top:0; margin-bottom:0;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopyClassName()"><i  class="icons pi pi-copy" id="CopyName" alt="Copy name"></i></a>');
 
+
+injectSidebarToggle();

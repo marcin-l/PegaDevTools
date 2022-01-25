@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<meta charset="utf-8">
 		<title>Pega Dev Tools Extension Options</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script src="resources\jscolor.js"></script>
 		<script src="resources\jquery-3.4.1.min.js"></script>
 		<style>
@@ -22,6 +24,7 @@
 
 			button {
 				margin: 5px;
+				cursor: pointer;
 			}
 
 			hr {
@@ -67,6 +70,20 @@
 				visibility: visible;
 				opacity: 1;
 			}
+
+			h2, h3 {
+				margin-bottom: 0;
+			}
+
+			.actionButton {
+				background-color: rgb(7, 107, 201);
+				color: white;
+				border-radius: 7px;
+				border: none;
+				padding: 8px;
+				font-size: 14px;
+				font-weight: bold;
+			}
 		</style>
 		<link rel="stylesheet" href="resources\shared.css" />
 	</head>
@@ -75,32 +92,75 @@
 		<div class="PDRrow">
 			<div class="PDTcolumn">
 				<h2>Settings</h2>
-				<input type="checkbox" id="useSiteLabelForBrowserTitle"><label for="useSiteLabelForBrowserTitle" class="tooltip">Use site label for browser title
-					<span class="tooltiptext">If you define an environment in Site Config the browser title will be replaced with the label you provided. Makes it easier to identify an environment in browser tabs.</span>
-				</label><br />
-				<input type="checkbox" id="hideEnvironmentHeader"><label for="hideEnvironmentHeader" class="tooltip">Hide OOTB environment header
-						<span class="tooltiptext">Site Config label is shown in Dev Studio so you might not need to see OOTB environment header.</span>
-				</label><br />
+				<input type="checkbox" id="useSiteLabelForBrowserTitle" /><label
+					for="useSiteLabelForBrowserTitle"
+					class="tooltip"
+					>Use site label for browser title
+					<span class="tooltiptext"
+						>If you define an environment in Site Config the browser title will
+						be replaced with the label you provided. Makes it easier to identify
+						an environment in browser tabs.</span
+					>
+				</label>
 
-				<h3>Dev Studio
+				<h3>
+					Dev Studio
 					<hr />
 				</h3>
 				<span>
-					<input type="checkbox" id="devstudioCloseTabMiddleClick"><label for="devstudioCloseTabMiddleClick" class="tooltip">Close
-						tabs with middle click
-						<span class="tooltiptext">Known issue: might not work for already opened tabs when you reload the browser window</span>
-					</label><br />
-					<input type="checkbox" id="devstudioHideCloseButton">
-						<label for="devstudioHideCloseButton" class="tooltip">Hide close button	<span class="tooltiptext">Allows to fit more tabs on the screen at once. Close button is not needed when "Close tabs with middle click" feature is enabled.</span></label>
-						<br />
-					<input type="checkbox" id="devstudioLongerRuleNames"><label for="devstudioLongerRuleNames"
-						class="tooltip">Allow longer rule names<span class="tooltiptext">By default rule names in tabs are trimmed to 14 characters, making it sometimes difficult to know which rule is open. <br/ >This option increases length to 20 characters.</span></label><br />
-					<input type="checkbox" id="devstudioCheckoutIndicator"><label for="devstudioCheckoutIndicator"
-						class="tooltip">Indicate checked-out rules<span class="tooltiptext">Shows asterisk (*) prefix in tab rule name - feature in Alpha stage</span></label><br />
-					<input type="checkbox" id="devstudioCopypzInsKey"><label for="devstudioCopypzInsKey"
-						class="tooltip">Show button to copy pzInskey to clipboard<span class="tooltiptext">Shows button next to rule name. Alternative to using SHIFT+F8 shortcut.</span></label><br />
-						
-								
+					<input type="checkbox" id="hideEnvironmentHeader" /><label
+						for="hideEnvironmentHeader"
+						class="tooltip"
+						>Hide OOTB environment header
+						<span class="tooltiptext"
+							>Site Config label is shown in Dev Studio so you might not need to
+							see OOTB environment header.</span
+						> </label
+					><br />
+					<input type="checkbox" id="devstudioCloseTabMiddleClick" /><label
+						for="devstudioCloseTabMiddleClick"
+						class="tooltip"
+						>Close tabs with middle click
+						<span class="tooltiptext"
+							>Known issue: might not work for already opened tabs when you
+							reload the browser window</span
+						> </label
+					><br />
+					<input type="checkbox" id="devstudioHideCloseButton" />
+					<label for="devstudioHideCloseButton" class="tooltip"
+						>Hide tab close button
+						<span class="tooltiptext"
+							>Allows to fit more tabs on the screen at once. Close button is
+							not needed when "Close tabs with middle click" feature is
+							enabled.</span
+						></label
+					>
+					<br />
+					<input type="checkbox" id="devstudioLongerRuleNames" /><label
+						for="devstudioLongerRuleNames"
+						class="tooltip"
+						>Allow longer rule names in tabs<span class="tooltiptext"
+							>By default rule names in tabs are trimmed to 14 characters,
+							making it sometimes difficult to know which rule is open. <br/
+							>This option increases length to 20 characters.</span
+						></label
+					><br />
+					<input type="checkbox" id="devstudioCheckoutIndicator" /><label
+						for="devstudioCheckoutIndicator"
+						class="tooltip"
+						>Indicate checked-out rules<span class="tooltiptext"
+							>Shows asterisk (*) prefix in tab rule name - feature in Alpha
+							stage</span
+						></label
+					><br />
+					<input type="checkbox" id="devstudioCopypzInsKey" /><label
+						for="devstudioCopypzInsKey"
+						class="tooltip"
+						>Show button to copy pzInskey to clipboard<span class="tooltiptext"
+							>Shows button next to rule name. Alternative to using SHIFT+F8
+							shortcut.</span
+						></label
+					><br />
 				</span>
 
 				<!-- <h3>Tracer
@@ -119,70 +179,85 @@
 							for="tracerOpenWindowedTab">in new window with tabs</label></div>
 				</span> -->
 
-				<h3>Clipboard
+				<h3>
+					Clipboard
 					<hr />
 				</h3>
 				<span>
-					<input type="checkbox" id="clipboardSplit5050"><label for="clipboardSplit5050" class="tooltip">Make clipboard tree
-						navigation wider (50%)
-						<span class="tooltiptext">Makes navigation easier on bigger monitors.</span>
-					</label><br />
+					<input type="checkbox" id="clipboardSplit5050" /><label
+						for="clipboardSplit5050"
+						class="tooltip"
+						>Make clipboard tree navigation wider (50%)
+						<span class="tooltiptext"
+							>Makes navigation easier on bigger monitors.</span
+						> </label
+					><br />
 				</span>
 
-				<h3>Disable components
+				<h3>
+					Disable components
 					<hr />
 				</h3>
 				<span>
-					<p>When you don't like a feature or it breaks Dev Studio you can disable it instead of the whole
-						extension</p>
+					<p>
+						When you don't like a feature or it breaks Dev Studio you can
+						disable it instead of the whole extension
+					</p>
 
-					<input type="checkbox" id="disableClipboard"><label for="disableClipboard">Clipboard</label><br />
-					<input type="checkbox" id="disableTracer"><label for="disableTracer">Tracer</label><br />
-					<input type="checkbox" id="disableDevStudioCustomization"><label
-						for="disableDevStudioCustomization">Dev Studio customizations</label><br />
-
+					<input type="checkbox" id="disableClipboard" /><label
+						for="disableClipboard"
+						>Clipboard</label
+					><br />
+					<input type="checkbox" id="disableTracer" /><label for="disableTracer"
+						>Tracer</label
+					><br />
+					<input type="checkbox" id="disableDevStudioCustomization" /><label
+						for="disableDevStudioCustomization"
+						>Dev Studio customizations</label
+					><br />
 				</span>
 
 				<div id="settingsStatus"></div>
-				<button id="saveSettings">Save settings</button>
+				<button id="saveSettings" class="actionButton">Save settings</button>
 			</div>
 
-			<div class="PDTcolumn">
-
-
-			</div>
+			<div class="PDTcolumn"></div>
 
 			<div class="PDTcolumn">
 				<h2>Site config <button id="addSite">+ Add site</button></h2>
 
-				<div id="siteConfig">
-				</div>
+				<div id="siteConfig"></div>
 
 				<div id="status"></div>
-				<button id="saveSiteConfig">Save site configuration</button>
-
+				<button id="saveSiteConfig" class="actionButton">Save site configuration</button>
 			</div>
 			<div class="PDTcolumn">
-				<h2>About</h2>
+				<h2>About this extension</h2>
 				<div>
 					<p>Author: Marcin Lesniak</p>
 					<p>PegaDevTools - v 0.9.5 prerelease</p>
 					<p>
-						Visit <a
-							href="https://github.com/marcin-l/PegaDevTools">https://github.com/marcin-l/PegaDevTools</a>
+						Visit
+						<a href="https://github.com/marcin-l/PegaDevTools"
+							>https://github.com/marcin-l/PegaDevTools</a
+						>
 					</p>
 					<p>
-						There is a list of <a href="https://github.com/marcin-l/PegaDevTools/issues">Known Issues</a>
+						There is a list of
+						<a href="https://github.com/marcin-l/PegaDevTools/issues"
+							>Known Issues</a
+						>
 						(things to be fixed and features to be implemented).
 					</p>
 					<p>
-						If you found a bug or have a new idea/feature for the extension, <a
-							href="https://github.com/marcin-l/PegaDevTools/issues/new">you can report them</a>.
+						If you found a bug or have a new idea/feature for the extension,
+						<a href="https://github.com/marcin-l/PegaDevTools/issues/new"
+							>you can report them</a
+						>.
 					</p>
 				</div>
 			</div>
 		</div>
 		<script src="settings.js"></script>
-</body>
-
+	</body>
 </html>

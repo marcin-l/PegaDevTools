@@ -3,7 +3,7 @@ function addpyWorkPageLink() {
 	jQuery("#devToolsGoToWorkPage").remove();
 
 	var pyWorkPage = jQuery("#gridNode li.gridRow ul li").has("span[title^='pyWorkPage']")[0];
-	if (pyWorkPage) {
+	if (pyWorkPage && pyWorkPage.getInnerHTML().indexOf("classless") < 0) {
 		jQuery("header").append("<b><a id='devToolsGoToWorkPage' class='Explorer_action'>pyWorkPage</a></b>");
 		jQuery("#devToolsGoToWorkPage").click(function () { jQuery("#gridNode li.gridRow ul li").has("span[title^='pyWorkPage']").first().trigger("click"); });
 		var title = jQuery("#gridNode li.gridRow ul li span[title^='pyWorkPage']")[0].title;

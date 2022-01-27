@@ -72,6 +72,14 @@ function injectSidebarToggle() {
     );
 }
 
+//inject script to close tab using keyboard shortcut
+function injectCloseShortcut() {
+    injectScript(
+    chrome.extension.getURL("/js/"),
+        "closeShortcut.js"
+    );
+}
+
 function executeScript(injectedCode) {
     var scriptEl = document.createElement("script");
     scriptEl.appendChild(document.createTextNode('('+ injectedCode +')();'));
@@ -94,17 +102,16 @@ function extractClassName(sinput, getFull) {
     }
 }
 
-// Show an element
-var showElem = function (elem) {
+var showElem = function (elem) {    //show an element
     elem.style.display = 'block';
 };
 
-var hideElem = function (elem) { //hide an element
+var hideElem = function (elem) {    //hide an element
     elem.style.display = 'none';
 };
 
-var toggleElem = function (elem) { //toggle element visibility
-    if (window.getComputedStyle(elem).display === 'block') { //if the element is visible, hide it
+var toggleElem = function (elem) {  //toggle element visibility
+    if (window.getComputedStyle(elem).display === 'block') { // if the element is visible, hide it
         hide(elem);
         return;
     }

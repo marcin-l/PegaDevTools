@@ -5,7 +5,7 @@ $.noConflict();
 
 function handleRightPanelChange() {
     return new Promise(() => {
-		//handle pyWorkPage and RH_1
+		//handle pyWorkPage
 		if(jQuery(".heading_2").length>0 && jQuery(".heading_2")[0].textContent == 'pyWorkPage') {
 			var elem = jQuery('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pyStatusWork"});
 			if(elem.length > 0) {
@@ -42,7 +42,7 @@ function handleRightPanelChange() {
 			if(clselem.length > 0) {
 				var cls = clselem.next()[0].innerText;
 				if(cls) {
-					jQuery(".heading_2").append(" (<i" + addedTextTooltip ? "title='"+ addedTextTooltip + "'" :  "" + ">" + cls + "</i>)");
+					jQuery(".heading_2").append(" (<i>" + cls + "</i>)");
 				}
 			}
 		}

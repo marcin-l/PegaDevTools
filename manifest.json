@@ -66,7 +66,13 @@
 			"all_frames": true,
             "js":["devstudio/devstudio_flow.js"],
             "run_at": "document_end"
-		},		
+		},
+		{
+			"matches":["*://*/prweb/*harnessName*pzLPBranchContents*", "*://*/prweb/*model=pzUpdateBranchInfo*"],
+			"all_frames": true,
+            "js":["devstudio/devstudio_branch.js"],
+            "run_at": "document_end"
+		},			
 		{
 			"matches":["*://*/prweb/*openRuleSpecific*openHandle=RULE-DECLARE-PAGES*", "*://*/prweb/*openRule*objClass=Rule-Declare-Pages*"],
 			"all_frames": true,

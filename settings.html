@@ -4,22 +4,29 @@
 		<meta charset="utf-8">
 		<title>Pega Dev Tools Extension Options</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script src="resources\jscolor.js"></script>
+		<script src="resources\huebee.pkgd.min.js"></script>
 		<script src="resources\jquery-3.4.1.min.js"></script>
 		<style>
+			body {
+				color: #181818;
+				background-color: #FEFCFE;
+				font-family: OpenSans, Arial;
+			}
+			
 			input#site {
 				width: 240px;
 				margin: 2px 5px;
 			}
 
 			input#label {
-				width: 80px;
+				width: 90px;
 				margin: 2px 5px;
 			}
 
-			button.jscolor {
-				border: 2px solid black;
+			button#color {
+				border: 1px solid #181818;
 				width: 65px;
+				border-radius: 2px;
 			}
 
 			button {
@@ -36,6 +43,11 @@
 				position: relative;
 				display: inline-block;
 				border-bottom: 1px dotted black;
+			}
+
+			.helper {
+				border-bottom: 0;
+				top: -4px;
 			}
 
 			.tooltip .tooltiptext {
@@ -76,7 +88,7 @@
 			}
 
 			.actionButton {
-				background-color: rgb(7, 107, 201);
+				background-color: #1B8EC4;
 				color: white;
 				border-radius: 7px;
 				border: none;
@@ -84,12 +96,27 @@
 				font-size: 14px;
 				font-weight: bold;
 			}
+
+			a {
+				color: #0080BC;
+				text-decoration: none;
+				font-weight: bold;
+			}
+			a.siteRem {
+				color: #FC543C;
+			}
+
+			.feature {
+				font-size: 10px;
+			}
+
 		</style>
 		<link rel="stylesheet" href="resources\shared.css" />
+		<link rel="stylesheet" href="resources\huebee.min.css" media="screen" />
 	</head>
 
 	<body>
-		<div class="PDRrow">
+		<div class="PDTrow">
 			<div class="PDTcolumn">
 				<h2>Settings</h2>
 				<input type="checkbox" id="useSiteLabelForBrowserTitle" /><label
@@ -104,7 +131,7 @@
 				</label>
 
 				<h3>
-					Dev Studio
+					Dev Studio <span class="feature"><a href="https://github.com/marcin-l/PegaDevTools/wiki/Developer-Studio" target="_blank" rel="noopener noreferrer">features</a></span>
 					<hr />
 				</h3>
 				<span>
@@ -163,24 +190,8 @@
 					><br />
 				</span>
 
-				<!-- <h3>Tracer
-					<hr />
-				</h3>
-				<span>
-					Open:
-					<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenDefault"><label
-							for="tracerOpenDefault">in a <b>popup</b> (default Pega behavior)</label></div>
-					<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenTab"><label for="tracerOpenTab">in
-							new <b>tab</b></label> and open property windows in <select id="tracerOpenPagesBehavior">
-							<option value="popup">popup (default)</option>
-							<option value="tab">tab</option>
-						</select></div>
-					<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenWindowedTab" disabled><label
-							for="tracerOpenWindowedTab">in new window with tabs</label></div>
-				</span> -->
-
 				<h3>
-					Clipboard
+					Clipboard <span class="feature"><a href="https://github.com/marcin-l/PegaDevTools/wiki/Clipboard" target="_blank" rel="noopener noreferrer">features</a></span>
 					<hr />
 				</h3>
 				<span>
@@ -192,6 +203,35 @@
 							>Makes navigation easier on bigger monitors.</span
 						> </label
 					><br />
+				</span>
+
+				<h3>
+					Tracer <span class="feature"><a href="https://github.com/marcin-l/PegaDevTools/wiki/Tracer" target="_blank" rel="noopener noreferrer">features</a></span>
+					<hr />
+				</h3>
+				<span>
+					<input type="checkbox" id="tracerPageSort" /><label
+						for="tracerPageSort"
+						class="tooltip"
+						>Sort properties alphabetically in page view
+						<span class="tooltiptext"
+							>When viewing a page or parameters top-level properties and pages will be sorted alphabetically in descending order. OOTB order appears to be random.</span
+						> </label
+					><br />		
+					
+					<!-- 
+					Open:
+					<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenDefault"><label
+							for="tracerOpenDefault">in a <b>popup</b> (default Pega behavior)</label></div>
+					<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenTab"><label for="tracerOpenTab">in
+							new <b>tab</b></label> and open property windows in <select id="tracerOpenPagesBehavior">
+							<option value="popup">popup (default)</option>
+							<option value="tab">tab</option>
+						</select></div>
+					<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenWindowedTab" disabled><label
+							for="tracerOpenWindowedTab">in new window with tabs</label></div>
+					 -->
+
 				</span>
 
 				<h3>
@@ -234,26 +274,17 @@
 			<div class="PDTcolumn">
 				<h2>About this extension</h2>
 				<div>
-					<p>Author: Marcin Lesniak</p>
-					<p>PegaDevTools - v 0.9.5 prerelease</p>
+					<p>PegaDevTools v0.9.7 prerelease</p>
+					<p>Author: Marcin Leśniak</p>
 					<p>
-						Visit
-						<a href="https://github.com/marcin-l/PegaDevTools"
-							>https://github.com/marcin-l/PegaDevTools</a
-						>
+						Visit <a href="https://github.com/marcin-l/PegaDevTools" target="_blank" rel="noopener noreferrer">github.com/marcin-l/PegaDevTools</a> for new releases and check out the <a href="https://github.com/marcin-l/PegaDevTools/wiki" target="_blank" rel="noopener noreferrer">Wiki</a>.
 					</p>
 					<p>
 						There is a list of
-						<a href="https://github.com/marcin-l/PegaDevTools/issues"
-							>Known Issues</a
-						>
-						(things to be fixed and features to be implemented).
-					</p>
-					<p>
+						<a href="https://github.com/marcin-l/PegaDevTools/issues" target="_blank" rel="noopener noreferrer">Known Issues</a>
+						(things to be fixed and features to be implemented). <br />
 						If you found a bug or have a new idea/feature for the extension,
-						<a href="https://github.com/marcin-l/PegaDevTools/issues/new"
-							>you can report them</a
-						>.
+						<a href="https://github.com/marcin-l/PegaDevTools/issues/new" target="_blank" rel="noopener noreferrer">you can report them</a>.
 					</p>
 				</div>
 			</div>

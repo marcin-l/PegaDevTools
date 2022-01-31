@@ -9,12 +9,16 @@ function saveSiteConfig() {
   let siteConfig = new Array();
   $("div#siteRow").each(function (index, element) {
     var site = $(this).find("input#site")[0].value;
-    var label = $(this).find("input#label")[0].value;
-    var useColorTop = $(this).find("input#useColorTop")[0].checked;
-    var color = $(this).find("button#color")[0].innerText;
-    var version = $(this).find("select#version")[0].value;
+    if(site) {
+      var label = $(this).find("input#label")[0].value;
+      var useColorTop = $(this).find("input#useColorTop")[0].checked;
+      var color = $(this).find("button#color")[0].innerText;
+      var version = $(this).find("select#version")[0].value;
 
-    siteConfig.push({ site: site, label: label, color: color, useColorTop: useColorTop, version: version });
+      siteConfig.push({ site: site, label: label, color: color, useColorTop: useColorTop, version: version });
+    } else {
+      $(this).closest("div#siteRow").remove();
+    }
   });
   console.log(siteConfig);
 
@@ -39,6 +43,7 @@ function saveSettings() {
   settings.clipboard.disabled = document.querySelector("input#disableClipboard").checked;
   settings.tracer = new Object();
   settings.tracer.disabled = document.querySelector("input#disableTracer").checked;
+  settings.tracer.pagesort = document.querySelector("input#tracerPageSort").checked;
   settings.tracer.openBehavior = (document.querySelector("input[name=tracerOpenBehavior]:checked") ?  document.querySelector("input[name=tracerOpenBehavior]:checked").id : "");
 
   settings.devstudio = new Object();
@@ -50,7 +55,6 @@ function saveSettings() {
   settings.devstudio.copypzinskey = document.querySelector("input#devstudioCopypzInsKey").checked;
   
   console.log(settings);
-
 
   window.browser.storage.sync.set({
     settings: settings
@@ -70,16 +74,17 @@ function restore_options() {
     $(data.siteConfig).each(function (index, element) {
       addSite();
       $("input#site").eq(index).val(element.site);
-      $("button#color").eq(index).text(element.color).css("background-color", "#" + element.color);
+      $("button#color").eq(index).text(element.color).css("background-color", "#" + element.color.replace("#", "")).css("color", "transparent");
       $("input#useColorTop").eq(index).prop("checked", element.useColorTop);
       $("input#label").eq(index).val(element.label);
       $("select#version").eq(index).val(element.version);
-    });
+   });
     document.querySelector("input#useSiteLabelForBrowserTitle").checked = (data.settings.useSiteLabelForBrowserTitle)?data.settings.useSiteLabelForBrowserTitle:"";
     document.querySelector("input#hideEnvironmentHeader").checked = data.settings.hideEnvironmentHeader;
     document.querySelector("input#clipboardSplit5050").checked = (data.settings.clipboard.split5050)?data.settings.clipboard.split5050:"";
     document.querySelector("input#disableClipboard").checked = (data.settings.clipboard.disabled)?data.settings.clipboard.disabled:"";
     document.querySelector("input#disableTracer").checked = (data.settings.tracer.disabled)?data.settings.tracer.disabled:"";
+    document.querySelector("input#tracerPageSort").checked = (data.settings.tracer.pagesort)?data.settings.tracer.pagesort:"";
     //if(data.settings.tracer.openBehavior) document.getElementById(data.settings.tracer.openBehavior).checked = true;
 
     document.querySelector("input#disableDevStudioCustomization").checked = (data.settings.devstudio.disabled)?data.settings.devstudio.disabled:"";
@@ -97,14 +102,17 @@ document.getElementById('saveSettings').addEventListener('click', saveSettings);
 
 function addSite() {
   var newOptionsHtml = '<div id="siteRow">'
-  newOptionsHtml += '<input id="site" placeholder="domain"></input>';
-  newOptionsHtml += '<input id="label" placeholder="DEV, STG, UAT"></input>';
-  newOptionsHtml += '<button id="color" class="jscolor">Pick a color</button>';
-  newOptionsHtml += '<input id="useColorTop" type="checkbox"></input><span class="tooltip">?<span class="tooltiptext">Show thin color bar at the top </span></span>&nbsp;';
-  newOptionsHtml += '<select id="version"><option value="" disabled selected hidden>Select</option><option value=""></option><option value="7">Pega 7</option><option value="81">Pega 8.1</option><option value="82">Pega 8.2</option><option value="83">Pega 8.3</option><option value="84">Pega 8.4</option><option value="85">Pega 8.5</option><option value="86">Pega 8.6</option><option value="87">Pega 8.7</option></select>';
-  newOptionsHtml += '&nbsp;<a href="#">remove</a></div>';
+  newOptionsHtml += '<input id="site" placeholder="domain, without https://"></input>';
+  newOptionsHtml += '<input id="label" placeholder="DEV, STG, UAT, etc."></input>';
+  newOptionsHtml += '<button id="color" class="color-button" data-huebee>Pick a color</button>';
+  newOptionsHtml += '<input id="useColorTop" type="checkbox" /><span class="tooltip helper">?<span class="tooltiptext">Show thin color bar at the top of Dev Studio, Tracer and Clipboard</span></span>&nbsp;';
+  newOptionsHtml += '<select id="version"><option value="" disabled selected hidden>Version:</option><option value=""></option><option value="7">Pega 7</option><option value="81">Pega 8.1</option><option value="82">Pega 8.2</option><option value="83">Pega 8.3</option><option value="84">Pega 8.4</option><option value="85">Pega 8.5</option><option value="86">Pega 8.6</option><option value="87">Pega 8.7</option></select>';
+  newOptionsHtml += '&nbsp;&nbsp;<a href="#" class="siteRem">remove</a></div>';
   $("#siteConfig").append(newOptionsHtml);
-  jscolor.installByClassName('jscolor');
+  var hueb = new Huebee($("button#color").last()[0], { notation: 'hex', saturations: 1, setBGColor: true, shades: 7, hue0: 80, customColors: [ '#FFF', '#0E0', '#FFA30F', '#C25', '#FFF000', '#19F' ]});
+  hueb.on('change', function(color) { //sets text color to chosen color so hex is not visible
+    this.anchor.style.color = color;
+  });
 }
 
 document.getElementById('addSite').addEventListener('click', addSite);

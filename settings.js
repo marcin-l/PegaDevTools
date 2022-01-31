@@ -44,6 +44,7 @@ function saveSettings() {
   settings.tracer = new Object();
   settings.tracer.disabled = document.querySelector("input#disableTracer").checked;
   settings.tracer.pagesort = document.querySelector("input#tracerPageSort").checked;
+  settings.tracer.fullscreen = document.querySelector("input#tracerFullscreen").checked;
   settings.tracer.openBehavior = (document.querySelector("input[name=tracerOpenBehavior]:checked") ?  document.querySelector("input[name=tracerOpenBehavior]:checked").id : "");
 
   settings.devstudio = new Object();
@@ -85,6 +86,8 @@ function restore_options() {
     document.querySelector("input#disableClipboard").checked = (data.settings.clipboard.disabled)?data.settings.clipboard.disabled:"";
     document.querySelector("input#disableTracer").checked = (data.settings.tracer.disabled)?data.settings.tracer.disabled:"";
     document.querySelector("input#tracerPageSort").checked = (data.settings.tracer.pagesort)?data.settings.tracer.pagesort:"";
+    document.querySelector("input#tracerFullscreen").checked = (data.settings.tracer.fullscreen)?data.settings.tracer.fullscreen:"";
+    
     //if(data.settings.tracer.openBehavior) document.getElementById(data.settings.tracer.openBehavior).checked = true;
 
     document.querySelector("input#disableDevStudioCustomization").checked = (data.settings.devstudio.disabled)?data.settings.devstudio.disabled:"";

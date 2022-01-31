@@ -50,7 +50,7 @@
             "run_at": "document_end"
 		},
 		{
-            "matches":["*://*/prweb/*action=openRuleSpecific*portalName=Developer*", "*://*/prweb/*action=action=createNewWork*portalName=Developer*"],
+            "matches":["*://*/prweb/*action=openRuleSpecific*portalName=Developer*", "*://*/prweb/*action=createNewWork*portalName=Developer*"],
 			"all_frames": true,
             "js":["resources/jquery-3.4.1.min.js", "devstudio/devstudio_rule.js"],
             "run_at": "document_end"

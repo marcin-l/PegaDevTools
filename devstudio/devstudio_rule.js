@@ -75,3 +75,4 @@ function siteConfigCallback(siteConfig, globalConfig) {
 siteConfig(siteConfigCallback);
 
 injectSidebarToggle();
+injectCloseShortcut();

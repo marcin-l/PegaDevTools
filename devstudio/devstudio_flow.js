@@ -1,1 +1,2 @@
 injectSidebarToggle();
+injectCloseShortcut();

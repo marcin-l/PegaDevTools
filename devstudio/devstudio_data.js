@@ -31,3 +31,4 @@ $('div[node_name="pzDataTypeKeysAndDescription"] a').eq(1).after('<a class="rule
 
 
 injectSidebarToggle();
+injectCloseShortcut();

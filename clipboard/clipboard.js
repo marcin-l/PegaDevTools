@@ -54,11 +54,11 @@ function siteConfigCallback(siteConfig, globalConfig) {
 
 			var headerButtonsElement = document.querySelector('div[node_name="pzClipboardHeader"] div.float-right div.layout-content-header_menu_secondary');
 			if (headerButtonsElement) {
-				headerButtonsElement.insertAdjacentHTML("beforeend", "<div class='float-right' style='color: white; text-shadow: black 0px 0px 6px;background-color:#" + siteConfig.color + ";border:2px solid;border-top-style:none; border-right-style:none;margin: 0 0 4px 0;font-weight: bold;border-color:#" + siteConfig.color + "; padding:6px'>" + siteConfig.label + "</ div>");
+				headerButtonsElement.insertAdjacentHTML("beforeend", "<div class='float-right' style='color: white; text-shadow: black 0px 0px 6px;background-color:#" + siteConfig.color.replace("#", '') + ";border:2px solid;border-top-style:none; border-right-style:none;margin: 0 0 4px 0;font-weight: bold;border-color:#" + siteConfig.color.replace("#", '') + "; padding:6px'>" + siteConfig.label + "</ div>");
 			}
 
 			if (siteConfig.useColorTop) {
-				document.querySelector('div[data-portalharnessinsname="Pega-Clipboard!pzClipboard"]').style.cssText = "border-top: 2px; border-top-style: solid; border-color: #" + siteConfig.color;
+				document.querySelector('div[data-portalharnessinsname="Pega-Clipboard!pzClipboard"]').style.cssText = "border-top: 2px; border-top-style: solid; border-color: #" + siteConfig.color.replace("#", '');
 			}
 		}
 

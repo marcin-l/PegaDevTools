@@ -36,9 +36,9 @@ function applyPDTCustomization() {
         productionEnvElement.insertAdjacentHTML(
           "afterend",
           "<div style='color: white; text-shadow: black 0px 0px 6px;background-color:#" +
-            siteConfig.color +
+            siteConfig.color.replace("#", '') +
             ";border:2px solid;border-top-style:none; border-right-style:none;margin: 0 0 4px 0;font-weight: bold;border-color:#" +
-            siteConfig.color +
+            siteConfig.color.replace("#", '') +
             "; padding:6px'>" +
             siteConfig.label +
             "</ div>"
@@ -52,9 +52,9 @@ function applyPDTCustomization() {
           .insertAdjacentHTML(
             "beforebegin",
             "<div style='color:#" +
-              siteConfig.color +
+              siteConfig.color.replace("#", '') +
               ";border:2px solid; margin:inherit;margin-right: 7px;padding:3px'>" +
-              siteConfig.label +
+              siteConfig.color.replace("#", '') +
               "</ div>"
           );
       }
@@ -71,7 +71,7 @@ function applyPDTCustomization() {
           'div[data-portalharnessinsname="Data-Portal-DesignerStudio!pzStudio"]'
         ).style.cssText =
           "border-top: 2px; border-top-style: solid; border-color: #" +
-          siteConfig.color;
+          siteConfig.color.replace("#", '');
       }
     }
 

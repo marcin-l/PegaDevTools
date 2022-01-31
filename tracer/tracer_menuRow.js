@@ -70,11 +70,11 @@ function siteConfigCallback(siteConfig, globalConfig) {
 		if (siteConfig && siteConfig.label) {
 			var headerButtonsElement = document.querySelector('table.tracertop tr');
 			if (headerButtonsElement) {
-				headerButtonsElement.insertAdjacentHTML("beforeend", "<td style='width:30px;font-size:11pt; color: white; text-shadow: black 0px 0px 6px;background-color:#" + siteConfig.color + ";border:2px solid;border-top-style:none; border-right-style:none;margin: 0 0 4px 0;font-weight: bold;border-color:#" + siteConfig.color + "; padding:6px'>" + siteConfig.label + "</ td>");
+				headerButtonsElement.insertAdjacentHTML("beforeend", "<td style='width:30px;font-size:11pt; color: white; text-shadow: black 0px 0px 6px;background-color:#" + siteConfig.color.replace("#", '') + ";border:2px solid;border-top-style:none; border-right-style:none;margin: 0 0 4px 0;font-weight: bold;border-color:#" + siteConfig.color.replace("#", '') + "; padding:6px'>" + siteConfig.label + "</ td>");
 			}
 
 			if (siteConfig.useColorTop) {
-				document.querySelector('table.tracertop').style.cssText = "border-top: #" + siteConfig.color + " 2px solid";
+				document.querySelector('table.tracertop').style.cssText = "border-top: #" + siteConfig.color.replace("#", '') + " 2px solid";
 			}
 		}
 		$('#Pause').click(function () { setTitle(); });

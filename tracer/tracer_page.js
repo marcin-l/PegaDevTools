@@ -20,6 +20,28 @@ function waitUntilRender() {
     }
 }
 
+//sorting based on https://stackoverflow.com/questions/14267781/sorting-html-table-with-javascript by Nick Grealy
+const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+const comparer = (idx) => (a, b) => ((v1, v2) => 
+    v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
+    )(getCellValue(a, idx), getCellValue(b, idx));
+
+function getMainTable() {  return document.querySelector("div#scrollingDIV table td[valign='TOP'] table tbody tr td table[border='0']"); } 
+
+function sortTopLevel() {
+    let mainTable = getMainTable();
+    Array.from(mainTable.querySelectorAll(':scope > tbody > tr.eventTable:nth-child(n+2)'))
+        .sort(comparer(0))
+        .forEach(tr => mainTable.appendChild(tr) );
+}
+
+var markNavigatedPage = function markNavigatedPage(e) { 
+    document.querySelectorAll("tr.eventTable").forEach(el => el.style.backgroundColor = "#EFEFEF"); //revert highlight
+    eid = e.getAttribute("href"); 
+    eid = eid.replaceAll("(", "\\(").replaceAll(")", "\\)"); //escape chars which querySelector doesn't like
+    document.querySelector(eid).parentNode.style.backgroundColor = "LightYellow"
+} 
+
 function addPageNavigation() {
     if (mainDiv) {
         console.log("PDT tracer_page");
@@ -29,12 +51,15 @@ function addPageNavigation() {
         divTag.style.maxWidth = "100px";
         mainDiv.prepend(divTag);
 
-        let mainTable = document.querySelector("div#scrollingDIV table td[valign='TOP'] table tbody tr td table[border='0']");
+        let mainTable = getMainTable();
         // if (!mainTable) {
 
         //     mainTable = document.querySelector("div#scrollingDIV table td[valign='TOP'] table tbody tr td table[border='0']");
         // }
         if (mainTable) {
+            appendScript(markNavigatedPage);
+
+            //TODO: needed?
             mainTable.setAttribute("id", "mainTable");
             //let subHeader = document.querySelector("td.dialogSubHeaderBackground");
             //subHeader.innerHTML = "";
@@ -52,7 +77,7 @@ function addPageNavigation() {
 
 
             //TODO: attempt at sorting the results
-            var embeddedPages = document.querySelectorAll("table#mainTable > tbody > tr.eventTable > td > table");
+            var embeddedPages = mainTable.querySelectorAll(":scope > tbody > tr.eventTable > td > table");
             Array.from(embeddedPages).sort(
                 function(a, b) {
                     var textA = a.parentNode.parentNode.querySelector("td").innerText.trim().toUpperCase();
@@ -65,6 +90,7 @@ function addPageNavigation() {
                 let linktag = document.createElement("a");
                 linktag.innerHTML = pelem.innerText.trim();
                 linktag.setAttribute("href", "#" + "mainPageNode" + pelem.innerText.trim());
+                linktag.setAttribute("onclick", "markNavigatedPage(this)");
                 divTag.appendChild(linktag);
                 divTag.appendChild(document.createElement("br"));
             })

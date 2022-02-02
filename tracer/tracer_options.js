@@ -127,3 +127,13 @@ function loadRulesets(rulesets) {
 		}
 	});
 }
+
+//TODO: add to configuration and call
+function makeFullscreen() {
+	window.resizeTo(screen.width,screen.height);
+}
+
+//TODO: WiP
+function responsiveLayout() {
+	document.querySelectorAll("div#ProfileDiv div.dialogDataContainer table table td")[2].className = "PDTrow";
+}

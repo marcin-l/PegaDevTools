@@ -37,6 +37,13 @@ Please note that this method is not persistent. Extension needs to be loaded on 
 - Go to [Extension Options](https://github.com/marcin-l/PegaDevTools/wiki/Configuration). In the **Site config** section add your environment by domain name (e.g. *client-dt1.pegacloud.net*, without *https://*) and click **Save site configuration**. Turn on features in the **Settings** section and click **Save settings**.
 - Reload your Pega tabs if needed
 
+### Updating
+- Overwrite extension with new download, your settings will be saved
+- Go to Chrome/Edge settings
+- Click **Extensions**
+- Reload PegaDevTools
+- Check the PDT Options to see if there are any new features to enable
+
 ## Credits
 Tracer feature to navigate to first Error and Message is based on Piotr Olejniczak's idea.
 

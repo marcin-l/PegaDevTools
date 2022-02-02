@@ -112,7 +112,17 @@
 			"all_frames": true,
 			"match_about_blank": true,
             "run_at": "document_end"
-        }
+        },
+		{
+			"matches":["*://*/prweb/*action=openRuleSpecific*openHandle=RULE-HTML-PARAGRAPH*"],
+			"all_frames": true,
+            "js":["resources/codemirror/codemirror.js", 
+				"resources/codemirror/foldcode.js", "resources/codemirror/foldgutter.js", "resources/codemirror/brace-fold.js", "resources/codemirror/indent-fold.js","resources/codemirror/comment-fold.js",
+				"resources/codemirror/xml-fold.js", "resources/codemirror/matchtags.js", "resources/codemirror/closetag.js", "resources/codemirror/fullscreen.js",
+				"resources/codemirror/xml.js", "resources/codemirror/javascript.js", "resources/codemirror/css.js", "resources/codemirror/htmlmixed.js", "devstudio/devstudio_paragraph.js"],
+			"css": ["resources/codemirror/codemirror.css", "resources/codemirror/foldgutter.css", "resources/codemirror/fullscreen.css"],
+            "run_at": "document_end"
+		}
     ],
 	"web_accessible_resources": [
 		"resources/*",

@@ -10,10 +10,11 @@ function waitUntilRender() {
     if (mainDiv) {
         addPageNavigation();
         addSearch();
+        return true;
     } else {
         tries = tries + 1;
         console.log(tries);
-        if (tries > 10) return;
+        if (tries > 10) return false;
         setTimeout(() => {
             waitUntilRender();
         }, 500);
@@ -105,6 +106,21 @@ function addSearch() {
     $('table#mainTable').filterTable({label:"Search:", placeholder:"properties and values"});
 }
 
-if (!waitUntilRender()) {
-    console.log("PDT tracer_page: No div#MainDiv");
+
+//get config
+function siteConfigCallback(siteConfig, globalConfig) {
+	if (!globalConfig.settings || (globalConfig.settings && globalConfig.settings.tracer.disabled)) {
+		console.log('PDT tracer disabled');
+	} else {
+		if (!waitUntilRender()) {
+            console.log("PDT tracer_page: No div#MainDiv");
+        }
+        
+        //FEATURE: Sort properties alphabetically in page view
+		else if (globalConfig.settings.tracer.pagesort) {
+			sortTopLevel();
+		}
+	}
 }
+
+siteConfig(siteConfigCallback);

@@ -109,7 +109,6 @@ function loadOptionSet() {
 	}
 }
 
-
 function loadEventTypes(eventTypes) {
 	document.querySelectorAll("div#EventTypesDisplay table table td.dataLabelStyle").forEach(function (val) { 
 		let cbox = val.querySelector("input[type='CHECKBOX']");
@@ -137,3 +136,18 @@ function makeFullscreen() {
 function responsiveLayout() {
 	document.querySelectorAll("div#ProfileDiv div.dialogDataContainer table table td")[2].className = "PDTrow";
 }
+
+
+//get config
+function siteConfigCallback(siteConfig, globalConfig) {
+	if (!globalConfig.settings || (globalConfig.settings && globalConfig.settings.tracer.disabled)) {
+		console.log('PDT tracer disabled');
+	} else {
+		//FEATURE: Display settings in fullscreen
+		if (globalConfig.settings.tracer.settingsFullscreen) {
+			makeFullscreen();
+		}
+	}
+}
+
+siteConfig(siteConfigCallback);

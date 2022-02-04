@@ -1,7 +1,7 @@
 {
 	"name": "PegaDevTools",
 	"description": "Pega Developer Productivity Tools",
-	"version": "0.9",
+	"version": "0.9.7",
 	"permissions": [
 		"activeTab",
 		"tabs",

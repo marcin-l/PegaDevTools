@@ -1,134 +1,273 @@
 {
 	"name": "PegaDevTools",
 	"description": "Pega Developer Productivity Tools",
-	"version": "0.9",
+	"version": "0.9.7",
+	"manifest_version": 3,
 	"permissions": [
 		"activeTab",
 		"tabs",
 		"contextMenus",
 		"storage",
-		"notifications"
+		"notifications",
+		"scripting"
 	],
+	"host_permissions": ["<all_urls>"],
 	"background": {
-		"scripts": ["background.js"],
-		"persistent": false
+		"service_worker": "background.js"
 	},
 	"options_ui": {
 		"page": "settings.html",
 		"open_in_tab": true
 	},
-	"page_action": {
-	  "default_popup": "popup.html"
-	},
+
 	"icons": {
 		"128": "icon.png"
 	},
-	"manifest_version": 2,
-	"content_scripts":
-    [
+	"content_scripts": [
 		{
-			"matches":["*://*/prweb/*"],
-			"exclude_globs": ["*blank.htm*"],
-			"css":["resources/shared.css"],
-			"js":["resources/jquery-3.4.1.min.js", "resources/shared.js", "resources/sub.js"],
+			"matches": [
+				"*://*/prweb/*"
+			],
+			"exclude_globs": [
+				"*blank.htm*"
+			],
+			"css": [
+				"resources/shared.css"
+			],
+			"js": [
+				"resources/jquery-3.4.1.min.js",
+				"resources/shared.js",
+				"resources/sub.js"
+			],
 			"all_frames": true,
 			"match_about_blank": true,
 			"run_at": "document_end"
 		},
 		{
-			"matches":["*://*/prweb/*"],
-			"exclude_globs": ["*blank.htm*"],
-			"js":["resources/main.js"],
+			"matches": [
+				"*://*/prweb/*"
+			],
+			"exclude_globs": [
+				"*blank.htm*"
+			],
+			"js": [
+				"resources/main.js"
+			],
 			"match_about_blank": false,
 			"run_at": "document_end"
-		},		
-		{
-			"matches":["*://*/prweb/*!STANDARD*", "*://*/prweb/*/app/*!STANDARD*", "*://*/prweb/*app/*!OpenPortal_Developer*"],
-			"exclude_globs": ["*agile*"],
-            "js":["resources/jquery-3.4.1.min.js", "devstudio/devstudio.js"],
-			"css":["devstudio/devstudio.css"],
-            "run_at": "document_end"
 		},
 		{
-            "matches":["*://*/prweb/*action=openRuleSpecific*portalName=Developer*", "*://*/prweb/*action=createNewWork*portalName=Developer*", "*://*/prweb/*/*eventSrcSection=Embed-PropertyValidation*"],
-			"all_frames": true,
-            "js":["resources/jquery-3.4.1.min.js", "devstudio/devstudio_rule.js"],
-            "run_at": "document_end"
-        },		
-		{
-			"matches":["*://*/prweb/*landingAction=openlanding*harnessName=pzDataTypeOverview*"],
-			"all_frames": true,
-            "js":["resources/jquery-3.4.1.min.js", "devstudio/devstudio_data.js"],
-            "run_at": "document_end"
+			"matches": [
+				"*://*/prweb/*!STANDARD*",
+				"*://*/prweb/*/app/*!STANDARD*",
+				"*://*/prweb/*app/*!OpenPortal_Developer*"
+			],
+			"exclude_globs": [
+				"*agile*"
+			],
+			"js": [
+				"resources/jquery-3.4.1.min.js",
+				"devstudio/devstudio.js"
+			],
+			"css": [
+				"devstudio/devstudio.css"
+			],
+			"run_at": "document_end"
 		},
 		{
-			"matches":["*://*/prweb/*openRuleByClassAndName*objClass=Rule-Obj-Flow*"],
+			"matches": [
+				"*://*/prweb/*action=openRuleSpecific*portalName=Developer*",
+				"*://*/prweb/*action=createNewWork*portalName=Developer*",
+				"*://*/prweb/*/*eventSrcSection=Embed-PropertyValidation*"
+			],
 			"all_frames": true,
-            "js":["devstudio/devstudio_flow.js"],
-            "run_at": "document_end"
+			"js": [
+				"resources/jquery-3.4.1.min.js",
+				"devstudio/devstudio_rule.js"
+			],
+			"run_at": "document_idle"
 		},
 		{
-			"matches":["*://*/prweb/*harnessName*pzLPBranchContents*", "*://*/prweb/*model=pzUpdateBranchInfo*"],
+			"matches": [
+				"*://*/prweb/*landingAction=openlanding*harnessName=pzDataTypeOverview*"
+			],
 			"all_frames": true,
-            "js":["devstudio/devstudio_branch.js"],
-            "run_at": "document_end"
-		},			
-		{
-			"matches":["*://*/prweb/*openRuleSpecific*openHandle=RULE-DECLARE-PAGES*", "*://*/prweb/*openRule*objClass=Rule-Declare-Pages*"],
-			"all_frames": true,
-            "js":["resources/jquery-3.4.1.min.js", "devstudio/datapage.js"],
-            "run_at": "document_end"
-		},
-        {
-			"matches":["*://*/prweb/*harnessName=pzClipboard*", "*://*/prweb/*pyActivity=pzGetClipboardPages*", "*://*/prweb/*pyPreActivity=pzGetClipboardPages*"],
-            "js":["resources/jquery-3.4.1.min.js", "resources/jquery.filtertable.min.js", "clipboard/clipboard.js"],
-			"css":["clipboard/clipboard.css"],
-            "run_at": "document_end"
+			"js": [
+				"resources/jquery-3.4.1.min.js",
+				"devstudio/devstudio_data.js"
+			],
+			"run_at": "document_end"
 		},
 		{
-            "matches":["*://*/prweb/*pyStream=TraceMain*", "*://*/prweb/*Data-TRACERSettings.pzStartTracerSession*"],
-			"js":["resources/jquery-3.4.1.min.js", "tracer/tracer_menuRow.js"],
-			"css": ["tracer/menuRow.css"],
+			"matches": [
+				"*://*/prweb/*openRuleByClassAndName*objClass=Rule-Obj-Flow*"
+			],
 			"all_frames": true,
-            "run_at": "document_end"
-        },
-        {
-            "matches":["*://*/prweb/*pyStream=TraceEvents*"],
-            "js":["resources/jquery-3.4.1.min.js", "resources/jquery.filtertable.min.js", "tracer/tracer_event.js"],
+			"js": [
+				"devstudio/devstudio_flow.js"
+			],
+			"run_at": "document_end"
+		},
+		{
+			"matches": [
+				"*://*/prweb/*harnessName*pzLPBranchContents*",
+				"*://*/prweb/*model=pzUpdateBranchInfo*"
+			],
+			"all_frames": true,
+			"js": [
+				"devstudio/devstudio_branch.js"
+			],
+			"run_at": "document_end"
+		},
+		{
+			"matches": [
+				"*://*/prweb/*openRuleSpecific*openHandle=RULE-DECLARE-PAGES*",
+				"*://*/prweb/*openRule*objClass=Rule-Declare-Pages*"
+			],
+			"all_frames": true,
+			"js": [
+				"resources/jquery-3.4.1.min.js",
+				"devstudio/datapage.js"
+			],
+			"run_at": "document_end"
+		},
+		{
+			"matches": [
+				"*://*/prweb/*harnessName=pzClipboard*",
+				"*://*/prweb/*pyActivity=pzGetClipboardPages*",
+				"*://*/prweb/*pyPreActivity=pzGetClipboardPages*"
+			],
+			"js": [
+				"resources/jquery-3.4.1.min.js",
+				"resources/jquery.filtertable.min.js",
+				"clipboard/clipboard.js"
+			],
+			"css": [
+				"clipboard/clipboard.css"
+			],
+			"run_at": "document_end"
+		},
+		{
+			"matches": [
+				"*://*/prweb/*pyStream=TraceMain*",
+				"*://*/prweb/*Data-TRACERSettings.pzStartTracerSession*"
+			],
+			"js": [
+				"resources/jquery-3.4.1.min.js",
+				"tracer/tracer_menuRow.js"
+			],
+			"css": [
+				"tracer/menuRow.css"
+			],
+			"all_frames": true,
+			"run_at": "document_end"
+		},
+		{
+			"matches": [
+				"*://*/prweb/*pyStream=TraceEvents*"
+			],
+			"js": [
+				"resources/jquery-3.4.1.min.js",
+				"resources/jquery.filtertable.min.js",
+				"tracer/tracer_event.js"
+			],
 			"all_frames": true,
 			"match_about_blank": true,
-            "run_at": "document_end"
-        },		
-        {
-			"matches":["*://*/prweb/*/*pyStream=TraceMain&pzPrimaryPageName=D_pzTracerSettingsForRequestor*"],
-            "js":["resources/jquery-3.4.1.min.js", "resources/jquery.filtertable.min.js", "tracer/tracer_page.js"],
-			"all_frames": true,
-			"match_about_blank": true,
-            "run_at": "document_end"
-        },
-        {
-			"matches":["*://*/prweb/*/*pyStream=TraceOptionsDialog*"],
-            "js":["resources/jquery-3.4.1.min.js", "tracer/tracer_options.js"],
-			"all_frames": true,
-			"match_about_blank": true,
-            "run_at": "document_end"
-        },
+			"run_at": "document_end"
+		},
 		{
-			"matches":["*://*/prweb/*action=openRuleSpecific*openHandle=RULE-HTML-PARAGRAPH*"],
+			"matches": [
+				"*://*/prweb/*/*pyStream=TraceMain&pzPrimaryPageName=D_pzTracerSettingsForRequestor*"
+			],
+			"js": [
+				"resources/jquery-3.4.1.min.js",
+				"resources/jquery.filtertable.min.js",
+				"tracer/tracer_page.js"
+			],
 			"all_frames": true,
-            "js":["resources/codemirror/codemirror.js", 
-				"resources/codemirror/foldcode.js", "resources/codemirror/foldgutter.js", "resources/codemirror/brace-fold.js", "resources/codemirror/indent-fold.js","resources/codemirror/comment-fold.js",
-				"resources/codemirror/xml-fold.js", "resources/codemirror/matchtags.js", "resources/codemirror/closetag.js", "resources/codemirror/fullscreen.js",
-				"resources/codemirror/xml.js", "resources/codemirror/javascript.js", "resources/codemirror/css.js", "resources/codemirror/htmlmixed.js", "devstudio/devstudio_paragraph.js"],
-			"css": ["resources/codemirror/codemirror.css", "resources/codemirror/foldgutter.css", "resources/codemirror/fullscreen.css"],
-            "run_at": "document_end"
+			"match_about_blank": true,
+			"run_at": "document_end"
+		},
+		{
+			"matches": [
+				"*://*/prweb/*/*pyStream=TraceOptionsDialog*"
+			],
+			"js": [
+				"resources/jquery-3.4.1.min.js",
+				"tracer/tracer_options.js"
+			],
+			"all_frames": true,
+			"match_about_blank": true,
+			"run_at": "document_end"
+		},
+		{
+			"matches": [
+				"*://*/prweb/*action=openRuleSpecific*openHandle=RULE-HTML-PARAGRAPH*",
+				"*://*/prweb/*SaveAs*prevRecordkey=RULE-HTML-PARAGRAPH*",
+				"*://*/prweb/*createNewWork*RULE-HTML-PARAGRAPH*"
+			],
+			"all_frames": true,
+			"js": [
+				"resources/codemirror/codemirror.js",
+				"resources/codemirror/foldcode.js",
+				"resources/codemirror/foldgutter.js",
+				"resources/codemirror/brace-fold.js",
+				"resources/codemirror/indent-fold.js",
+				"resources/codemirror/comment-fold.js",
+				"resources/codemirror/xml-fold.js",
+				"resources/codemirror/matchtags.js",
+				"resources/codemirror/closetag.js",
+				"resources/codemirror/fullscreen.js",
+				"resources/codemirror/active-line.js",
+				"resources/codemirror/xml.js",
+				"resources/codemirror/javascript.js",
+				"resources/codemirror/css.js",
+				"resources/codemirror/htmlmixed.js",
+				"devstudio/devstudio_paragraph.js"
+			],
+			"css": [
+				"resources/codemirror/codemirror.css",
+				"resources/codemirror/foldgutter.css",
+				"resources/codemirror/fullscreen.css"
+			],
+			"run_at": "document_idle"
+		},
+		{
+			"matches": [
+				"*://*/prweb/*Popup*rulespecific*"
+			],
+			"all_frames": true,
+			"js": [
+				"resources/codemirror/codemirror.js",
+				"resources/codemirror/foldcode.js",
+				"resources/codemirror/foldgutter.js",
+				"resources/codemirror/brace-fold.js",
+				"resources/codemirror/indent-fold.js",
+				"resources/codemirror/comment-fold.js",
+				"resources/codemirror/xml-fold.js",
+				"resources/codemirror/matchtags.js",
+				"resources/codemirror/closetag.js",
+				"resources/codemirror/xml.js",
+				"devstudio/devstudio_ruleform_popup.js"
+			],
+			"css": [
+				"resources/codemirror/codemirror.css",
+				"resources/codemirror/foldgutter.css",
+				"resources/codemirror/fullscreen.css"
+			],
+			"run_at": "document_end"
 		}
-    ],
+	],
 	"web_accessible_resources": [
-		"resources/*",
-		"clipboard/*",
-		"tracer/*",
-		"devstudio/*",
-		"js/*"
+		{
+			"resources": [
+				"resources/*",
+				"clipboard/*",
+				"tracer/*",
+				"devstudio/*",
+				"js/*"
+			],
+			"matches": ["<all_urls>"]
+		}
 	]
 }

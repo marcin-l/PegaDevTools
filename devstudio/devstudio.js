@@ -242,11 +242,7 @@ function customizeText() {
   //FEATURE: shorten Performance
   document.querySelector("div.pal-link a").innerHTML = document
     .querySelector("div.pal-link a")
-    .innerHTML.replace("Performance", "");
-  //TODO: needed twice?
-  document.querySelector("div.pal-link a").innerHTML = document
-    .querySelector("div.pal-link a")
-    .innerHTML.replace("Performance", "");
+    .innerHTML.replace("</i>Performance", "</i>");
   //FEATURE: shorten Issues
   document.querySelector("div.alerts a").innerHTML = document
     .querySelector("div.alerts a")

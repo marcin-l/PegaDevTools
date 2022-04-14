@@ -3,7 +3,7 @@ function addpyWorkPageLink() {
 	jQuery("#devToolsGoToWorkPage").remove();
 
 	var pyWorkPage = jQuery("#gridNode li.gridRow ul li").has("span[title^='pyWorkPage']")[0];
-	if (pyWorkPage && pyWorkPage.getInnerHTML().indexOf("classless") < 0) {
+	if (pyWorkPage && pyWorkPage.getInnerHTML().indexOf("classless") < 0 && pyWorkPage.getInnerHTML().indexOf("ProjectManagement") < 0) {
 		jQuery("header").append("<b><a id='devToolsGoToWorkPage' class='Explorer_action'>pyWorkPage</a></b>");
 		jQuery("#devToolsGoToWorkPage").click(function () { jQuery("#gridNode li.gridRow ul li").has("span[title^='pyWorkPage']").first().trigger("click"); });
 		var title = jQuery("#gridNode li.gridRow ul li span[title^='pyWorkPage']")[0].title;
@@ -34,8 +34,9 @@ function addnewAssignPage() {
 		jQuery("header").append(" <a id='devToolsGoToAssignPage' class='Explorer_action'>newAssignPage</a>");
 		jQuery("#devToolsGoToAssignPage").click(function () { jQuery("#gridNode li.gridRow ul li").has("span[title^='newAssignPage']").first().trigger("click"); });
 		let clsname = extractClassName(jQuery("#gridNode li.gridRow ul li span[title^='newAssignPage']")[0].title);
-		if (clsname)
+		if (clsname) {
 			jQuery("header").append(' <i class="dark_background_label_dataLabelForRead" title="' + clsname + '">(' + clsname + ')</i>');
+		}
 	}
 }
 
@@ -63,12 +64,12 @@ function siteConfigCallback(siteConfig, globalConfig) {
 		}
 
 
-		injectScript(chrome.extension.getURL("/resources/"), "jquery-3.4.1.min.js");
-		injectScript(chrome.extension.getURL("/resources/"), "jquery.filtertable.min.js");
+		injectScript("/resources/", "jquery-3.4.1.min.js");
+		injectScript("/resources/", "jquery.filtertable.min.js");
 
 		addpyWorkPageLink();
 		addnewAssignPage();
-		injectScript(chrome.extension.getURL("/clipboard/"), "inject_clipboard.js");
+		injectScript("/clipboard/", "inject_clipboard.js");
 
 		//remove unnecessary space in right panel
 		jQuery("div[node_name='pzClipboardToolbarWrapper'] > div").css("margin", 0)

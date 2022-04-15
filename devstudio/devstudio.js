@@ -4,8 +4,6 @@ console.log("PDT: devstudio/devstudio.js");
 // (function ($) {})(jQuery);
 
 
-
-
 function applyPDTCustomization() {
   function siteConfigCallback(siteConfig, globalConfig) {
     messageServiceWorker("registerDevStudio");  //register with Service Worker

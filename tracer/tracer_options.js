@@ -41,7 +41,7 @@ function addSaveOptionSet() {
 
 //Saves options to browser.storage
 function saveOptionSets() {
-	window.browser.storage.local.set({
+	chrome.storage.local.browser.storage.local.set({
 		optionSets: optionSets
 	}, function () {
 		restoreOptionSets();
@@ -56,7 +56,7 @@ function saveOptionSets() {
 }
 
 function getOptionSets(callback) {
-	window.browser.storage.local.get(["optionSets"], function (data) {
+	chrome.storage.local.get(["optionSets"], function (data) {
 		console.log(data);
 		if (typeof data.optionSets !== "undefined" && typeof data.optionSets.length !== "undefined") {
 			optionSets = data.optionSets;

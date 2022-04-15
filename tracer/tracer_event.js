@@ -1,5 +1,5 @@
 //FEATURE mark row on right-click
-$("div#traceEvent-CONTAINER").on("contextmenu", "td#eventLineNumber", function (evt) { evt.preventDefault(); $(this).toggleClass("PegaDevToolsTextRed"); });
+$("div#traceEvent-CONTAINER").on("contextmenu", "td#eventLineNumber", function (evt) { evt.preventDefault(); $(this).parent().toggleClass("PegaDevToolsTextRed"); });
 
 //FEATURE hide columns
 var removeThreadNameButton = $('<span title="Remove" style="margin-left:3px; cursor:pointer">x</span>');

@@ -37,9 +37,9 @@ function sortTopLevel() {
 
 var markNavigatedPage = function markNavigatedPage(e) { 
     document.querySelectorAll("tr.eventTable").forEach(el => el.style.backgroundColor = "#EFEFEF"); //revert highlight
-    eid = e.getAttribute("href"); 
+    let eid = e.getAttribute("href"); 
     eid = eid.replaceAll("(", "\\(").replaceAll(")", "\\)"); //escape chars which querySelector doesn't like
-    document.querySelector(eid).parentNode.style.backgroundColor = "LightYellow"
+    document.querySelector(eid).parentNode.style.backgroundColor = "LightYellow";
 } 
 
 function addPageNavigation() {
@@ -48,7 +48,7 @@ function addPageNavigation() {
         mainDiv.style.display = "flex";
         let divTag = document.createElement("div");
         divTag.id = "PDT_embeddedPageList";
-        divTag.style.maxWidth = "100px";
+        divTag.style.maxWidth = "20%";
         mainDiv.prepend(divTag);
 
         let mainTable = getMainTable();
@@ -107,4 +107,10 @@ function addSearch() {
 
 if (!waitUntilRender()) {
     console.log("PDT tracer_page: No div#MainDiv");
+}
+
+function siteConfigCallback(siteConfig, globalConfig) {
+	if (globalConfig.settings && globalConfig.settings.tracer.tracerPageSort) {
+		sortTopLevel();
+	}
 }

@@ -9,23 +9,37 @@
 			"*.yaml": "home-assistant"
 		},
 		"cSpell.words": [
+			"closetag",
 			"cntr",
+			"codemirror",
 			"Copypz",
 			"datapage",
 			"devstudio",
+			"foldcode",
+			"foldgutter",
+			"fullscreen",
+			"htmlmixed",
 			"hueb",
 			"huebee",
 			"inanchor",
 			"lesniak",
 			"marcin",
+			"matchtags",
 			"nocopy",
 			"ootb",
 			"pagesort",
 			"prweb",
+			"Recordkey",
 			"str",
 			"t",
 			"tabanchor",
 			"tooltiptext"
+		],
+		"favorites.resources": [
+			{
+				"filePath": "manifest.json",
+				"group": "Default"
+			}
 		]
 	}
 }

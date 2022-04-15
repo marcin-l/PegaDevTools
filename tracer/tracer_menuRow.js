@@ -6,22 +6,51 @@ function isTracerActive() {
 var titleTimerId;
 var counter = 0;
 
+async function backgroundNotify(state) {
+	if (PDT.settings.debug) {
+		chrome.runtime.sendMessage({ purpose: "tracerState", tracerIsOn: state });
+	}
+}
+
+async function backgroundHeartbeat() {
+	if (PDT.settings.debug) {
+		chrome.runtime.sendMessage({ purpose: "tracerHeartbeat" });
+		console.log("PDT sending heartbeat " + Math.floor(Date.now() / 1000));
+	}
+}
+
+async function updateCounts() {
+	updateMessageCount(getMessagesList().length);
+	updateErrorCount(getErrorList().length);
+}
+
+async function resetCounts() {
+	updateMessageCount();
+	updateErrorCount();
+}
+
+
 function setTitle() {
 	if (isTracerActive()) {
 		parent.document.title = "ıı Tracer Off";
 		clearInterval(titleTimerId);
+		backgroundNotify(false);
+		updateCounts();
 	}
 	else {
 		parent.document.title = "Tracer Active!";
+		backgroundHeartbeat();
+		backgroundNotify(true);
+		resetCounts();
 
 		titleTimerId = setInterval(function () {
 			parent.document.title = '►' + parent.document.title;
 			counter++;
-			if (counter == 2) {
-				counter = 0;
+			if ((counter % 2) == 0) {
 				parent.document.title = "Tracer Active!"
 			}
-		}, 1000);
+			backgroundHeartbeat();
+		}, 1000);		
 	}
 }
 
@@ -29,7 +58,7 @@ var errorIndex = 0, messageIndex = 0, accessDeniedIndex;
 var errorList = [], messagesList = [], accessDeniedList = [];
 
 function getErrorList() {
-	return window.parent.frames[1].document.querySelectorAll('td[title="FAIL"]');
+	return window.parent.frames[1].document.querySelectorAll('td[title="FAIL"], td[title="Exception"]');
 }
 
 function getMessagesList() {
@@ -39,21 +68,24 @@ function getMessagesList() {
 function getAccessDeniedList() {
 	return window.parent.frames[1].document.querySelectorAll('td[title="Access Denied"]');
 }
+
 function updateErrorCount(count, index) {
-	var newTextContent = 'Errors(';
-	if(index)
-		newTextContent += '' + index + '/' + count + ')';
-	else
-		newTextContent += '' + count + ')';
-	document.querySelector("button#btnPDTErrors").textContent = newTextContent;	
+	var newTextContent = "Errors";
+	if (! (count === undefined)) {
+		newTextContent = "Errors" + String.fromCharCode(160);
+		if (index) newTextContent += "" + index + "/" + count;
+		else newTextContent += "" + count;
+	}
+	document.querySelector("button#btnPDTErrors").textContent = newTextContent;
 }
 
 function updateMessageCount(count, index) {
-	var newTextContent = 'Warnings(';
-	if(index)
-		newTextContent += '' + index + '/' + count + ')';
-	else
-		newTextContent += '' + count + ')';
+	var newTextContent = "Warnings";
+	if (! (count === undefined)) {
+		newTextContent = "Warnings" + String.fromCharCode(160);
+		if (index) newTextContent += "" + index + "/" + count;
+		else newTextContent += "" + count;
+	}
 	document.querySelector("button#btnPDTMessages").textContent = newTextContent;
 }
 
@@ -66,6 +98,7 @@ function siteConfigCallback(siteConfig, globalConfig) {
 		console.log('PDT tracer disabled');
 	} else {
 		console.log('PDT tracer');
+		messageServiceWorker("registerTracer");  //register with Service Worker
 
 		if (siteConfig && siteConfig.label) {
 			var headerButtonsElement = document.querySelector('table.tracertop tr');
@@ -79,11 +112,13 @@ function siteConfigCallback(siteConfig, globalConfig) {
 		}
 		$('#Pause').click(function () { setTitle(); });
 
-		setTitle();
+		$('#ClearEvents').click(function () { resetCounts(); });
 
 		$.get(chrome.runtime.getURL("tracer/tracer_button.html"), function (data) {
 			//add buttons from html
 			$('table.tracertop table tr').eq(2).prepend(data);
+
+			setTitle();
 		
 			//TODO
 			document.querySelector("button#btnPDTErrors").oncontextmenu = function () {
@@ -117,9 +152,9 @@ function siteConfigCallback(siteConfig, globalConfig) {
 					errorList[errorList.length - 1].scrollIntoView(false);
 				}
 				updateErrorCount(errorList.length);
+				errorIndex = 0;
 			};
-		
-		
+				
 			document.querySelector("button#btnPDTErrorsPrev").onclick = function () {
 				errorList = getErrorList();
 				if (errorList.length) {
@@ -157,6 +192,7 @@ function siteConfigCallback(siteConfig, globalConfig) {
 					messagesList[messagesList.length - 1].scrollIntoView(false);
 				}
 				updateMessageCount(messagesList.length);
+				messageIndex = 0;
 			};
 		
 			document.querySelector("button#btnPDTMessagesPrev").onclick = function () {

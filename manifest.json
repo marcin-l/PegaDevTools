@@ -1,8 +1,9 @@
 {
 	"name": "PegaDevTools",
 	"description": "Pega Developer Productivity Tools",
-	"version": "0.9.7",
+	"version": "0.9.8",
 	"manifest_version": 3,
+	"author": "Marcin Leśniak",
 	"permissions": [
 		"activeTab",
 		"tabs",
@@ -12,6 +13,7 @@
 		"scripting"
 	],
 	"host_permissions": ["<all_urls>"],
+	"incognito":"spanning",
 	"background": {
 		"service_worker": "background.js"
 	},
@@ -60,13 +62,12 @@
 			"matches": [
 				"*://*/prweb/*!STANDARD*",
 				"*://*/prweb/*/app/*!STANDARD*",
-				"*://*/prweb/*app/*!OpenPortal_Developer*"
+				"*://*/prweb/*app/*!OpenPortal_*"
 			],
 			"exclude_globs": [
 				"*agile*"
 			],
 			"js": [
-				"resources/jquery-3.4.1.min.js",
 				"devstudio/devstudio.js"
 			],
 			"css": [
@@ -76,16 +77,38 @@
 		},
 		{
 			"matches": [
+				"*://*/prweb/*action=openRuleSpecific*openHandle=RULE-OBJ-ACTIVITY*",
+				"*://*/prweb/*SaveAs*prevRecordkey=RULE-OBJ-ACTIVITY*",
+				"*://*/prweb/*createNewWork*RULE-OBJ-ACTIVITY*",
+				"*://*/prweb/*action=openRule*objClass=Rule-Obj-Activity*"
+			],
+			"all_frames": true,
+			"js": [
+				"devstudio/devstudio_activity.js"
+			]
+		},		
+		{
+			"matches": [
 				"*://*/prweb/*action=openRuleSpecific*portalName=Developer*",
 				"*://*/prweb/*action=createNewWork*portalName=Developer*",
-				"*://*/prweb/*/*eventSrcSection=Embed-PropertyValidation*"
+				"*://*/prweb/*/*eventSrcSection=Embed-PropertyValidation*",
+				"*://*/prweb/*/*action=openRuleByClassAndName*"
 			],
 			"all_frames": true,
 			"js": [
 				"resources/jquery-3.4.1.min.js",
 				"devstudio/devstudio_rule.js"
+			]
+		},
+		{
+			"matches": [
+				"*://*/prweb/*action=openRuleSpecific*openHandle=RULE-RULESET-NAME*",
+				"*://*/prweb/*action=openRule*objClass=Rule-RuleSet-Name*"
 			],
-			"run_at": "document_idle"
+			"all_frames": true,
+			"js": [
+				"devstudio/devstudio_ruleset.js"
+			]
 		},
 		{
 			"matches": [
@@ -100,14 +123,61 @@
 		},
 		{
 			"matches": [
-				"*://*/prweb/*openRuleByClassAndName*objClass=Rule-Obj-Flow*"
+				"*://*/prweb/*action=openRuleSpecific*openHandle=RULE-OBJ-MODEL*",
+				"*://*/prweb/*SaveAs*prevRecordkey=RULE-OBJ-MODEL*",
+				"*://*/prweb/*createNewWork*RULE-OBJ-MODEL*",
+				"*://*/prweb/*action=openRule*objClass=Rule-Obj-Model*"
+			],
+			"all_frames": true,
+			"js": [
+				"devstudio/devstudio_datatransform.js"
+			],
+			"run_at": "document_end"
+		},
+		{
+			"matches": [
+				"*://*/prweb/*action=openRuleSpecific*openHandle=RULE-OBJ-FLOW*",
+				"*://*/prweb/*SaveAs*prevRecordkey=RULE-OBJ-FLOW*",
+				"*://*/prweb/*createNewWork*RULE-OBJ-FLOW*",
+				"*://*/prweb/*action=openRule*objClass=Rule-Obj-Flow*",
+				"*://*/prweb/*openRuleByKeys*openHandle=RULE-OBJ-FLOW*"	
 			],
 			"all_frames": true,
 			"js": [
 				"devstudio/devstudio_flow.js"
+			]
+		},
+		{
+			"matches": [
+				"*://*/prweb/*pyLibraryName*pyFunctionName*",
+				"*://*/prweb/*action=openRuleSpecific*openHandle=RULE-UTILITY-FUNCTION*",
+				"*://*/prweb/*SaveAs*prevRecordkey=RULE-UTILITY-FUNCTION*",
+				"*://*/prweb/*createNewWork*RULE-UTILITY-FUNCTION*",
+				"*://*/prweb/*action=openRule*objClass=Rule-Utility-Function*",
+
+				"*://*/prweb/*action=openRuleSpecific*openHandle=RULE-EDIT-VALIDATE*",
+				"*://*/prweb/*SaveAs*prevRecordkey=RULE-EDIT-VALIDATE*",
+				"*://*/prweb/*createNewWork*RULE-EDIT-VALIDATE*",
+				"*://*/prweb/*action=openRule*objClass=Rule-Edit-Validate*"
+			],
+			"all_frames": true,
+			"js": [
+				"devstudio/devstudio_function.js"
+			]
+		},		
+		{
+			"matches": [
+				"*://*/prweb/*action=openRuleSpecific*openHandle=RULE-OBJ-REPORT-DEFINITION*",
+				"*://*/prweb/*SaveAs*prevRecordkey=RULE-OBJ-REPORT-DEFINITION*",
+				"*://*/prweb/*createNewWork*RULE-OBJ-REPORT-DEFINITION*",
+				"*://*/prweb/*action=openRule*objClass=Rule-Obj-Report-Definition*"
+			],
+			"all_frames": true,
+			"js": [
+				"devstudio/devstudio_report.js"
 			],
 			"run_at": "document_end"
-		},
+		},			
 		{
 			"matches": [
 				"*://*/prweb/*harnessName*pzLPBranchContents*",
@@ -159,8 +229,7 @@
 			"css": [
 				"tracer/menuRow.css"
 			],
-			"all_frames": true,
-			"run_at": "document_end"
+			"all_frames": true
 		},
 		{
 			"matches": [
@@ -177,7 +246,7 @@
 		},
 		{
 			"matches": [
-				"*://*/prweb/*/*pyStream=TraceMain&pzPrimaryPageName=D_pzTracerSettingsForRequestor*"
+				"*://*/prweb/*/*pyStream=TraceMain*pzPrimaryPageName=*pzTracerSettingsForRequestor*"
 			],
 			"js": [
 				"resources/jquery-3.4.1.min.js",
@@ -186,7 +255,7 @@
 			],
 			"all_frames": true,
 			"match_about_blank": true,
-			"run_at": "document_end"
+			"run_at": "document_idle"
 		},
 		{
 			"matches": [
@@ -204,7 +273,8 @@
 			"matches": [
 				"*://*/prweb/*action=openRuleSpecific*openHandle=RULE-HTML-PARAGRAPH*",
 				"*://*/prweb/*SaveAs*prevRecordkey=RULE-HTML-PARAGRAPH*",
-				"*://*/prweb/*createNewWork*RULE-HTML-PARAGRAPH*"
+				"*://*/prweb/*createNewWork*RULE-HTML-PARAGRAPH*",
+				"*://*/prweb/*action=openRule*objClass=Rule-HTML-Paragraph*"
 			],
 			"all_frames": true,
 			"js": [

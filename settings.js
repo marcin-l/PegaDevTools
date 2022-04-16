@@ -1,8 +1,3 @@
-window.browser = (function () {
-  return window.msBrowser ||
-    window.browser ||
-    window.chrome;
-})();
 
 // Saves options to browser.storage
 function saveSiteConfig() {
@@ -22,7 +17,7 @@ function saveSiteConfig() {
   });
   console.log(siteConfig);
 
-  window.browser.storage.sync.set({
+  chrome.storage.sync.set({
     siteConfig: siteConfig
   }, function () {
     //update status to let user know options were saved
@@ -54,10 +49,12 @@ function saveSettings() {
   settings.devstudio.longerRuleNames = document.querySelector("input#devstudioLongerRuleNames").checked;
   settings.devstudio.checkoutIndicator = document.querySelector("input#devstudioCheckoutIndicator").checked;
   settings.devstudio.copypzinskey = document.querySelector("input#devstudioCopypzInsKey").checked;
+
+  settings.debug = document.querySelector("input#debug").checked;
   
   console.log(settings);
 
-  window.browser.storage.sync.set({
+  chrome.storage.sync.set({
     settings: settings
   }, function () {
     var status = document.getElementById('settingsStatus');
@@ -70,7 +67,7 @@ function saveSettings() {
 
 // Restores select box and checkbox state using the preferences stored in browser.storage
 function restore_options() {
-  window.browser.storage.sync.get(["siteConfig", "settings"], function (data) {
+  chrome.storage.sync.get(["siteConfig", "settings"], function (data) {
     console.log(data);
     $(data.siteConfig).each(function (index, element) {
       addSite();
@@ -80,6 +77,8 @@ function restore_options() {
       $("input#label").eq(index).val(element.label);
       $("select#version").eq(index).val(element.version);
    });
+    
+    document.querySelector("input#debug").checked = data.settings.debug;
     document.querySelector("input#useSiteLabelForBrowserTitle").checked = (data.settings.useSiteLabelForBrowserTitle)?data.settings.useSiteLabelForBrowserTitle:"";
     document.querySelector("input#hideEnvironmentHeader").checked = data.settings.hideEnvironmentHeader;
     document.querySelector("input#clipboardSplit5050").checked = (data.settings.clipboard.split5050)?data.settings.clipboard.split5050:"";
@@ -108,7 +107,7 @@ function addSite() {
   newOptionsHtml += '<input id="label" placeholder="DEV, STG, UAT, etc."></input>';
   newOptionsHtml += '<button id="color" class="color-button" data-huebee>Pick a color</button>';
   newOptionsHtml += '<input id="useColorTop" type="checkbox" /><span class="tooltip helper">?<span class="tooltiptext">Show thin color bar at the top of Dev Studio, Tracer and Clipboard</span></span>&nbsp;';
-  newOptionsHtml += '<select id="version"><option value="" disabled selected hidden>Version:</option><option value=""></option><option value="7">Pega 7</option><option value="81">Pega 8.1</option><option value="82">Pega 8.2</option><option value="83">Pega 8.3</option><option value="84">Pega 8.4</option><option value="85">Pega 8.5</option><option value="86">Pega 8.6</option><option value="87">Pega 8.7</option></select>';
+  newOptionsHtml += '<select id="version"><option value="" disabled selected hidden>Version:</option><option value=""></option><option value="7">Pega 7</option><option value="81">Pega 8.1</option><option value="82">Pega 8.2</option><option value="83">Pega 8.3</option><option value="84">Pega 8.4</option><option value="85">Pega 8.5</option><option value="86">Pega 8.6</option><option value="87">Pega 8.7</option><option value="88">Pega 8.8</option></select>';
   newOptionsHtml += '&nbsp;&nbsp;<a href="#" class="siteRem">remove</a></div>';
   $("#siteConfig").append(newOptionsHtml);
   var hueb = new Huebee($("button#color").last()[0], { notation: 'hex', saturations: 1, setBGColor: true, shades: 7, hue0: 80, customColors: [ '#FFF', '#0E0', '#FFA30F', '#C25', '#FFF000', '#19F' ]});

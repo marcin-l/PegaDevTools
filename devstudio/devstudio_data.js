@@ -1,4 +1,8 @@
+
+
 console.log("PDT: devstudio/devstudio_data.js");
+
+//TODO: to be reviewed
 
 var CopyName = function CopyName() {
     let xml = $('textarea#PRXML').val().replace('<?xml version="1.0" ?>', '').replace("<?xml version='1.0' ?>", "");

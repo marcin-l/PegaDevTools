@@ -1,34 +1,7 @@
 console.log("PDT: devstudio/devstudio_rule.js");
 
-var CopyNameAndClass = function CopyNameAndClass() {
-    let xml = $('textarea#PRXML').val().replace('<?xml version="1.0" ?>', '').replace("<?xml version='1.0' ?>", "");
-    $xml = $($.parseXML(xml));
-    let copyText = $xml.find("pyRuleName")[0].textContent;
-    copyText = copyText + ' \t' + $xml.find("pyClassName")[0].textContent;
-    copyText = copyText + ' \t' + $xml.find("pyRuleSet")[0].textContent;
-    if (!$xml.find("pyRuleSet")[0].textContent.includes("Branch"))
-        copyText = copyText + ' [' + $xml.find("pyRuleSetVersion")[0].textContent + ']';
-
-    copyToClipboard(copyText);
-    return false;
-}
-
-var CopyClassName = function CopyClassName() {
-    let xml = $('textarea#PRXML').val().replace('<?xml version="1.0" ?>', '').replace("<?xml version='1.0' ?>", "");
-    $xml = $($.parseXML(xml));
-    let copyText = $xml.find("pyClassName")[0].textContent;
-    copyToClipboard(copyText);
-    return false;
-}
-
-var CopypzInsKey = function CopypzInsKey() {
-    let xml = $('textarea#PRXML').val().replace('<?xml version="1.0" ?>', '').replace("<?xml version='1.0' ?>", "");
-    $xml = $($.parseXML(xml));
-    let copyText = $xml.find("pzInsKey")[0].textContent;
-    copyToClipboard(copyText);
-    return false;
-}
-
+var tries = 0;
+var mainDiv;
 
 //TODO: open rule class in app explorer
 // function openRuleClassInAppExplorer() {
@@ -49,30 +22,43 @@ function siteConfigCallback(siteConfig, globalConfig) {
 		console.log('PDT DevStudio disabled');
 	} else {
 		console.log('PDT DevStudio');
-        appendScript(copyToClipboard);
+        injectScript("/js/", "copyNameClass.js");
 
         //FEATURE: copy rule info (name, class, ruleset) in a format to be pasted into a table
         if($('a.custom_RuleOpener').eq(0)) {
-            appendScript(CopyNameAndClass);
             $('a.custom_RuleOpener').eq(0).after('<a class="rule-details" style="margin-top:0; margin-bottom:0;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopyNameAndClass()" title="Copy name, class and ruleset"><i  class="icons pi pi-copy" id="CopyNameAndClass"></i></a>');
         }
         
         //FEATURE: copy class name
-        if(document.querySelector("a[name^='RuleFormHeader']")) {
-            appendScript(CopyClassName);
-            document.querySelector("a[name^='RuleFormHeader']").insertAdjacentHTML('afterend', '<a style="margin-top:0; margin-bottom:0;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopyClassName()" title="Copy class name"><i  class="icons pi pi-copy" id="CopyClassName"></i></a>');
+        var classElem = document.querySelector("a[name^='RuleFormHeader']" || document.querySelector("span[tile='Class Name']"))
+        if(classElem) {
+            classElem.insertAdjacentHTML('afterend', '<a style="margin-top:0; margin-bottom:0;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopyClassName()" title="Copy class name"><i  class="icons pi pi-copy" id="CopyClassName"></i></a>');
+        } else {
+            //TODO: show class name
+            //document.querySelector('div#PEGA_HARNESS').getAttribute('classname');
         }
         
         //FEATURE: show button to copy pzInskey to clipboard
         if(globalConfig.settings.devstudio.copypzinskey) {
-            appendScript(CopypzInsKey);
             document.querySelectorAll('div[node_name="pzRuleFormKeysAndDescription"] span.workarea_header_titles')[0].insertAdjacentHTML('beforebegin', '<a style="margin-top:0; margin-bottom:0;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopypzInsKey()" title="Copy pzInsKey"><i  class="icons pi pi-copy" style="color: white" id="CopypzInsKey"></i></a>')
         }
     }
 }
 
+function waitUntilRender() {
+    mainDiv =  document.querySelector("a[name^='RuleFormHeader']") || document.querySelector('a.custom_RuleOpener') ;
+    if (mainDiv) {
+        siteConfig(siteConfigCallback);
+    } else {
+        tries = tries + 1;
+        console.log(tries);
+        if (tries > 10) return;
+        setTimeout(() => {
+            waitUntilRender();
+        }, 500);
+    }
+}
 
-siteConfig(siteConfigCallback);
-
+waitUntilRender();
 injectSidebarToggle();
 injectCloseShortcut();

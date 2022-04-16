@@ -1,18 +1,13 @@
 console.log("PDT: devstudio/devstudio.js");
 
-(function ($) {})(jQuery);
+// //TODO: get rid of jQuery, remove from manifest
+// (function ($) {})(jQuery);
 
-//TODO: FEATURE: copy ruleset version list pager on top of the list
-//observer needed?
-var rsvPager = jQuery(
-  "div[editaction=pzRuleset_ShowRuleSetVersion] div.gridActionBottom"
-);
-if (rsvPager) {
-  jQuery("div[editaction=pzRuleset_ShowRuleSetVersion]").prepend(rsvPager);
-}
 
 function applyPDTCustomization() {
   function siteConfigCallback(siteConfig, globalConfig) {
+    messageServiceWorker("registerDevStudio");  //register with Service Worker
+
     if (siteConfig && siteConfig.label) {
       if (
         globalConfig.settings &&
@@ -20,11 +15,7 @@ function applyPDTCustomization() {
       ) {
         var newTitle = siteConfig.label + " Pega";
         if (siteConfig.version)
-          newTitle +=
-            " " +
-            siteConfig.version.slice(0, 1) +
-            "." +
-            siteConfig.version.slice(1, 2);
+          newTitle += " " + siteConfig.version.slice(0, 1) + "." + siteConfig.version.slice(1, 2);
         parent.document.title = newTitle;
       }
 
@@ -37,15 +28,12 @@ function applyPDTCustomization() {
           "afterend",
           "<div style='color: white; text-shadow: black 0px 0px 6px;background-color:#" +
             siteConfig.color.replace("#", '') +
-            ";border:2px solid;border-top-style:none; border-right-style:none;margin: 0 0 4px 0;font-weight: bold;border-color:#" +
+            ";border:2px solid;border-top-style:none; border-right-style:none;font-weight: bold;border-color:#" +
             siteConfig.color.replace("#", '') +
-            "; padding:6px'>" +
-            siteConfig.label +
-            "</ div>"
+            "; padding:6px'>" + siteConfig.label + "</ div>"
         );
-        productionEnvElement.closest(
-          'div[bsimplelayout="true"]'
-        ).style.paddingRight = "0";
+        productionEnvElement.closest('div[bsimplelayout="true"]').style.paddingRight = "0";
+        document.querySelector("div.env-name").style.borderLeft = "none";
       } else {
         document
           .querySelector("div#PegaDevToolsSearchAllOptionsLink")
@@ -60,8 +48,7 @@ function applyPDTCustomization() {
       }
 
       if (
-        globalConfig.settings &&
-        globalConfig.settings.hideEnvironmentHeader
+        globalConfig.settings && globalConfig.settings.hideEnvironmentHeader
       ) {
         if (productionEnvElement) productionEnvElement.style.display = "none";
       }
@@ -94,10 +81,7 @@ function applyPDTCustomization() {
 
         if (settings.devstudio.longerRuleNames) {
           //inject script which will apply it for newly opened tabs
-          injectScript(
-            chrome.extension.getURL("/js/"),
-            "makeRuleNamesLonger.js"
-          );
+          injectScript("/js/", "makeRuleNamesLonger.js");
           injectStyles(
             ".Temporary_top_tabs .Temporary_top_tabsList LI span#TABANCHOR { padding-right: 4px !important; padding-left: 4px; !important}"
           );
@@ -106,10 +90,7 @@ function applyPDTCustomization() {
         //FEATURE: close tab on middle click
         if (settings.devstudio.closeTabMiddleClick) {
           //inject script which will apply it for newly opened tabs
-          injectScript(
-            chrome.extension.getURL("/js/"),
-            "closeTabMiddleClick.js"
-          );
+          injectScript("/js/", "closeTabMiddleClick.js");
 
           // apply for existing tabs
           document.querySelectorAll("div.tStrCntr ul table#RULE_KEY span[data-stl='1'], div.tStrCntr ul table#RULE_KEY svg").forEach(function (elem) {
@@ -253,10 +234,7 @@ function customizeText() {
     "div a[data-test-id='DataInspectorButton']"
   );
   if (DataInspectorButton) {
-    DataInspectorButton.innerHTML = DataInspectorButton.innerHTML.replace(
-      "Live Data",
-      ""
-    );
+    DataInspectorButton.innerHTML = DataInspectorButton.innerHTML.replace("Live Data", "");
     //TODO:
     //replaceInnerHTML(DataInspectorButton, DataInspectorButton.innerHTML.replace("Live Data", ""));
   }

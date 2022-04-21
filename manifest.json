@@ -213,8 +213,7 @@
 			],
 			"css": [
 				"clipboard/clipboard.css"
-			],
-			"run_at": "document_end"
+			]
 		},
 		{
 			"matches": [

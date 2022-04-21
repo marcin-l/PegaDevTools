@@ -140,7 +140,8 @@
 				"*://*/prweb/*SaveAs*prevRecordkey=RULE-OBJ-FLOW*",
 				"*://*/prweb/*createNewWork*RULE-OBJ-FLOW*",
 				"*://*/prweb/*action=openRule*objClass=Rule-Obj-Flow*",
-				"*://*/prweb/*openRuleByKeys*openHandle=RULE-OBJ-FLOW*"	
+				"*://*/prweb/*openRuleByKeys*openHandle=RULE-OBJ-FLOW*",
+				"*://*/prweb/*openRuleByKeys*openHandle=Rule-Obj-Flow*"	
 			],
 			"all_frames": true,
 			"js": [
@@ -208,8 +209,6 @@
 				"*://*/prweb/*pyPreActivity=pzGetClipboardPages*"
 			],
 			"js": [
-				"resources/jquery-3.4.1.min.js",
-				"resources/jquery.filtertable.min.js",
 				"clipboard/clipboard.js"
 			],
 			"css": [

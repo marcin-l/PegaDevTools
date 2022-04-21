@@ -107,9 +107,9 @@ function addSearch() {
 }
 
 
-//get config
+//TODO: convert to PDT settings
 function siteConfigCallback(siteConfig, globalConfig) {
-	if (!globalConfig.settings || (globalConfig.settings && globalConfig.settings.tracer.disabled)) {
+	if (! PDT.isTracerEnabled()) {
 		console.log('PDT tracer disabled');
 	} else {
 		if (!waitUntilRender()) {

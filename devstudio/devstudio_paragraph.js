@@ -56,7 +56,7 @@ function applyCodeMirror() {
 }
 
 
-function waitUntilRender() {
+function waitUntilRenderRS() {
     mainDiv =  document.querySelector("div[node_name='pzViewParagraph']");
     if (mainDiv) {
         applyCodeMirror();
@@ -66,12 +66,12 @@ function waitUntilRender() {
         console.log(tries);
         if (tries > 10) return;
         setTimeout(() => {
-            waitUntilRender();
+            waitUntilRenderRS();
         }, 500);
     }
 }
 
-waitUntilRender();
+waitUntilRenderRS();
 
 
 

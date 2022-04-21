@@ -42,7 +42,7 @@ function addnewAssignPage() {
 
 //get config
 function siteConfigCallback(siteConfig, globalConfig) {
-	if (!globalConfig.settings || (globalConfig.settings && globalConfig.settings.clipboard.disabled)) {
+	if (! PDT.isClipboardEnabled()) {
 		console.log('PDT clipboard disabled');
 	} else {
 		console.log('PDT clipboard');
@@ -62,7 +62,6 @@ function siteConfigCallback(siteConfig, globalConfig) {
 				document.querySelector('div[data-portalharnessinsname="Pega-Clipboard!pzClipboard"]').style.cssText = "border-top: 2px; border-top-style: solid; border-color: #" + siteConfig.color.replace("#", '');
 			}
 		}
-
 
 		injectScript("/resources/", "jquery-3.4.1.min.js");
 		injectScript("/resources/", "jquery.filtertable.min.js");

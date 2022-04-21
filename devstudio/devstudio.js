@@ -1,9 +1,5 @@
 console.log("PDT: devstudio/devstudio.js");
 
-// //TODO: get rid of jQuery, remove from manifest
-// (function ($) {})(jQuery);
-
-
 function applyPDTCustomization() {
   function siteConfigCallback(siteConfig, globalConfig) {
     messageServiceWorker("registerDevStudio");  //register with Service Worker
@@ -65,51 +61,49 @@ function applyPDTCustomization() {
     if (globalConfig && globalConfig.settings) {
       var settings = globalConfig.settings;
     }
-    if (!settings || (settings && settings.devstudio.disabled)) {
+    if (! PDT.isDevstudioEnabled()) {
       console.log("PDT DevStudio disabled");
     } else {
-      if (settings.tracer) {
+      if (PDT.isTracerEnabled()) {
         //FEATURE: open tracer in tab
-        if (settings.tracer.openBehavior)
+        if (PDT.settings.tracer.openBehavior)
           alterTracerOpenBehavior(settings.tracer.openBehavior);
       }
 
-      if (settings.devstudio) {
-        //FEATURE: hide close button
-        if (settings.devstudio.hideCloseButton)
-          injectStyles("div.tStrCntr ul #close {display: none}");
+      //FEATURE: hide close button
+      if (PDT.settings.devstudio.hideCloseButton)
+        injectStyles("div.tStrCntr ul #close {display: none}");
 
-        if (settings.devstudio.longerRuleNames) {
-          //inject script which will apply it for newly opened tabs
-          injectScript("/js/", "makeRuleNamesLonger.js");
-          injectStyles(
-            ".Temporary_top_tabs .Temporary_top_tabsList LI span#TABANCHOR { padding-right: 4px !important; padding-left: 4px; !important}"
-          );
-        }
-
-        //FEATURE: close tab on middle click
-        if (settings.devstudio.closeTabMiddleClick) {
-          //inject script which will apply it for newly opened tabs
-          injectScript("/js/", "closeTabMiddleClick.js");
-
-          // apply for existing tabs
-          document.querySelectorAll("div.tStrCntr ul table#RULE_KEY span[data-stl='1'], div.tStrCntr ul table#RULE_KEY svg").forEach(function (elem) {
-          	elem.addEventListener("mousedown", function (e) {
-          		console.log(e);
-          		if (e && (e.which == 2 || e.button == 4))
-          			this.parentNode.parentNode.querySelector('#close').click();
-          	})
-          })
-        }
-
-        if (settings.devstudio.checkoutIndicator) {
-          showCheckoutIndicator();
-        }
-
-        addHeaderShortcuts();
-        customizeText();
-        injectSidebarToggle();
+      if (PDT.settings.devstudio.longerRuleNames) {
+        //inject script which will apply it for newly opened tabs
+        injectScript("/js/", "makeRuleNamesLonger.js");
+        injectStyles(
+          ".Temporary_top_tabs .Temporary_top_tabsList LI span#TABANCHOR { padding-right: 4px !important; padding-left: 4px; !important}"
+        );
       }
+
+      //FEATURE: close tab on middle click
+      if (PDT.settings.devstudio.closeTabMiddleClick) {
+        //inject script which will apply it for newly opened tabs
+        injectScript("/js/", "closeTabMiddleClick.js");
+
+        // apply for existing tabs
+        document.querySelectorAll("div.tStrCntr ul table#RULE_KEY span[data-stl='1'], div.tStrCntr ul table#RULE_KEY svg").forEach(function (elem) {
+          elem.addEventListener("mousedown", function (e) {
+            console.log(e);
+            if (e && (e.which == 2 || e.button == 4))
+              this.parentNode.parentNode.querySelector('#close').click();
+          })
+        })
+      }
+
+      if (PDT.settings.devstudio.checkoutIndicator) {
+        showCheckoutIndicator();
+      }
+
+      addHeaderShortcuts();
+      customizeText();
+      injectSidebarToggle();
     }
   }
 
@@ -246,4 +240,3 @@ if (isInDevStudio()) {
   console.log("In DEV studio - applying customizations");
   applyPDTCustomization();
 }
-

@@ -17,8 +17,9 @@ var mainDiv;
 //     document.getElementById('PegaDevToolsRuleDropdown').addEventListener('click', openRuleClassInAppExplorer);
 // }
 
+//TODO: convert to PDT.settings
 function siteConfigCallback(siteConfig, globalConfig) {
-	if (!globalConfig.settings || (globalConfig.settings && globalConfig.settings.devstudio.disabled)) {
+	if (! PDT.isDevstudioEnabled()) {
 		console.log('PDT DevStudio disabled');
 	} else {
 		console.log('PDT DevStudio');
@@ -39,13 +40,13 @@ function siteConfigCallback(siteConfig, globalConfig) {
         }
         
         //FEATURE: show button to copy pzInskey to clipboard
-        if(globalConfig.settings.devstudio.copypzinskey) {
+        if(PDT.settings.devstudio.copypzinskey) {
             document.querySelectorAll('div[node_name="pzRuleFormKeysAndDescription"] span.workarea_header_titles')[0].insertAdjacentHTML('beforebegin', '<a style="margin-top:0; margin-bottom:0;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopypzInsKey()" title="Copy pzInsKey"><i  class="icons pi pi-copy" style="color: white" id="CopypzInsKey"></i></a>')
         }
     }
 }
 
-function waitUntilRender() {
+function waitUntilRenderRS() {
     mainDiv =  document.querySelector("a[name^='RuleFormHeader']") || document.querySelector('a.custom_RuleOpener') ;
     if (mainDiv) {
         siteConfig(siteConfigCallback);
@@ -54,11 +55,11 @@ function waitUntilRender() {
         console.log(tries);
         if (tries > 10) return;
         setTimeout(() => {
-            waitUntilRender();
+            waitUntilRenderRS();
         }, 500);
     }
 }
 
-waitUntilRender();
+waitUntilRenderRS();
 injectSidebarToggle();
 injectCloseShortcut();

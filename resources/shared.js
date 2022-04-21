@@ -277,6 +277,10 @@ class PDT {
 		this.settings = {};
 		chrome.storage.sync.get(["settings"], (data) => {
 			this.settings = data.settings;
+			if(! this.settings) this.settings = {};
+			if(! this.settings.tracer) this.settings.tracer = {};
+			if(! this.settings.clipboard) this.settings.clipboard = {};
+			if(! this.settings.devstudio) this.settings.devstudio = {};
 		});
 	}
 
@@ -288,8 +292,19 @@ class PDT {
 		return this.settings[key];
 	}
 
-	set(key, value) {
-		this.settings[key] = value;
-		this.save();
+	static isTracerEnabled() {
+		return !(this.settings.tracer.disabled);
+	}
+
+	static isClipboardEnabled() {
+		return !(this.settings.clipboard.disabled);
+	}
+
+	static isDevstudioEnabled() {
+		return !(this.settings.devstudio.disabled);
+	}
+
+	static isDebugEnabled() {
+		return this.settings.debug;
 	}
 }

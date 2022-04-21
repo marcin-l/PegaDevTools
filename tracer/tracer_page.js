@@ -36,13 +36,6 @@ function sortTopLevel() {
         .forEach(tr => mainTable.appendChild(tr) );
 }
 
-var markNavigatedPage = function markNavigatedPage(e) { 
-    document.querySelectorAll("tr.eventTable").forEach(el => el.style.backgroundColor = "#EFEFEF"); //revert highlight
-    let eid = e.getAttribute("href"); 
-    eid = eid.replaceAll("(", "\\(").replaceAll(")", "\\)"); //escape chars which querySelector doesn't like
-    document.querySelector(eid).parentNode.style.backgroundColor = "LightYellow";
-} 
-
 function addPageNavigation() {
     if (mainDiv) {
         console.log("PDT tracer_page");
@@ -58,7 +51,7 @@ function addPageNavigation() {
         //     mainTable = document.querySelector("div#scrollingDIV table td[valign='TOP'] table tbody tr td table[border='0']");
         // }
         if (mainTable) {
-            appendScript(markNavigatedPage);
+            injectScript("/js/", "tracerMarkNavigatedPage.js");
 
             //TODO: needed?
             mainTable.setAttribute("id", "mainTable");

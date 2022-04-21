@@ -47,6 +47,7 @@ function handleRightPanelChange() {
 			}
 		}
 		if(jQuery('table.gridTable') && jQuery('table.gridTable').eq(2)) {
+			document.querySelectorAll("table.gridTable table tr tr").forEach((e) => { e.classList.add("noFilter") });
 			//immediately invoked function expression to avoid "$" conflicts using plugins
 			(function( $ ) {
 				$('table.gridTable').eq(2).filterTable({label:"Search:", placeholder:"properties and values", minRows:7, quickListClear:"clear"});

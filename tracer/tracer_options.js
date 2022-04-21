@@ -12,7 +12,7 @@ $.get(chrome.runtime.getURL("tracer/tracerOptionSets.html"), function (data) {
 		}
 	});
 
-	injectScript(chrome.extension.getURL("/tracer/"), "tracerOptionsSets.js");
+	injectScript("/tracer/", "tracerOptionsSets.js");
 	restoreOptionSets();
 });
 
@@ -41,7 +41,7 @@ function addSaveOptionSet() {
 
 //Saves options to browser.storage
 function saveOptionSets() {
-	chrome.storage.local.browser.storage.local.set({
+	chrome.storage.local.set({
 		optionSets: optionSets
 	}, function () {
 		restoreOptionSets();

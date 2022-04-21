@@ -6,7 +6,7 @@ function addpyWorkPageLink() {
 	if (pyWorkPage && pyWorkPage.getInnerHTML().indexOf("classless") < 0 && pyWorkPage.getInnerHTML().indexOf("ProjectManagement") < 0) {
 		jQuery("header").append("<b><a id='devToolsGoToWorkPage' class='Explorer_action'>pyWorkPage</a></b>");
 		jQuery("#devToolsGoToWorkPage").click(function () { jQuery("#gridNode li.gridRow ul li").has("span[title^='pyWorkPage']").first().trigger("click"); });
-		var title = jQuery("#gridNode li.gridRow ul li span[title^='pyWorkPage']")[0].title;
+		let title = jQuery("#gridNode li.gridRow ul li span[title^='pyWorkPage']")[0].title;
 		let clsname = extractClassName(title);
 		let clsnamefull = extractClassName(title, true);
 		if (clsname)
@@ -17,6 +17,11 @@ function addpyWorkPageLink() {
 		if (pyWorkPage) {
 			jQuery("header").append("<a id='devToolsGoToWorkPage' class='Explorer_action'>RH_1</a>");
 			jQuery("#devToolsGoToWorkPage").click(function () { jQuery("#gridNode li.gridRow ul li").has("span[title^='RH_1']").first().trigger("click"); });
+			let title = jQuery("#gridNode li.gridRow ul li span[title^='RH_1']")[0].title;
+			let clsname = extractClassName(title);
+			let clsnamefull = extractClassName(title, true);
+			if (clsname)
+				jQuery("header").append(' <i class="dark_background_label_dataLabelForRead" title="' + clsnamefull + '">(' + clsname + ')</i>');
 			console.log('PDT RH_1 found');
 		}
 		else {

@@ -58,4 +58,4 @@ Tracer feature to navigate to first Error and Message is based on Piotr Olejnicz
 - [CodeMirror](https://codemirror.net/)
 - [Huebee](https://huebee.buzz)
 - [jQuery](https://jquery.com/)
-- [jquery.filterTable](https://github.com/sunnywalker/jQuery.FilterTable)
+- [jQuery.FilterTable](https://github.com/sunnywalker/jQuery.FilterTable)

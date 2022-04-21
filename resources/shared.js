@@ -136,7 +136,10 @@ function messageServiceWorker(purpose) {
 	); 
 }
 
+//TODO: not working as of v3, use injectScript with separate files in js folder instead
 function appendScript(appendedScript) {
+	if(PDT.isDebugEnabled)
+		console.log("PDT: appendScript: " + appendedScript);
 	chrome.runtime.sendMessage(
 		{ purpose: "appendScript", appendedScript: appendedScript },
 		function (response) {
@@ -181,6 +184,7 @@ function extractClassName(sinput, getFull) {
 		if (getFull) return sinput;
 		if (sinput.includes("Work-")) sinput = sinput.split("Work-")[1];
 		else if (sinput.includes("Assign-")) sinput = sinput.split("Assign-")[1];
+		else if (sinput.includes("-")) sinput = sinput.split("-")[sinput.split("-").length - 1];
 		return sinput;
 	}
 }

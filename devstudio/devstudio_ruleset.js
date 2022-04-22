@@ -6,10 +6,10 @@ var rsvListObserver;
 //TODO: FEATURE: copy ruleset version list pager on top of the list
 function copyPagerToTop() {
     console.log("PDT: copyPagerToTop");
-    var rsvPager = document.querySelector("div[editaction=pzRuleset_ShowRuleSetVersion] div.gridActionBottom");
-    if(rsvPager) {
+    var rsvPagerList = document.querySelectorAll("div[editaction=pzRuleset_ShowRuleSetVersion] div.gridActionBottom");
+    if(rsvPagerList.length == 1) {
         console.log("PDT: copyPagerToTop rsvPager found");
-        rsvPager = rsvPager.cloneNode(true);
+        var rsvPager = document.querySelector("div[editaction=pzRuleset_ShowRuleSetVersion] div.gridActionBottom").cloneNode(true);
         var rsvTarget = document.querySelector("div[editaction=pzRuleset_ShowRuleSetVersion]");
         if(rsvTarget) {
             rsvTarget.insertBefore(rsvPager, rsvTarget.firstChild);

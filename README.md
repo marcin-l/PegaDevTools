@@ -16,7 +16,7 @@ If you found a bug or have a new idea/feature for the extension, [you can report
 **Code -> Download ZIP**
 - Unpack downloaded zip file
 
-[[https://raw.githubusercontent.com/wiki/marcin-l/PegaDevTools/images/installation.png]]
+<img src="https://raw.githubusercontent.com/wiki/marcin-l/PegaDevTools/images/installation.png" />
 
 ### Chrome and Edge
 - Go to Chrome/Edge settings

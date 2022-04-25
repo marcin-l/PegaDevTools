@@ -26,8 +26,11 @@ var CopyClassName = function CopyClassName() {
 $('div[node_name="pzLocalDataStorageWrapper"] div.header-right').append('<a onclick="pd(event);" data-ctl="Link" data-click="[[&quot;refresh&quot;, [&quot;thisSection&quot;,&quot;&quot;, &quot;&quot;, &quot;&amp;=&quot;, &quot;&quot;, &quot;,&quot;,&quot;:event&quot;,&quot;&quot;]]]">Refresh</a>');
 //$('div[node_name="pzRecordEditor"] table div#PEGA_GRID_SKIN td').eq(1).append('<a data-test-id="2016072109232603516456" href="#" onclick="pd(event);" data-ctl="Link" name="pzRecordEditor_D_pzRecordsEditor_4" data-click="[[&quot;refresh&quot;, [&quot;thisSection&quot;,&quot;&quot;, &quot;&quot;, &quot;&amp;=&quot;, &quot;&quot;, &quot;,&quot;,&quot;:event&quot;,&quot;&quot;,&quot;D_pzRecordsEditor_pa1391986709661278pz&quot;]]]" class="">Refresh</a>');
 
-appendScript(copyToClipboard);
-appendScript(CopyClassName);
+// //TODO: to be reviewed
+// appendScript(copyToClipboard);
+// appendScript(CopyClassName);
+injectScript("/js/", "copyNameClass.js");
+
 // var script = document.createElement('script');
 // script.textContent = CopyClassName;
 // (document.head || window.documentElement).appendChild(script);

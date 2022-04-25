@@ -12,10 +12,17 @@ function CopyNameAndClass() {
 }
 
 function CopyClassName() {
-    let xml = $('textarea#PRXML').val().replace('<?xml version="1.0" ?>', '').replace("<?xml version='1.0' ?>", "");
-    $xml = $($.parseXML(xml));
-    let copyText = $xml.find("pyClassName")[0].textContent;
-    copyToClipboard(copyText);
+    let xml = $('textarea#PRXML');
+	var copyText;
+	if(xml && xml.val()) {
+		xml = xml.val().replace('<?xml version="1.0" ?>', '').replace("<?xml version='1.0' ?>", "");
+    	$xml = $($.parseXML(xml));
+    	copyText = $xml.find("pyClassName")[0].textContent;
+	} else if(document.querySelector("a[name^='pzDataTypeKeysAndDescription'")){
+		copyText = document.querySelector("a[name^='pzDataTypeKeysAndDescription'").innerText;
+	}
+    if(copyText)
+		copyToClipboard(copyText);
     return false;
 }
 

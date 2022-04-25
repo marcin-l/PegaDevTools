@@ -5,18 +5,18 @@ var rsvListObserver;
 
 //TODO: FEATURE: copy ruleset version list pager on top of the list
 function copyPagerToTop() {
-    console.log("PDT: copyPagerToTop");
+    PDT.debug("PDT: copyPagerToTop");
     var rsvPagerList = document.querySelectorAll("div[editaction=pzRuleset_ShowRuleSetVersion] div.gridActionBottom");
     if(rsvPagerList.length == 1) {
-        console.log("PDT: copyPagerToTop rsvPager found");
+        PDT.debug("PDT: copyPagerToTop rsvPager found");
         var rsvPager = document.querySelector("div[editaction=pzRuleset_ShowRuleSetVersion] div.gridActionBottom").cloneNode(true);
         var rsvTarget = document.querySelector("div[editaction=pzRuleset_ShowRuleSetVersion]");
         if(rsvTarget) {
             rsvTarget.insertBefore(rsvPager, rsvTarget.firstChild);
-            console.log("PDT: copyPagerToTop rsvTarget found");
+            PDT.debug("PDT: copyPagerToTop rsvTarget found");
         }
     } else {
-        console.log("PDT: copyPagerToTop rsvPager NOT found");
+        PDT.debug("PDT: copyPagerToTop rsvPager NOT found");
     }
 }
 
@@ -28,9 +28,9 @@ function addRSObserver() {
     //("table#bodyTbl_right[summary='pyRuleSetVersionsList']");
     //document.querySelector("table[summary='pyRuleSetVersionsList']");
 
-    console.debug(rsvList);
+    PDT.debug(rsvList);
     const rsvListCallback = function (mutationsList, observer) {
-        console.log("PDT: rsvListCallback ");
+        PDT.debug("PDT: rsvListCallback ");
         copyPagerToTop();
     };
 

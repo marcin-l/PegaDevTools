@@ -311,4 +311,8 @@ class PDT {
 	static isDebugEnabled() {
 		return this.settings.debug;
 	}
+
+	static debug(msg) {
+		if(this.isDebugEnabled()) console.log(msg);
+	}
 }

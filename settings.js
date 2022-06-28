@@ -78,7 +78,7 @@ function restore_options() {
       $("select#version").eq(index).val(element.version);
    });
     
-    document.querySelector("input#debug").checked = (data.settings.debug)?data.settings.debug:"";
+    document.querySelector("input#debug").checked = (data.settings.debug)?data.settings.debug:false;
     document.querySelector("input#useSiteLabelForBrowserTitle").checked = (data.settings.useSiteLabelForBrowserTitle)?data.settings.useSiteLabelForBrowserTitle:"";
     document.querySelector("input#hideEnvironmentHeader").checked = data.settings.hideEnvironmentHeader;
     document.querySelector("input#clipboardSplit5050").checked = (data.settings.clipboard.split5050)?data.settings.clipboard.split5050:"";

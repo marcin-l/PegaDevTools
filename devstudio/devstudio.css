@@ -7,3 +7,9 @@
     border-right-width: 0 !important;
     margin: 0 !important;
 }
+
+
+/* remove reserved space in recents explorer, giving more space for item description */
+div[node_name='pzRecentExplorer'] div[node_name='pyFatListItems'] div.explorer-list-item > div {
+    padding-left: 0 !important;
+}

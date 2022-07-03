@@ -85,6 +85,7 @@ function addPageNavigation() {
                 linktag.innerHTML = pelem.innerText.trim();
                 linktag.setAttribute("href", "#" + "mainPageNode" + pelem.innerText.trim());
                 linktag.setAttribute("onclick", "markNavigatedPage(this)");
+                linktag.setAttribute("title", pelem.innerText.trim());
                 divTag.appendChild(linktag);
                 divTag.appendChild(document.createElement("br"));
             })

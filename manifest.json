@@ -39,7 +39,7 @@
 			"js": [
 				"resources/jquery-3.4.1.min.js",
 				"resources/shared.js",
-				"resources/sub.js"
+				"resources/tinycon.min.js"
 			],
 			"all_frames": true,
 			"match_about_blank": true,
@@ -72,15 +72,14 @@
 			],
 			"css": [
 				"devstudio/devstudio.css"
-			],
-			"run_at": "document_end"
+			]
 		},
 		{
 			"matches": [
 				"*://*/prweb/*action=openRuleSpecific*openHandle=RULE-OBJ-ACTIVITY*",
 				"*://*/prweb/*SaveAs*prevRecordkey=RULE-OBJ-ACTIVITY*",
 				"*://*/prweb/*createNewWork*RULE-OBJ-ACTIVITY*",
-				"*://*/prweb/*action=openRule*objClass=Rule-Obj-Activity*"
+				"*://*/prweb/*action=openRule*bjClass=Rule-Obj-Activity*"
 			],
 			"all_frames": true,
 			"js": [
@@ -103,7 +102,7 @@
 		{
 			"matches": [
 				"*://*/prweb/*action=openRuleSpecific*openHandle=RULE-RULESET-NAME*",
-				"*://*/prweb/*action=openRule*objClass=Rule-RuleSet-Name*"
+				"*://*/prweb/*action=openRule*bjClass=Rule-RuleSet-Name*"
 			],
 			"all_frames": true,
 			"js": [
@@ -118,28 +117,26 @@
 			"js": [
 				"resources/jquery-3.4.1.min.js",
 				"devstudio/devstudio_data.js"
-			],
-			"run_at": "document_end"
+			]
 		},
 		{
 			"matches": [
 				"*://*/prweb/*action=openRuleSpecific*openHandle=RULE-OBJ-MODEL*",
 				"*://*/prweb/*SaveAs*prevRecordkey=RULE-OBJ-MODEL*",
 				"*://*/prweb/*createNewWork*RULE-OBJ-MODEL*",
-				"*://*/prweb/*action=openRule*objClass=Rule-Obj-Model*"
+				"*://*/prweb/*action=openRule*bjClass=Rule-Obj-Model*"
 			],
 			"all_frames": true,
 			"js": [
 				"devstudio/devstudio_datatransform.js"
-			],
-			"run_at": "document_end"
+			]
 		},
 		{
 			"matches": [
 				"*://*/prweb/*action=openRuleSpecific*openHandle=RULE-OBJ-FLOW*",
 				"*://*/prweb/*SaveAs*prevRecordkey=RULE-OBJ-FLOW*",
 				"*://*/prweb/*createNewWork*RULE-OBJ-FLOW*",
-				"*://*/prweb/*action=openRule*objClass=Rule-Obj-Flow*",
+				"*://*/prweb/*action=openRule*bjClass=Rule-Obj-Flow*",
 				"*://*/prweb/*openRuleByKeys*openHandle=RULE-OBJ-FLOW*",
 				"*://*/prweb/*openRuleByKeys*openHandle=Rule-Obj-Flow*"	
 			],
@@ -154,12 +151,12 @@
 				"*://*/prweb/*action=openRuleSpecific*openHandle=RULE-UTILITY-FUNCTION*",
 				"*://*/prweb/*SaveAs*prevRecordkey=RULE-UTILITY-FUNCTION*",
 				"*://*/prweb/*createNewWork*RULE-UTILITY-FUNCTION*",
-				"*://*/prweb/*action=openRule*objClass=Rule-Utility-Function*",
+				"*://*/prweb/*action=openRule*bjClass=Rule-Utility-Function*",
 
 				"*://*/prweb/*action=openRuleSpecific*openHandle=RULE-EDIT-VALIDATE*",
 				"*://*/prweb/*SaveAs*prevRecordkey=RULE-EDIT-VALIDATE*",
 				"*://*/prweb/*createNewWork*RULE-EDIT-VALIDATE*",
-				"*://*/prweb/*action=openRule*objClass=Rule-Edit-Validate*"
+				"*://*/prweb/*action=openRule*bjClass=Rule-Edit-Validate*"
 			],
 			"all_frames": true,
 			"js": [
@@ -171,13 +168,12 @@
 				"*://*/prweb/*action=openRuleSpecific*openHandle=RULE-OBJ-REPORT-DEFINITION*",
 				"*://*/prweb/*SaveAs*prevRecordkey=RULE-OBJ-REPORT-DEFINITION*",
 				"*://*/prweb/*createNewWork*RULE-OBJ-REPORT-DEFINITION*",
-				"*://*/prweb/*action=openRule*objClass=Rule-Obj-Report-Definition*"
+				"*://*/prweb/*action=openRule*bjClass=Rule-Obj-Report-Definition*"
 			],
 			"all_frames": true,
 			"js": [
 				"devstudio/devstudio_report.js"
-			],
-			"run_at": "document_end"
+			]
 		},			
 		{
 			"matches": [
@@ -187,20 +183,18 @@
 			"all_frames": true,
 			"js": [
 				"devstudio/devstudio_branch.js"
-			],
-			"run_at": "document_end"
+			]
 		},
 		{
 			"matches": [
 				"*://*/prweb/*openRuleSpecific*openHandle=RULE-DECLARE-PAGES*",
-				"*://*/prweb/*openRule*objClass=Rule-Declare-Pages*"
+				"*://*/prweb/*openRule*bjClass=Rule-Declare-Pages*"
 			],
 			"all_frames": true,
 			"js": [
 				"resources/jquery-3.4.1.min.js",
 				"devstudio/datapage.js"
-			],
-			"run_at": "document_end"
+			]
 		},
 		{
 			"matches": [
@@ -239,8 +233,7 @@
 				"tracer/tracer_event.js"
 			],
 			"all_frames": true,
-			"match_about_blank": true,
-			"run_at": "document_end"
+			"match_about_blank": true
 		},
 		{
 			"matches": [
@@ -252,8 +245,7 @@
 				"tracer/tracer_page.js"
 			],
 			"all_frames": true,
-			"match_about_blank": true,
-			"run_at": "document_idle"
+			"match_about_blank": true
 		},
 		{
 			"matches": [
@@ -272,7 +264,7 @@
 				"*://*/prweb/*action=openRuleSpecific*openHandle=RULE-HTML-PARAGRAPH*",
 				"*://*/prweb/*SaveAs*prevRecordkey=RULE-HTML-PARAGRAPH*",
 				"*://*/prweb/*createNewWork*RULE-HTML-PARAGRAPH*",
-				"*://*/prweb/*action=openRule*objClass=Rule-HTML-Paragraph*"
+				"*://*/prweb/*action=openRule*bjClass=Rule-HTML-Paragraph*"
 			],
 			"all_frames": true,
 			"js": [
@@ -297,8 +289,7 @@
 				"resources/codemirror/codemirror.css",
 				"resources/codemirror/foldgutter.css",
 				"resources/codemirror/fullscreen.css"
-			],
-			"run_at": "document_idle"
+			]
 		},
 		{
 			"matches": [
@@ -335,6 +326,7 @@
 			"all_frames": true,
 			"match_about_blank": true,
 			"run_at": "document_end"
+
 		}
 	],
 	"web_accessible_resources": [

@@ -14,8 +14,16 @@ function applyPDTCustomization() {
           newTitle += " " + siteConfig.version.slice(0, 1) + "." + siteConfig.version.slice(1, 2);
         parent.document.title = newTitle;
       }
+    
+      Tinycon.setOptions({
+        width: 17,
+        height: 3,
+        background: "#" + siteConfig.color.replace("#", ''),
+        fallback: true
+      });
+      Tinycon.setBubble(" ");
 
-	  //FEATURE: environment header
+	    //FEATURE: environment header
       var productionEnvElement = document.querySelector(
         "div[data-ui-meta*='D_pzGetCurrentSystemRecord.pyActiveProductionLevelName']"
       );
@@ -24,7 +32,7 @@ function applyPDTCustomization() {
           "afterend",
           "<div style='color: white; text-shadow: black 0px 0px 6px;background-color:#" +
             siteConfig.color.replace("#", '') +
-            ";border:2px solid;border-top-style:none; border-right-style:none;font-weight: bold;border-color:#" +
+            ";border:2px solid; border-top-style:none; border-right-style:none; font-weight:bold; border-color:#" +
             siteConfig.color.replace("#", '') +
             "; padding:6px'>" + siteConfig.label + "</ div>"
         );
@@ -37,7 +45,7 @@ function applyPDTCustomization() {
             "beforebegin",
             "<div style='color:#" +
               siteConfig.color.replace("#", '') +
-              ";border:2px solid; margin:inherit;margin-right: 7px;padding:3px'>" +
+              ";border:2px solid; margin:inherit; margin-right:7px; padding:3px'>" +
               siteConfig.color.replace("#", '') +
               "</ div>"
           );
@@ -53,7 +61,7 @@ function applyPDTCustomization() {
         document.querySelector(
           'div[data-portalharnessinsname="Data-Portal-DesignerStudio!pzStudio"]'
         ).style.cssText =
-          "border-top: 2px; border-top-style: solid; border-color: #" +
+          "border-top:2px; border-top-style:solid; border-color:#" +
           siteConfig.color.replace("#", '');
       }
     }
@@ -239,4 +247,17 @@ console.log("Checking if in DEV studio");
 if (isInDevStudio()) {
   console.log("In DEV studio - applying customizations");
   applyPDTCustomization();
+} else {
+  // apply favicon color to other portals
+  //TODO: same as in siteConfigCallback, move to a function
+  if(PDT.hasConfigForSite) {
+  
+    Tinycon.setOptions({
+      width: 17,
+      height: 3,
+      background: "#" + PDT.siteConfig.color.replace("#", ''),
+      fallback: true
+    });
+    Tinycon.setBubble(" ");
+  }
 }

@@ -261,7 +261,7 @@ function isInDevStudio() {
 		) &&
 		document.querySelector(
 			"span#TABANCHOR span.textIn, span#TABANCHOR[tabtitle='Home']"
-		).innerText == "Home"
+		).innerText.startsWith("Home")
 	);
 	//TODO: get Pega api object
 	// if(pega.desktop.support.isInDesignerDesktop)
@@ -276,15 +276,49 @@ function injectRuleExport() {
 	}
 }
 
+const getObjectFromStorage = async function (key) {
+	return new Promise((resolve, reject) => {
+		try {
+			chrome.storage.sync.get(key, function (value) {
+				resolve(value[key]);
+			});
+		} catch (ex) {
+			reject(ex);
+		}
+	});
+};
+
 class PDT {
+
 	static {
+
+	}
+
+	static init() {
 		this.settings = {};
-		chrome.storage.sync.get(["settings"], (data) => {
+		
+		chrome.storage.sync.get(["settings", "siteConfig"], (data) => {
+			//this.settings = await getObjectFromLocalStorage("settings");
+
 			this.settings = data.settings;
-			if(! this.settings) this.settings = {};
 			if(! this.settings.tracer) this.settings.tracer = {};
 			if(! this.settings.clipboard) this.settings.clipboard = {};
 			if(! this.settings.devstudio) this.settings.devstudio = {};
+			PDT.debug("storage settings load");
+
+			//var siteConfigs = await getObjectFromLocalStorage("siteConfig");
+
+			this.hasConfigForSite = false;
+			if (data.siteConfig) {
+				for (let i = 0; i < data.siteConfig.length; i++) {
+					if (window.location.href.includes(data.siteConfig[i].site)) {
+						this.siteConfig = data.siteConfig[i];
+						this.hasConfigForSite = true;
+						this.siteConfig.color = this.siteConfig.color.replace("#", '');
+						break;
+					}
+				}
+			}
 		});
 	}
 
@@ -312,7 +346,11 @@ class PDT {
 		return this.settings.debug;
 	}
 
+	static hasConfigForSite;
+
 	static debug(msg) {
 		if(this.isDebugEnabled()) console.log(msg);
 	}
 }
+
+PDT.init();

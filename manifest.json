@@ -37,9 +37,9 @@
 				"resources/shared.css"
 			],
 			"js": [
-				"resources/jquery-3.4.1.min.js",
-				"resources/shared.js",
-				"resources/tinycon.min.js"
+				"resources/jquery-3.4.1.min.js",				
+				"resources/tinycon.min.js",
+				"resources/shared.js"
 			],
 			"all_frames": true,
 			"match_about_blank": true,

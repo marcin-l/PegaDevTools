@@ -1,4 +1,4 @@
-console.log("PDT: shared.js");
+console.log("PDT: resources/shared.js");
 
 function getFrameId() {
 	chrome.runtime.sendMessage({ purpose: "getFrameId" }, function (response) {
@@ -15,8 +15,6 @@ function applyContentScripts(purpose) {
 		}
 	);
 }
-
-//applyContentScripts("paragraphRule");
 
 const injectScriptsToIframe = (tabId, frameId, scriptList) => {
 	scriptList.forEach((script) => {
@@ -42,6 +40,8 @@ const injectScriptsToIframe = (tabId, frameId, scriptList) => {
 	});
 };
 
+//applyContentScripts("paragraphRule");
+
 const paragraphScriptList = [
 	"resources/codemirror/codemirror.js",
 	"resources/codemirror/foldcode.js",
@@ -63,13 +63,10 @@ const paragraphScriptList = [
 
 //injectScriptsToIframe(null, getFrameId(), paragraphScriptList);
 
-console.log("PDT: resources/shared.js");
-
 //TODO: deprecated?
 window.browser = (function () {
 	return window.msBrowser || window.browser || window.chrome;
 })();
-
 
 const DEBUG = false;
 
@@ -184,7 +181,10 @@ function extractClassName(sinput, getFull) {
 		if (getFull) return sinput;
 		if (sinput.includes("Work-")) sinput = sinput.split("Work-")[1];
 		else if (sinput.includes("Assign-")) sinput = sinput.split("Assign-")[1];
-		else if (sinput.includes("-")) sinput = sinput.split("-")[sinput.split("-").length - 1];
+		else if (sinput.includes("-")) {
+			var sinputLength = sinput.split("-").length;
+			sinput = (sinputLength>3)? sinput.split("-")[sinputLength - 2] + "-" + sinput.split("-")[sinputLength - 1] : sinput.split("-")[sinputLength - 1];
+		}
 		return sinput;
 	}
 }
@@ -314,7 +314,16 @@ class PDT {
 					if (window.location.href.includes(data.siteConfig[i].site)) {
 						this.siteConfig = data.siteConfig[i];
 						this.hasConfigForSite = true;
-						this.siteConfig.color = this.siteConfig.color.replace("#", '');
+						if(this.siteConfig.color) {
+							this.siteConfig.color = this.siteConfig.color.replace("#", '');
+							if (this.siteConfig.color.length === 3) {
+								this.siteConfig.color = this.siteConfig.color.split('').map(function (hex) {
+									return hex + hex;
+								}).join('');
+							}
+							if(this.siteConfig.color[0] != "#") 
+								this.siteConfig.color = "#" + this.siteConfig.color;
+						}
 						break;
 					}
 				}
@@ -346,10 +355,73 @@ class PDT {
 		return this.settings.debug;
 	}
 
+	static isInTracer() {
+		return (window.location.href.includes("Tracer"));
+	}
+	
 	static hasConfigForSite;
 
 	static debug(msg) {
 		if(this.isDebugEnabled()) console.log(msg);
+	}
+
+	static isDigit(n) {
+		return !!([!0, !0, !0, !0, !0, !0, !0, !0, !0, !0][n]);
+	}
+
+	static contrastTextColor(backgroundColor) {
+		//https://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
+		const getColorLuminance = function(clr) {
+			clr = clr / 255;
+			if(clr <= 0.03928) 
+				return clr / 12.92;
+			else
+				return ((clr + 0.055) / 1.055) ** 2.4;
+		}
+
+		backgroundColor = backgroundColor.replace("#", "");
+		var r = parseInt(backgroundColor.substring(0, 2), 16);
+		var g = parseInt(backgroundColor.substring(2, 4), 16);
+		var b = parseInt(backgroundColor.substring(4, 6), 16);
+		var rs = getColorLuminance(r);
+		var gs = getColorLuminance(g);
+		var bs = getColorLuminance(b);
+	  
+		var L =  (0.2126 * rs) + (0.7152 * gs) + (0.0722 * bs);
+
+		//https://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef
+		//const contrastThreshold = 0.0525; 	// 0.0525 is contrast ratio between white and black 
+		const contrastThreshold = 0.3; 		// favor more lighter text	 
+
+		return (L > contrastThreshold) ? "#000000" : "#FFFFFF";
+	}
+
+	static alterFavicon(forceSmall = false) {
+		if(this.hasConfigForSite) {
+			if(this.settings.favicon == "large" && this.siteConfig.label && !forceSmall) {
+				Tinycon.setOptions({
+					width: 16,
+					height: 16,
+					background: this.siteConfig.color,
+					color: this.contrastTextColor(this.siteConfig.color),
+					fallback: true
+				});
+				let faviconLabel = this.siteConfig.label[0];
+				if(this.siteConfig.label.length>1) {
+					if(PDT.isDigit(this.siteConfig.label.slice(-1)))
+						faviconLabel += this.siteConfig.label.slice(-1);
+				}      
+				Tinycon.setBubble(faviconLabel);
+			} else {
+				Tinycon.setOptions({
+					width: 16,
+					height: 3,
+					background: this.siteConfig.color,          
+					fallback: true
+				});
+				Tinycon.setBubble(" ");
+			}
+		}
 	}
 }
 

@@ -15,15 +15,7 @@ function applyPDTCustomization() {
         parent.document.title = newTitle;
       }
     
-      Tinycon.setOptions({
-        width: 17,
-        height: 3,
-        background: "#" + siteConfig.color.replace("#", ''),
-        fallback: true
-      });
-      Tinycon.setBubble(" ");
-
-	    //FEATURE: environment header
+      //FEATURE: environment header
       var productionEnvElement = document.querySelector(
         "div[data-ui-meta*='D_pzGetCurrentSystemRecord.pyActiveProductionLevelName']"
       );
@@ -113,6 +105,7 @@ function applyPDTCustomization() {
       customizeText();
       injectSidebarToggle();
     }
+    PDT.alterFavicon();
   }
 
   // //TODO: alter to opposite behavior on right click
@@ -243,21 +236,13 @@ function customizeText() {
 }
 
 // BEGIN are we in dev studio?
-console.log("Checking if in DEV studio");
-if (isInDevStudio()) {
-  console.log("In DEV studio - applying customizations");
-  applyPDTCustomization();
-} else {
-  // apply favicon color to other portals
-  //TODO: same as in siteConfigCallback, move to a function
-  if(PDT.hasConfigForSite) {
-  
-    Tinycon.setOptions({
-      width: 17,
-      height: 3,
-      background: "#" + PDT.siteConfig.color.replace("#", ''),
-      fallback: true
-    });
-    Tinycon.setBubble(" ");
+if(!PDT.isInTracer()) {
+  console.log("Checking if in DEV studio");
+  if (isInDevStudio()) {
+    console.log("In DEV studio - applying customizations");
+    applyPDTCustomization();
+  } else {
+    // apply favicon color to other portals
+    PDT.alterFavicon(true);
   }
 }

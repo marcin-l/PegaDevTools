@@ -23,21 +23,42 @@ function copyPagerToTop() {
 function addRSObserver() {
 
     //const rsvList = document.querySelector("div[data-node-id='pzRuleSet_ListRuleSetVersions']");
-    const rsvList = document.querySelector('div[node_name="pzRuleSet_ListRuleSetVersions"] div.default#PEGA_GRID_SKIN');
+    //const rsvList = document.querySelector('div[node_name="pzRuleSet_ListRuleSetVersions"] div.default#PEGA_GRID_SKIN');
     //document.querySelector("div[node_name='pzRuleSet_ListRuleSetVersions']")
     //("table#bodyTbl_right[summary='pyRuleSetVersionsList']");
     //document.querySelector("table[summary='pyRuleSetVersionsList']");
+    const rsvList = document.querySelector("div.rf-sticky-header#RULE_KEY[pyclassname='Rule-RuleSet-Name']");
 
     PDT.debug(rsvList);
     const rsvListCallback = function (mutationsList, observer) {
         PDT.debug("PDT: rsvListCallback ");
-        copyPagerToTop();
+        //show mutations
+        for (let mutation of mutationsList) {
+            //PDT.debug(mutation);
+
+            if (mutation.type === 'childList') {
+                //PDT.debug("PDT: rsvListCallback childList");
+                //show added nodes
+                // for (let addedNode of mutation.addedNodes) {
+
+                //      PDT.debug(addedNode);
+                // }
+                if(mutation.target && mutation.target.querySelector("div#EXPAND-OUTERFRAME")) {
+                    copyPagerToTop();
+                    PDT.debug(mutation);
+                }
+                //show removed nodes
+
+            }
+
+        }
+        //copyPagerToTop();
     };
 
     rsvListObserver = new MutationObserver(rsvListCallback);
     rsvListObserver.observe(rsvList, {
-        childList: true
-        //subtree: true
+        childList: true,
+        subtree: true
     })
 }
 

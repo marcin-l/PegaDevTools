@@ -9,7 +9,8 @@ function waitUntilRender() {
     mainDiv = document.querySelector("div#MainDiv");
     if (mainDiv) {
         addPageNavigation();
-        addSearch();
+        if(PDT.isDebugEnabled())
+            addSearch();
         return true;
     } else {
         tries = tries + 1;
@@ -99,7 +100,6 @@ function addPageNavigation() {
 function addSearch() {
     $('table#mainTable').filterTable({label:"Search:", placeholder:"properties and values"});
 }
-
 
 //TODO: convert to PDT settings
 function siteConfigCallback(siteConfig, globalConfig) {

@@ -1,230 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>Pega Dev Tools Extension Options</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script src="resources\huebee.pkgd.min.js"></script>
-		<script src="resources\jquery-3.4.1.min.js"></script>
-		<style>
-			body {
-				color: #181818;
-				background-color: #FEFCFE;
-				font-family: OpenSans, Arial;
-			}
-			
-			input#site {
-				width: 240px;
-				margin: 2px 5px;
-			}
 
-			input#label {
-				width: 90px;
-				margin: 2px 5px;
-			}
+<head>
+	<meta charset="utf-8">
+	<title>Pega Dev Tools Extension Options</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="resources\huebee.pkgd.min.js"></script>
+	<script src="resources\jquery-3.4.1.min.js"></script>
+	<style>
+		body {
+			color: #181818;
+			background-color: #FEFCFE;
+			font-family: OpenSans, Arial;
+		}
 
-			button#color {
-				border: 1px solid #181818;
-				width: 65px;
-				border-radius: 2px;
-			}
+		input#site {
+			width: 240px;
+			margin: 2px 5px;
+		}
 
-			button {
-				margin: 5px;
-				cursor: pointer;
-			}
+		input#label {
+			width: 90px;
+			margin: 2px 5px;
+		}
 
-			hr {
-				padding: 0px;
-				margin: 0px;
-			}
+		button#color {
+			border: 1px solid #181818;
+			width: 65px;
+			border-radius: 2px;
+		}
 
-			.tooltip {
-				position: relative;
-				display: inline-block;
-				border-bottom: 1px dotted black;
-			}
+		button {
+			margin: 5px;
+			cursor: pointer;
+		}
 
-			.helper {
-				border-bottom: 0;
-				top: -4px;
-			}
+		hr {
+			padding: 0px;
+			margin: 0px;
+		}
 
-			.tooltip .tooltiptext {
-				visibility: hidden;
-				width: 120px;
-				background-color: #555;
-				color: #fff;
-				text-align: center;
-				border-radius: 6px;
-				padding: 5px;
-				position: absolute;
-				z-index: 1;
-				bottom: 125%;
-				left: 50%;
-				margin-left: -60px;
-				opacity: 0;
-				transition: opacity 0.3s;
-			}
+		.tooltip {
+			position: relative;
+			display: inline-block;
+			border-bottom: 1px dotted black;
+		}
 
-			.tooltip .tooltiptext::after {
-				content: "";
-				position: absolute;
-				top: 100%;
-				left: 50%;
-				margin-left: -5px;
-				border-width: 5px;
-				border-style: solid;
-				border-color: #555 transparent transparent transparent;
-			}
+		.helper {
+			border-bottom: 0;
+			top: -4px;
+		}
 
-			.tooltip:hover .tooltiptext {
-				visibility: visible;
-				opacity: 1;
-			}
+		.tooltip .tooltiptext {
+			visibility: hidden;
+			width: 120px;
+			background-color: #555;
+			color: #fff;
+			text-align: center;
+			border-radius: 6px;
+			padding: 5px;
+			position: absolute;
+			z-index: 1;
+			bottom: 125%;
+			left: 50%;
+			margin-left: -60px;
+			opacity: 0;
+			transition: opacity 0.3s;
+		}
 
-			h2, h3 {
-				margin-bottom: 0;
-			}
+		.tooltip .tooltiptext::after {
+			content: "";
+			position: absolute;
+			top: 100%;
+			left: 50%;
+			margin-left: -5px;
+			border-width: 5px;
+			border-style: solid;
+			border-color: #555 transparent transparent transparent;
+		}
 
-			.actionButton {
-				background-color: #1B8EC4;
-				color: white;
-				border-radius: 7px;
-				border: none;
-				padding: 8px;
-				font-size: 14px;
-				font-weight: bold;
-			}
+		.tooltip:hover .tooltiptext {
+			visibility: visible;
+			opacity: 1;
+		}
 
-			a {
-				color: #0080BC;
-				text-decoration: none;
-				font-weight: bold;
-			}
-			a.siteRem {
-				color: #FC543C;
-			}
+		h2,
+		h3 {
+			margin-bottom: 0;
+		}
 
-			.feature {
-				font-size: 10px;
-			}
+		.actionButton {
+			background-color: #1B8EC4;
+			color: white;
+			border-radius: 7px;
+			border: none;
+			padding: 8px;
+			font-size: 14px;
+			font-weight: bold;
+		}
 
-		</style>
-		<link rel="stylesheet" href="resources\shared.css" />
-		<link rel="stylesheet" href="resources\huebee.min.css" media="screen" />
-	</head>
+		a {
+			color: #0080BC;
+			text-decoration: none;
+			font-weight: bold;
+		}
 
-	<body>
-		<div class="PDTrow">
-			<div class="PDTcolumn">
-				<h2>Settings</h2>
-				<input type="checkbox" id="useSiteLabelForBrowserTitle" /><label
-					for="useSiteLabelForBrowserTitle"
-					class="tooltip"
-					>Use site label for browser title
-					<span class="tooltiptext"
-						>If you define an environment in Site Config the browser title will
-						be replaced with the label you provided. Makes it easier to identify
-						an environment in browser tabs.</span
-					>
+		a.siteRem {
+			color: #FC543C;
+		}
+
+		.feature {
+			font-size: 10px;
+		}
+	</style>
+	<link rel="stylesheet" href="resources\shared.css" />
+	<link rel="stylesheet" href="resources\huebee.min.css" media="screen" />
+</head>
+
+<body>
+	<div class="PDTrow">
+		<div class="PDTcolumn">
+			<h2>Settings</h2>
+			<input type="checkbox" id="useSiteLabelForBrowserTitle" /><label for="useSiteLabelForBrowserTitle"
+				class="tooltip">Use site label for browser title
+				<span class="tooltiptext">If you define an environment in Site Config the browser title will
+					be replaced with the label you provided. Makes it easier to identify
+					an environment in browser tabs.
+				</span>
+			</label>
+			<h3>
+				Dev Studio <span class="feature"><a
+						href="https://github.com/marcin-l/PegaDevTools/wiki/Developer-Studio" target="_blank"
+						rel="noopener noreferrer">features</a></span>
+				<hr />
+			</h3>
+			<span data-pdt-setting="main">
+				<label
+						for="favicon" class="tooltip" style="margin-left: 20px">Favicon
+				<span class="tooltiptext">Alters favicon to improve environment identification in browser tabs. <br>
+					"Abbreviated name" will be the first character of Site name plus the last character if it exists, i.e. <b>STG1</b> will become <b>S1</b>.</span> </label>
+				<select id="favicon" data-pdt-setting-name="favicon"> 
+					<option value="">default</option>
+					<option value="small">show site color </option>
+					<option value="large">show site color and abbreviated name</option>
+				</select><br />			
+				<input type="checkbox" id="hideEnvironmentHeader" data-pdt-setting-name="hideEnvironmentHeader" /><label
+					for="hideEnvironmentHeader" class="tooltip">Hide OOTB environment header
+					<span class="tooltiptext">Site Config label is shown in Dev Studio so you might not need to
+						see OOTB environment header.</span> </label><br />							
+			</span>
+			<span data-pdt-setting="devstudio">
+				<input type="checkbox" id="devstudioCloseTabMiddleClick" data-pdt-setting-name="closeTabMiddleClick" />
+				<label for="devstudioCloseTabMiddleClick" class="tooltip">Close tabs with middle click
+					<span class="tooltiptext">
+						Known issue: might not work for already opened tabs when you reload the browser window.
+					</span>
 				</label>
+				<br />
+				<input type="checkbox" id="devstudioHideCloseButton" data-pdt-setting-name="hideCloseButton" />
+				<label for="devstudioHideCloseButton" class="tooltip">Hide tab close button
+					<span class="tooltiptext">
+						Allows to fit more tabs on the screen at once. Close button is not needed when "Close tabs with
+						middle click" feature is enabled.
+					</span>
+				</label>
+				<br /> <input type="checkbox" id="devstudioLongerRuleNames"
+					data-pdt-setting-name="longerRuleNames" /><label for="devstudioLongerRuleNames"
+					class="tooltip">Allow longer rule names in tabs<span class="tooltiptext">By default rule names in
+						tabs are trimmed to 14 characters,
+						making it sometimes difficult to know which rule is open. <br />This option increases length to
+						20 characters.</span></label><br />
+				<input type="checkbox" id="devstudioCheckoutIndicator"
+					data-pdt-setting-name="checkoutIndicator" /><label for="devstudioCheckoutIndicator"
+					class="tooltip">Indicate checked-out rules<span class="tooltiptext">Shows asterisk (*) prefix in tab
+						rule name - feature in Alpha
+						stage</span></label><br />
+				<input type="checkbox" id="devstudioCopypzInsKey" data-pdt-setting-name="copypzinskey" /><label
+					for="devstudioCopypzInsKey" class="tooltip">Show button to copy pzInskey to clipboard<span
+						class="tooltiptext">Shows button next to rule name. Alternative to using SHIFT+F8
+						shortcut.</span></label><br />
+			</span>
 
-				<h3>
-					Dev Studio <span class="feature"><a href="https://github.com/marcin-l/PegaDevTools/wiki/Developer-Studio" target="_blank" rel="noopener noreferrer">features</a></span>
-					<hr />
-				</h3>
-				<span>
-					<input type="checkbox" id="hideEnvironmentHeader" /><label
-						for="hideEnvironmentHeader"
-						class="tooltip"
-						>Hide OOTB environment header
-						<span class="tooltiptext"
-							>Site Config label is shown in Dev Studio so you might not need to
-							see OOTB environment header.</span
-						> </label
-					><br />
-					<input type="checkbox" id="devstudioCloseTabMiddleClick" /><label
-						for="devstudioCloseTabMiddleClick"
-						class="tooltip"
-						>Close tabs with middle click
-						<span class="tooltiptext"
-							>Known issue: might not work for already opened tabs when you
-							reload the browser window</span
-						> </label
-					><br />
-					<input type="checkbox" id="devstudioHideCloseButton" />
-					<label for="devstudioHideCloseButton" class="tooltip"
-						>Hide tab close button
-						<span class="tooltiptext"
-							>Allows to fit more tabs on the screen at once. Close button is
-							not needed when "Close tabs with middle click" feature is
-							enabled.</span
-						></label
-					>
-					<br />
-					<input type="checkbox" id="devstudioLongerRuleNames" /><label
-						for="devstudioLongerRuleNames"
-						class="tooltip"
-						>Allow longer rule names in tabs<span class="tooltiptext"
-							>By default rule names in tabs are trimmed to 14 characters,
-							making it sometimes difficult to know which rule is open. <br/
-							>This option increases length to 20 characters.</span
-						></label
-					><br />
-					<input type="checkbox" id="devstudioCheckoutIndicator" /><label
-						for="devstudioCheckoutIndicator"
-						class="tooltip"
-						>Indicate checked-out rules<span class="tooltiptext"
-							>Shows asterisk (*) prefix in tab rule name - feature in Alpha
-							stage</span
-						></label
-					><br />
-					<input type="checkbox" id="devstudioCopypzInsKey" /><label
-						for="devstudioCopypzInsKey"
-						class="tooltip"
-						>Show button to copy pzInskey to clipboard<span class="tooltiptext"
-							>Shows button next to rule name. Alternative to using SHIFT+F8
-							shortcut.</span
-						></label
-					><br />
-				</span>
+			<h3>
+				Clipboard <span class="feature"><a href="https://github.com/marcin-l/PegaDevTools/wiki/Clipboard"
+						target="_blank" rel="noopener noreferrer">features</a></span>
+				<hr />
+			</h3>
+			<span data-pdt-setting="clipboard">
+				<input type="checkbox" id="clipboardSplit5050" data-pdt-setting-name="split5050" /><label
+					for="clipboardSplit5050" class="tooltip">Make clipboard tree navigation wider (50%)
+					<span class="tooltiptext">Makes navigation easier on bigger monitors.</span> </label><br />
+			</span>
 
-				<h3>
-					Clipboard <span class="feature"><a href="https://github.com/marcin-l/PegaDevTools/wiki/Clipboard" target="_blank" rel="noopener noreferrer">features</a></span>
-					<hr />
-				</h3>
-				<span>
-					<input type="checkbox" id="clipboardSplit5050" /><label
-						for="clipboardSplit5050"
-						class="tooltip"
-						>Make clipboard tree navigation wider (50%)
-						<span class="tooltiptext"
-							>Makes navigation easier on bigger monitors.</span
-						> </label
-					><br />
-				</span>
+			<h3>
+				Tracer <span class="feature"><a href="https://github.com/marcin-l/PegaDevTools/wiki/Tracer"
+						target="_blank" rel="noopener noreferrer">features</a></span>
+				<hr />
+			</h3>
+			<span data-pdt-setting="tracer">
+				<input type="checkbox" id="tracerPageSort" data-pdt-setting-name="pagesort" />
+				<label for="tracerPageSort" class="tooltip">Sort properties alphabetically in page view
+					<span class="tooltiptext">When viewing a page or parameters top-level properties and pages will be
+						sorted alphabetically in descending order. OOTB order appears to be random.</span>
+				</label>
+				<br />
 
-				<h3>
-					Tracer <span class="feature"><a href="https://github.com/marcin-l/PegaDevTools/wiki/Tracer" target="_blank" rel="noopener noreferrer">features</a></span>
-					<hr />
-				</h3>
-				<span>
-					<input type="checkbox" id="tracerPageSort" />
-					<label for="tracerPageSort"	class="tooltip">Sort properties alphabetically in page view
-						<span class="tooltiptext">When viewing a page or parameters top-level properties and pages will be sorted alphabetically in descending order. OOTB order appears to be random.</span>
-					</label>
-					<br />		
+				<input type="checkbox" id="tracerSettingsFullscreen" data-pdt-setting-name="settingsFullscreen" />
+				<label for="tracerSettingsFullscreen" class="tooltip">Display settings in fullscreen
+					<span class="tooltiptext">Resizes settings</span>
+				</label>
+				<br />
 
-					<input type="checkbox" id="tracerSettingsFullscreen" />
-					<label for="tracerSettingsFullscreen" class="tooltip">Display settings in fullscreen
-						<span class="tooltiptext">Resizes settings</span>
-					</label>
-					<br />						
-
-					<!-- 
+				<!-- 
 					Open:
-					<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenDefault"><label
+					<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenDefault" data-pdt-setting-name="openBehavior"><label
 							for="tracerOpenDefault">in a <b>popup</b> (default Pega behavior)</label></div>
 					<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenTab"><label for="tracerOpenTab">in
 							new <b>tab</b></label> and open property windows in <select id="tracerOpenPagesBehavior">
@@ -235,69 +224,68 @@
 							for="tracerOpenWindowedTab">in new window with tabs</label></div>
 					 -->
 
-				</span>
+			</span>
 
-				<h3>
-					Disable components
-					<hr />
-				</h3>
-				<span>
-					<p>
-						When you don't like a feature or it breaks Dev Studio you can
-						disable it instead of the whole extension
-					</p>
+			<h3>
+				Disable components
+				<hr />
+			</h3>
+			<span>
+				<p>
+					When you don't like a feature or it breaks Dev Studio you can
+					disable it instead of the whole extension
+				</p>
 
-					<input type="checkbox" id="disableClipboard" /><label
-						for="disableClipboard"
-						>Clipboard</label
-					><br />
-					<input type="checkbox" id="disableTracer" /><label for="disableTracer"
-						>Tracer</label
-					><br />
-					<input type="checkbox" id="disableDevStudioCustomization" /><label
-						for="disableDevStudioCustomization"
-						>Dev Studio customizations</label
-					><br />
-				</span>
+				<input type="checkbox" id="disableClipboard" /><label for="disableClipboard">Clipboard</label><br />
+				<input type="checkbox" id="disableTracer" /><label for="disableTracer">Tracer</label><br />
+				<input type="checkbox" id="disableDevStudioCustomization" /><label
+					for="disableDevStudioCustomization">Dev Studio customizations</label><br />
+			</span>
 
-				<div id="settingsStatus"></div>
-				<button id="saveSettings" class="actionButton">Save settings</button>
+			<div id="settingsStatus"></div>
+			<button id="saveSettings" class="actionButton">Save settings</button>
+		</div>
+
+		<div class="PDTcolumn"></div>
+
+		<div class="PDTcolumn">
+			<h2>Site config <button id="addSite">+ Add site</button></h2>
+
+			<div id="siteConfig"></div>
+
+			<div id="status"></div>
+			<button id="saveSiteConfig" class="actionButton">Save site configuration</button>
+		</div>
+		<div class="PDTcolumn">
+			<h2>About this extension</h2>
+			<div>
+				<p>PegaDevTools v0.9.8 prerelease</p>
+				<p>Author: Marcin Leśniak</p>
+				<p>
+					Visit <a href="https://github.com/marcin-l/PegaDevTools" target="_blank"
+						rel="noopener noreferrer">github.com/marcin-l/PegaDevTools</a> for new releases and check out
+					the <a href="https://github.com/marcin-l/PegaDevTools/wiki" target="_blank"
+						rel="noopener noreferrer">Wiki</a>.
+				</p>
+				<p>
+					There is a list of
+					<a href="https://github.com/marcin-l/PegaDevTools/issues" target="_blank"
+						rel="noopener noreferrer">Known Issues</a>
+					(things to be fixed and features to be implemented). <br />
+					If you found a bug or have a new idea/feature for the extension,
+					<a href="https://github.com/marcin-l/PegaDevTools/issues/new" target="_blank"
+						rel="noopener noreferrer">you can report them</a>.
+				</p>
 			</div>
-
-			<div class="PDTcolumn"></div>
-
-			<div class="PDTcolumn">
-				<h2>Site config <button id="addSite">+ Add site</button></h2>
-
-				<div id="siteConfig"></div>
-
-				<div id="status"></div>
-				<button id="saveSiteConfig" class="actionButton">Save site configuration</button>
-			</div>
-			<div class="PDTcolumn">
-				<h2>About this extension</h2>
-				<div>
-					<p>PegaDevTools v0.9.8 prerelease</p>
-					<p>Author: Marcin Leśniak</p>
-					<p>
-						Visit <a href="https://github.com/marcin-l/PegaDevTools" target="_blank" rel="noopener noreferrer">github.com/marcin-l/PegaDevTools</a> for new releases and check out the <a href="https://github.com/marcin-l/PegaDevTools/wiki" target="_blank" rel="noopener noreferrer">Wiki</a>.
-					</p>
-					<p>
-						There is a list of
-						<a href="https://github.com/marcin-l/PegaDevTools/issues" target="_blank" rel="noopener noreferrer">Known Issues</a>
-						(things to be fixed and features to be implemented). <br />
-						If you found a bug or have a new idea/feature for the extension,
-						<a href="https://github.com/marcin-l/PegaDevTools/issues/new" target="_blank" rel="noopener noreferrer">you can report them</a>.
-					</p>
-				</div>
-				<div>
-					<input type="checkbox" id="debug" />
-					<label for="debug"class="tooltip">Enable debug mode
-						<span class="tooltiptext"></span>
-					</label>
-				</div>
+			<div data-pdt-setting="main">
+				<input type="checkbox" id="debug" data-pdt-setting-name="debug" />
+				<label for="debug" class="tooltip">Enable debug mode
+					<span class="tooltiptext"></span>
+				</label>
 			</div>
 		</div>
-		<script src="settings.js"></script>
-	</body>
+	</div>
+	<script src="settings.js"></script>
+</body>
+
 </html>

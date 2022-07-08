@@ -348,7 +348,15 @@ class PDT {
 	}
 
 	static isDevstudioEnabled() {
-		return !(this.settings.devstudio.disabled);
+		return !(this.settings.devstudio && this.settings.devstudio.disabled);
+	}
+
+	static isAgilestudioEnabled() {
+		return (this.settings.agilestudio && this.settings.agilestudio.enabled);
+	}
+
+	static isDeploymentManagerEnabled() {
+		return (this.settings.deploymentmanager && this.settings.deploymentmanager.enabled);
 	}
 
 	static isDebugEnabled() {
@@ -396,21 +404,26 @@ class PDT {
 		return (L > contrastThreshold) ? "#000000" : "#FFFFFF";
 	}
 
-	static alterFavicon(forceSmall = false) {
-		if(this.hasConfigForSite) {
-			if(this.settings.favicon == "large" && this.siteConfig.label && !forceSmall) {
+	static alterFavicon(forceSmall = false, forceLargeLabel = "", forceColor = "") {
+		if(this.hasConfigForSite || forceColor) {
+			if(forceLargeLabel || (this.settings.favicon == "large" && this.siteConfig.label && !forceSmall)) {
 				Tinycon.setOptions({
 					width: 16,
 					height: 16,
-					background: this.siteConfig.color,
-					color: this.contrastTextColor(this.siteConfig.color),
+					background: (forceColor || this.siteConfig.color),
+					color: this.contrastTextColor(forceColor || this.siteConfig.color),
 					fallback: true
 				});
-				let faviconLabel = this.siteConfig.label[0];
-				if(this.siteConfig.label.length>1) {
-					if(PDT.isDigit(this.siteConfig.label.slice(-1)))
-						faviconLabel += this.siteConfig.label.slice(-1);
-				}      
+				let faviconLabel = forceLargeLabel;
+				if(!faviconLabel) {
+					faviconLabel = this.siteConfig.label[0];
+					if(this.siteConfig.label.length>1) {
+						if(PDT.isDigit(this.siteConfig.label.slice(-1)))
+							faviconLabel += this.siteConfig.label.slice(-1);
+					}
+					if(faviconLabel.length == 1)
+						faviconLabel += " ";
+				}
 				Tinycon.setBubble(faviconLabel);
 			} else {
 				Tinycon.setOptions({

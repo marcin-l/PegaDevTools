@@ -285,6 +285,8 @@ if(document.querySelector("table.tracertop")) {
 }
 
 
+PDT.alterFavicon();
+
 
 //TODO:
 //displayPage = new Function('pageXML','pageName','pagePropertyName', displayPage.toString().match(/{([\s\S]*)}/)[1].replace('window.open(strURL,strForm,"status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=yes"  + strFeatures)', "window.open(strURL,'_blank')"));

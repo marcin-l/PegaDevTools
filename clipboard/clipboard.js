@@ -11,7 +11,7 @@ function addpyWorkPageLink() {
 		let clsname = extractClassName(title);
 		let clsnamefull = extractClassName(title, true);
 		if (clsname)
-			jQuery("header").append(' <i class="dark_background_label_dataLabelForRead" title="' + clsnamefull + '">(' + clsname + ')</i>');
+			jQuery("header").append(' <i class="dark_background_label_dataLabelForRead" title="' + clsnamefull + '">(' + clsname + ')</i> ');
 		console.log('PDT pyWorkPage found');
 	}
 
@@ -24,7 +24,7 @@ function addpyWorkPageLink() {
 		let clsname = extractClassName(title);
 		let clsnamefull = extractClassName(title, true);
 		if (clsname)
-			jQuery("header").append(' <i class="dark_background_label_dataLabelForRead" title="' + clsnamefull + '">(' + clsname + ')</i>');
+			jQuery("header").append(' <i class="dark_background_label_dataLabelForRead" title="' + clsnamefull + '">(' + clsname + ')</i> ');
 		console.log('PDT RH_1 found');
 	}
 		// else {
@@ -94,16 +94,13 @@ function siteConfigCallback(siteConfig, globalConfig) {
 		//FEATURE: split clipboard panels 50/50
 		if (globalConfig.settings.clipboard.split5050) {
 			injectStyles(`/** makes clipboard panels split 50/50 **/
-			.flex.screen-layout-header_left > .screen-layout-region-main-sidebar1 {
-			width:50%;
-			}
-			.flex.screen-layout-header_left .screen-layout-region-main-sidebar1> #sidebar-collapse-left{
-			left:50%;
-			}
-			.flex.screen-layout-header_left > .screen-layout-region-main-middle {
-			width:50%;
-			padding-left: 0.5em;
-			}`);
+				.flex.screen-layout-header_left > .screen-layout-region-main-sidebar1 {
+					width:50%;}
+				.flex.screen-layout-header_left .screen-layout-region-main-sidebar1> #sidebar-collapse-left{
+					left:50%;}
+				.flex.screen-layout-header_left > .screen-layout-region-main-middle {
+					width:50%;
+					padding-left: 0.5em;}`);
 		}
 	}
 }

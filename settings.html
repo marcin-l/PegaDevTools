@@ -51,7 +51,7 @@
 			top: -4px;
 		}
 
-		.tooltip .tooltiptext {
+		.tooltip .tooltipText {
 			visibility: hidden;
 			width: 120px;
 			background-color: #555;
@@ -68,7 +68,7 @@
 			transition: opacity 0.3s;
 		}
 
-		.tooltip .tooltiptext::after {
+		.tooltip .tooltipText::after {
 			content: "";
 			position: absolute;
 			top: 100%;
@@ -79,7 +79,7 @@
 			border-color: #555 transparent transparent transparent;
 		}
 
-		.tooltip:hover .tooltiptext {
+		.tooltip:hover .tooltipText {
 			visibility: visible;
 			opacity: 1;
 		}
@@ -112,6 +112,10 @@
 		.feature {
 			font-size: 10px;
 		}
+
+		.noCheckBox {
+			margin-left: 20px;
+		}
 	</style>
 	<link rel="stylesheet" href="resources\shared.css" />
 	<link rel="stylesheet" href="resources\huebee.min.css" media="screen" />
@@ -123,7 +127,7 @@
 			<h2>Settings</h2>
 			<input type="checkbox" id="useSiteLabelForBrowserTitle" /><label for="useSiteLabelForBrowserTitle"
 				class="tooltip">Use site label for browser title
-				<span class="tooltiptext">If you define an environment in Site Config the browser title will
+				<span class="tooltipText">If you define an environment in Site Config the browser title will
 					be replaced with the label you provided. Makes it easier to identify
 					an environment in browser tabs.
 				</span>
@@ -135,50 +139,61 @@
 				<hr />
 			</h3>
 			<span data-pdt-setting="main">
-				<label
-						for="favicon" class="tooltip" style="margin-left: 20px">Favicon
-				<span class="tooltiptext">Alters favicon to improve environment identification in browser tabs. <br>
-					"Abbreviated name" will be the first character of Site name plus the last character if it exists, i.e. <b>STG1</b> will become <b>S1</b>.</span> </label>
+				<label for="favicon" class="tooltip noCheckBox">Favicon
+				<span class="tooltipText">Alters favicon to improve environment identification in browser tabs. <br>
+					"Abbreviated name" will be the first character of Site name plus the last character if it exists, i.e. <strong>STG1</strong> will become <strong>S1</strong>.</span> </label>
 				<select id="favicon" data-pdt-setting-name="favicon"> 
 					<option value="">default</option>
-					<option value="small">show site color </option>
+					<option value="small">show site color</option>
 					<option value="large">show site color and abbreviated name</option>
 				</select><br />			
 				<input type="checkbox" id="hideEnvironmentHeader" data-pdt-setting-name="hideEnvironmentHeader" /><label
 					for="hideEnvironmentHeader" class="tooltip">Hide OOTB environment header
-					<span class="tooltiptext">Site Config label is shown in Dev Studio so you might not need to
-						see OOTB environment header.</span> </label><br />							
+					<span class="tooltipText">Site Config label is shown in Dev Studio so you might not need to
+						see OOTB environment header.
+					</span> 
+			</label>
+			<br />							
 			</span>
 			<span data-pdt-setting="devstudio">
 				<input type="checkbox" id="devstudioCloseTabMiddleClick" data-pdt-setting-name="closeTabMiddleClick" />
 				<label for="devstudioCloseTabMiddleClick" class="tooltip">Close tabs with middle click
-					<span class="tooltiptext">
+					<span class="tooltipText">
 						Known issue: might not work for already opened tabs when you reload the browser window.
 					</span>
 				</label>
-				<br />
+				<br /> 
+				<input type="checkbox" id="devstudioLongerRuleNames" data-pdt-setting-name="longerRuleNames" />
+				<label for="devstudioLongerRuleNames" class="tooltip">Allow longer rule names in tabs
+					<span class="tooltipText">By default rule names in
+						tabs are trimmed to 14 characters,
+						making it sometimes difficult to know which rule is open. <br />This option increases length to
+						20 characters.
+					</span>
+				</label>				
+				<br />				
 				<input type="checkbox" id="devstudioHideCloseButton" data-pdt-setting-name="hideCloseButton" />
 				<label for="devstudioHideCloseButton" class="tooltip">Hide tab close button
-					<span class="tooltiptext">
+					<span class="tooltipText">
 						Allows to fit more tabs on the screen at once. Close button is not needed when "Close tabs with
 						middle click" feature is enabled.
 					</span>
 				</label>
-				<br /> <input type="checkbox" id="devstudioLongerRuleNames"
-					data-pdt-setting-name="longerRuleNames" /><label for="devstudioLongerRuleNames"
-					class="tooltip">Allow longer rule names in tabs<span class="tooltiptext">By default rule names in
-						tabs are trimmed to 14 characters,
-						making it sometimes difficult to know which rule is open. <br />This option increases length to
-						20 characters.</span></label><br />
-				<input type="checkbox" id="devstudioCheckoutIndicator"
-					data-pdt-setting-name="checkoutIndicator" /><label for="devstudioCheckoutIndicator"
-					class="tooltip">Indicate checked-out rules<span class="tooltiptext">Shows asterisk (*) prefix in tab
+				<br />
+				<input type="checkbox" id="devstudioExpandTabOnHover" data-pdt-setting-name="expandTabOnHover" />
+				<label for="devstudioExpandTabOnHover" class="tooltip">Expand rule names in tab on hover (BETA)
+					<span class="tooltipText">
+						Known issue: might not work for already opened tabs when you reload the browser window.
+					</span>
+				</label>				
+				<br />
+				<input type="checkbox" id="devstudioCheckoutIndicator" data-pdt-setting-name="checkoutIndicator" />
+				<label for="devstudioCheckoutIndicator" class="tooltip">Indicate checked-out rules (ALPHA)
+					<span class="tooltipText">Shows asterisk (*) prefix in tab
 						rule name - feature in Alpha
-						stage</span></label><br />
-				<input type="checkbox" id="devstudioCopypzInsKey" data-pdt-setting-name="copypzinskey" /><label
-					for="devstudioCopypzInsKey" class="tooltip">Show button to copy pzInskey to clipboard<span
-						class="tooltiptext">Shows button next to rule name. Alternative to using SHIFT+F8
-						shortcut.</span></label><br />
+						stage</span>
+				</label>
+				<br />
 			</span>
 
 			<h3>
@@ -187,9 +202,11 @@
 				<hr />
 			</h3>
 			<span data-pdt-setting="clipboard">
-				<input type="checkbox" id="clipboardSplit5050" data-pdt-setting-name="split5050" /><label
-					for="clipboardSplit5050" class="tooltip">Make clipboard tree navigation wider (50%)
-					<span class="tooltiptext">Makes navigation easier on bigger monitors.</span> </label><br />
+				<input type="checkbox" id="clipboardSplit5050" data-pdt-setting-name="split5050" />
+				<label for="clipboardSplit5050" class="tooltip">Make clipboard tree navigation wider (50%)
+					<span class="tooltipText">Makes navigation easier on bigger monitors.</span>
+				</label>
+				<br />
 			</span>
 
 			<h3>
@@ -200,17 +217,17 @@
 			<span data-pdt-setting="tracer">
 				<input type="checkbox" id="tracerPageSort" data-pdt-setting-name="pagesort" />
 				<label for="tracerPageSort" class="tooltip">Sort properties alphabetically in page view
-					<span class="tooltiptext">When viewing a page or parameters top-level properties and pages will be
+					<span class="tooltipText">When viewing a page or parameters top-level properties and pages will be
 						sorted alphabetically in descending order. OOTB order appears to be random.</span>
 				</label>
 				<br />
 
 				<input type="checkbox" id="tracerSettingsFullscreen" data-pdt-setting-name="settingsFullscreen" />
 				<label for="tracerSettingsFullscreen" class="tooltip">Display settings in fullscreen
-					<span class="tooltiptext">Resizes settings</span>
+					<span class="tooltipText">Resizes settings</span>
 				</label>
 				<br />
-
+				
 				<!-- 
 					Open:
 					<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenDefault" data-pdt-setting-name="openBehavior"><label
@@ -223,7 +240,6 @@
 					<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenWindowedTab" disabled><label
 							for="tracerOpenWindowedTab">in new window with tabs</label></div>
 					 -->
-
 			</span>
 
 			<h3>
@@ -231,7 +247,7 @@
 				<hr />
 			</h3>
 			<span>
-				<p>
+				<p class="margin-top-0 margin-bottom-small">
 					When you don't like a feature or it breaks Dev Studio you can
 					disable it instead of the whole extension
 				</p>
@@ -241,6 +257,29 @@
 				<input type="checkbox" id="disableDevStudioCustomization" /><label
 					for="disableDevStudioCustomization">Dev Studio customizations</label><br />
 			</span>
+
+			<h3>
+				Agile Studio
+				<hr />
+			</h3>
+			<span>
+				<p class="margin-top-0 margin-bottom-small">
+					Adds closing tabs by middle mouse button click and changes favicon
+				</p>
+
+				<input type="checkbox" id="enableAgilestudio" /><label for="enableAgilestudio">Enable</label><br />
+
+				<h3>
+					Deployment Manager
+					<hr />
+				</h3>
+				<span>
+					<p class="margin-top-0 margin-bottom-small">
+						Changes favicon
+					</p>
+	
+					<input class="margin-top-0" type="checkbox" id="enableDeploymentManager" /><label for="enableDeploymentManager">Enable</label><br />				
+		</span>			
 
 			<div id="settingsStatus"></div>
 			<button id="saveSettings" class="actionButton">Save settings</button>
@@ -259,7 +298,7 @@
 		<div class="PDTcolumn">
 			<h2>About this extension</h2>
 			<div>
-				<p>PegaDevTools v0.9.8 prerelease</p>
+				<p>PegaDevTools v<span id="extensionVersion">0.9.8</span> prerelease</p>
 				<p>Author: Marcin Leśniak</p>
 				<p>
 					Visit <a href="https://github.com/marcin-l/PegaDevTools" target="_blank"
@@ -280,11 +319,12 @@
 			<div data-pdt-setting="main">
 				<input type="checkbox" id="debug" data-pdt-setting-name="debug" />
 				<label for="debug" class="tooltip">Enable debug mode
-					<span class="tooltiptext"></span>
+					<span class="tooltipText"></span>
 				</label>
 			</div>
 		</div>
 	</div>
+	<script src="shared.js"></script>
 	<script src="settings.js"></script>
 </body>
 

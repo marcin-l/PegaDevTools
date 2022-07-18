@@ -17,7 +17,7 @@ function saveSiteConfig() {
   });
   console.log(siteConfig);
 
-  chrome.storage.sync.set({
+  browser.storage.sync.set({
     siteConfig: siteConfig
   }, function () {
     //update status to let user know options were saved
@@ -46,15 +46,22 @@ function saveSettings() {
   settings.devstudio = new Object();
   settings.devstudio.disabled = document.querySelector("input#disableDevStudioCustomization").checked;
   settings.devstudio.closeTabMiddleClick = document.querySelector("input#devstudioCloseTabMiddleClick").checked;
-  settings.devstudio.hideCloseButton = /*settings.devstudio.closeTabMiddleClick &&*/ document.querySelector("input#devstudioHideCloseButton").checked;
+  settings.devstudio.expandTabOnHover = document.querySelector("input#devstudioExpandTabOnHover").checked;
+  settings.devstudio.hideCloseButton = document.querySelector("input#devstudioHideCloseButton").checked;
   settings.devstudio.longerRuleNames = document.querySelector("input#devstudioLongerRuleNames").checked;
   settings.devstudio.checkoutIndicator = document.querySelector("input#devstudioCheckoutIndicator").checked;
+
+  settings.agilestudio = new Object();
+  settings.agilestudio.enabled = document.querySelector("input#enableAgilestudio").checked;
+
+  settings.deploymentmanager = new Object();
+  settings.deploymentmanager.enabled = document.querySelector("input#enableDeploymentManager").checked;  
 
   settings.debug = document.querySelector("input#debug").checked;
   
   console.log(settings);
 
-  chrome.storage.sync.set({
+  browser.storage.sync.set({
     settings: settings
   }, function () {
     var status = document.getElementById('settingsStatus');
@@ -67,7 +74,7 @@ function saveSettings() {
 
 // Restores select box and checkbox state using the preferences stored in browser.storage
 function restore_options() {
-  chrome.storage.sync.get(["siteConfig", "settings"], function (data) {
+  browser.storage.sync.get(["siteConfig", "settings"], function (data) {
     console.log(data);
     $(data.siteConfig).each(function (index, element) {
       addSite();
@@ -91,9 +98,15 @@ function restore_options() {
 
     document.querySelector("input#disableDevStudioCustomization").checked = (data.settings.devstudio.disabled)?data.settings.devstudio.disabled:"";
     document.querySelector("input#devstudioCloseTabMiddleClick").checked = (data.settings.devstudio.closeTabMiddleClick)?data.settings.devstudio.closeTabMiddleClick:"";
+    document.querySelector("input#devstudioExpandTabOnHover").checked = (data.settings.devstudio.expandTabOnHover)?data.settings.devstudio.expandTabOnHover:"";    
     document.querySelector("input#devstudioHideCloseButton").checked = (data.settings.devstudio.hideCloseButton)?data.settings.devstudio.hideCloseButton:"";
     document.querySelector("input#devstudioLongerRuleNames").checked = (data.settings.devstudio.longerRuleNames)?data.settings.devstudio.longerRuleNames:"";
     document.querySelector("input#devstudioCheckoutIndicator").checked = (data.settings.devstudio.devstudioCheckoutIndicator)?data.settings.devstudio.devstudioCheckoutIndicator:"";
+
+    document.querySelector("input#enableAgilestudio").checked = (data.settings.agilestudio.enabled)?data.settings.agilestudio.enabled:"";
+
+    document.querySelector("input#enableDeploymentManager").checked = (data.settings.deploymentmanager.enabled)?data.settings.deploymentmanager.enabled:"";
+
   });
 }
 document.addEventListener('DOMContentLoaded', restore_options);
@@ -106,7 +119,7 @@ function addSite() {
   newOptionsHtml += '<input id="site" placeholder="domain, without https://"></input>';
   newOptionsHtml += '<input id="label" placeholder="DEV, STG, UAT, etc."></input>';
   newOptionsHtml += '<button id="color" class="color-button" data-huebee>Pick a color</button>';
-  newOptionsHtml += '<input id="useColorTop" type="checkbox" /><span class="tooltip helper">?<span class="tooltiptext">Show thin color bar at the top of Dev Studio, Tracer and Clipboard</span></span>&nbsp;';
+  newOptionsHtml += '<input id="useColorTop" type="checkbox" /><span class="tooltip helper">?<span class="tooltipText">Show thin color bar at the top of Dev Studio, Tracer and Clipboard</span></span>&nbsp;';
   newOptionsHtml += '<select id="version"><option value="" disabled selected hidden>Version:</option><option value=""></option><option value="7">Pega 7</option><option value="81">Pega 8.1</option><option value="82">Pega 8.2</option><option value="83">Pega 8.3</option><option value="84">Pega 8.4</option><option value="85">Pega 8.5</option><option value="86">Pega 8.6</option><option value="87">Pega 8.7</option><option value="88">Pega 8.8</option></select>';
   newOptionsHtml += '&nbsp;&nbsp;<a href="#" class="siteRem">remove</a></div>';
   $("#siteConfig").append(newOptionsHtml);

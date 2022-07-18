@@ -55,7 +55,9 @@ Tracer feature to navigate to first Error and Message is based on Piotr Olejnicz
 * [Mariusz Woźnica](https://github.com/woznica1970)
 
 ### Third-party libraries (MIT license)
+- [arrive.js](https://github.com/uzairfarooq/arrive)
 - [CodeMirror](https://codemirror.net/)
+- [ContextmenuJS](https://github.com/m-thalmann/contextmenujs)
 - [Huebee](https://huebee.buzz)
 - [jQuery](https://jquery.com/)
 - [jQuery.FilterTable](https://github.com/sunnywalker/jQuery.FilterTable)

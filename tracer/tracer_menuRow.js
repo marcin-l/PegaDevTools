@@ -11,13 +11,13 @@ var counter = 0;
 
 async function backgroundNotify(state) {
 	if (PDT.settings.debug) {
-		chrome.runtime.sendMessage({ purpose: "tracerState", tracerIsOn: state });
+		browser.runtime.sendMessage({ purpose: "tracerState", tracerIsOn: state });
 	}
 }
 
 async function backgroundHeartbeat() {
 	if (PDT.settings.debug) {
-		chrome.runtime.sendMessage({ purpose: "tracerHeartbeat" });
+		browser.runtime.sendMessage({ purpose: "tracerHeartbeat" });
 		console.log("PDT sending heartbeat " + Math.floor(Date.now() / 1000));
 	}
 }
@@ -64,7 +64,7 @@ var errorList = [],
 
 function getErrorList() {
 	return window.parent.frames[1].document.querySelectorAll(
-		'td[title="FAIL"], td[title="Exception"]'
+		'td[title="FAIL"], td[title="Exception"], tr.eventTableAlertTrace td#eventNodeId'
 	);
 }
 
@@ -81,7 +81,7 @@ function getAccessDeniedList() {
 }
 
 function updateErrorCount(count, index) {
-	var newTextContent = "Errors";
+	let newTextContent = "Errors";
 	if (!(count === undefined)) {
 		newTextContent = "Errors" + String.fromCharCode(160);
 		if (index) newTextContent += "" + index + "/" + count;
@@ -91,8 +91,8 @@ function updateErrorCount(count, index) {
 }
 
 function updateMessageCount(count, index) {
-	var newTextContent = "Warnings";
-	if (!(count === undefined)) {
+	let newTextContent = "Warnings";
+	if (count !== undefined) {
 		newTextContent = "Warnings" + String.fromCharCode(160);
 		if (index) newTextContent += "" + index + "/" + count;
 		else newTextContent += "" + count;
@@ -101,12 +101,12 @@ function updateMessageCount(count, index) {
 }
 
 function updateAccessDeniedCount(count) {
-	document.querySelector("button#btnPDTMAccessDenied").textContent =
+	document.querySelector("button#btnPDTAccessDenied").textContent =
 		" AccessDeny(" + count + ")";
 }
 
 //TODO: convert to use PDT.settings
-function siteConfigCallback(siteConfig, globalConfig) {
+function siteConfigCallback(siteConfig, _globalConfig) {
 	if (!PDT.isTracerEnabled()) {
 		console.log("PDT tracer disabled");
 	} else {
@@ -114,7 +114,7 @@ function siteConfigCallback(siteConfig, globalConfig) {
 		messageServiceWorker("registerTracer"); //register with Service Worker
 
 		if (siteConfig && siteConfig.label) {
-			var headerButtonsElement = document.querySelector("table.tracertop tr");
+			let headerButtonsElement = document.querySelector("table.tracertop tr");
 			if (headerButtonsElement) {
 				headerButtonsElement.insertAdjacentHTML(
 					"beforeend",
@@ -141,8 +141,8 @@ function siteConfigCallback(siteConfig, globalConfig) {
 			resetCounts();
 		});
 
-		//TODO: get rid of jQuery
-		$.get(chrome.runtime.getURL("tracer/tracer_button.html"), function (data) {
+		//TODO: get rid of jQuery, use fetch API
+		$.get(browser.runtime.getURL("tracer/tracer_button.html"), function (data) {
 			//add buttons from html
 			$("table.tracertop table tr").eq(2).prepend(data);
 
@@ -156,10 +156,10 @@ function addEventHandlers() {
 
 	//setTitle();
 
-	//TODO
+	//TODO: !!!!!!!
 	document.querySelector("button#btnPDTErrors").oncontextmenu = function () {
-		var offset = this.getBoundingClientRect().left;
-		var errorListDropdown = window.parent.frames[1].document.querySelector(
+		let offset = this.getBoundingClientRect().left;
+		let errorListDropdown = window.parent.frames[1].document.querySelector(
 			"div.dropdown-content"
 		);
 		if (errorListDropdown) {
@@ -172,13 +172,12 @@ function addEventHandlers() {
 			errorListDropdown.style.display = "block";
 			errorListDropdown.style.left = offset;
 
-			for (var rslt in getErrorList()) {
-				var elem = document.createElement("a");
-				elem.textContent =
-					rslt.parent.querySelector("td#eventLineNumber").title;
-				errorListDropdown.appendChild(elem);
+			for (let errorResult in getErrorList()) {
+				let newElem = document.createElement("a");
+				newElem.textContent = errorResult.parent.querySelector("td#eventLineNumber").title;
+				errorListDropdown.appendChild(newElem);
 			}
-			elem = document.createElement("a");
+			let elem = document.createElement("a");
 			elem.textContent = "Close";
 			elem.onclick = function () {
 				document.querySelector("div.dropdown-content").style.display = "none";
@@ -263,6 +262,7 @@ function addEventHandlers() {
 }
 
 //make sure buttons are part of the DOM before adding event handlers
+//TODO: use arrive.js
 function waitUntilRenderTracerButtons() {
 	let expectedElement = document.querySelector("button#btnPDTErrors");
 	if (expectedElement) {
@@ -284,14 +284,9 @@ if(document.querySelector("table.tracertop")) {
 	siteConfig(siteConfigCallback);
 }
 
-
 PDT.alterFavicon();
-
 
 //TODO:
 //displayPage = new Function('pageXML','pageName','pagePropertyName', displayPage.toString().match(/{([\s\S]*)}/)[1].replace('window.open(strURL,strForm,"status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=yes"  + strFeatures)', "window.open(strURL,'_blank')"));
 //TODO:  Access Deny list
 //window.parent.frames[1].document.querySelectorAll('td[title="Access Denied"]')
-
-//$('table.tracertop table tr').eq(2).prepend("<td><div class='toolbarButton'><div id='HideColumns' class='TracerIconStyling PegaDevToolsButton'>Hide columns</div></div></td>");
-//$('div.HideColumns').click(function() {   });

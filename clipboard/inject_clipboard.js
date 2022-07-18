@@ -7,20 +7,20 @@ function handleRightPanelChange() {
     return new Promise(() => {
 		//handle pyWorkPage
 		if(jQuery(".heading_2").length>0 && jQuery(".heading_2")[0].textContent == 'pyWorkPage') {
-			var elem = jQuery('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pyStatusWork"});
+			let elem = jQuery('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pyStatusWork"});
 			if(elem.length > 0) {
-				var status = elem.next()[0].innerText;
+				let status = elem.next()[0].innerText;
 				if(status)
 					jQuery(".heading_2").append(" (<i>" + status + "</i>)");
 			}
 		}
 		//handle newAssignPage
 		else if(jQuery(".heading_2").length > 0 && jQuery(".heading_2")[0].textContent == 'newAssignPage') {
-			var addedText = "";
-			var addedTextTooltip = "";
-			var napelem = jQuery('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pxObjClass"});
-			if(napelem.length > 0) {
-				var cls = napelem.next()[0].innerText;
+			let addedText = "";
+			let addedTextTooltip = "";
+			let napElem = jQuery('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pxObjClass"});
+			if(napElem.length > 0) {
+				let cls = napElem.next()[0].innerText;
 				if(cls) {
 					addedTextTooltip = cls;
 					if(cls.includes("-"))
@@ -28,9 +28,9 @@ function handleRightPanelChange() {
 					addedText += cls;					
 				}
 			}
-			napelem = jQuery('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pxAssignedOperatorID"});
-				if(napelem.length > 0) {
-				var op = napelem.next()[0].innerText;
+			napElem = jQuery('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pxAssignedOperatorID"});
+				if(napElem.length > 0) {
+					let op = napElem.next()[0].innerText;
 				if(op)
 					addedText += ": " + op;
 			}
@@ -38,9 +38,9 @@ function handleRightPanelChange() {
 				jQuery(".heading_2").append(" (<i>" + addedText + "</i>)");
 		}
 		else { //handle all the rest
-			var clselem = jQuery('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pxObjClass"});
-			if(clselem.length > 0) {
-				var cls = clselem.next()[0].innerText;
+			let classElement = jQuery('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pxObjClass"});
+			if(classElement.length > 0) {
+				let cls = classElement.next()[0].innerText;
 				if(cls) {
 					jQuery(".heading_2").append(" (<i>" + cls + "</i>)");
 				}
@@ -52,7 +52,7 @@ function handleRightPanelChange() {
 			(function( $ ) {
 				$('table.gridTable').eq(2).filterTable({label:"Search:", placeholder:"properties and values", minRows:7, quickListClear:"clear"});
 			})( jQuery );
-			var addedFilterInput = document.querySelector("p.filter-table input");
+			let addedFilterInput = document.querySelector("p.filter-table input");
 			if(addedFilterInput)
 				addedFilterInput.focus();
 		}

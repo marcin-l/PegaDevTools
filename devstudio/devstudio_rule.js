@@ -31,7 +31,7 @@ function siteConfigCallback(siteConfig, globalConfig) {
         }
         
         //FEATURE: copy class name
-        var classElem = document.querySelector("a[name^='RuleFormHeader']" || document.querySelector("span[tile='Class Name']"))
+        let classElem = document.querySelector("a[name^='RuleFormHeader']") || (document.querySelector("span[tile='Class Name']"));
         if(classElem) {
             classElem.insertAdjacentHTML('afterend', '<a style="margin-top:0; margin-bottom:0;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopyClassName()" title="Copy class name"><i  class="icons pi pi-copy" id="CopyClassName"></i></a>');
         } else {
@@ -40,9 +40,7 @@ function siteConfigCallback(siteConfig, globalConfig) {
         }
         
         //FEATURE: show button to copy pzInskey to clipboard
-        if(PDT.settings.devstudio.copypzinskey) {
-            document.querySelectorAll('div[node_name="pzRuleFormKeysAndDescription"] span.workarea_header_titles')[0].insertAdjacentHTML('beforebegin', '<a style="margin-top:0; margin-bottom:0;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopypzInsKey()" title="Copy pzInsKey"><i  class="icons pi pi-copy" style="color: white" id="CopypzInsKey"></i></a>')
-        }
+        document.querySelectorAll('div[node_name="pzRuleFormKeysAndDescription"] span.workarea_header_titles')[0].insertAdjacentHTML('beforebegin', '<a style="margin-top:0; margin-bottom:0;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopypzInsKey()" title="Copy pzInsKey"><i  class="icons pi pi-copy" style="color: white" id="CopypzInsKey"></i></a>')
     }
 }
 

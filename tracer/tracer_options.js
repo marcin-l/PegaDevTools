@@ -1,4 +1,4 @@
-$.get(chrome.runtime.getURL("tracer/tracerOptionSets.html"), function (data) {
+$.get(browser.runtime.getURL("tracer/tracerOptionSets.html"), function (data) {
 	//add html
 	document.querySelectorAll("div#ProfileDiv div.dialogDataContainer table table td")[2].querySelectorAll("table")[0].insertAdjacentHTML("afterend", data);
 	document.addEventListener('click', function (e) {
@@ -30,7 +30,7 @@ function getSelectedRulesets() {
 var optionSets = new Array();
 
 function addSaveOptionSet() {
-	var optionSet = new Object();
+	let optionSet = new Object();
 	optionSet.name = document.getElementById("PDTConfigurationProfileNewName").value;
 	optionSet.eventTypes = getSelectedEventTypes();
 	optionSet.rulesets = getSelectedRulesets();
@@ -41,7 +41,7 @@ function addSaveOptionSet() {
 
 //Saves options to browser.storage
 function saveOptionSets() {
-	chrome.storage.local.set({
+	browser.storage.local.set({
 		optionSets: optionSets
 	}, function () {
 		restoreOptionSets();
@@ -56,7 +56,7 @@ function saveOptionSets() {
 }
 
 function getOptionSets(callback) {
-	chrome.storage.local.get(["optionSets"], function (data) {
+	browser.storage.local.get(["optionSets"], function (data) {
 		console.log(data);
 		if (typeof data.optionSets !== "undefined" && typeof data.optionSets.length !== "undefined") {
 			optionSets = data.optionSets;
@@ -81,7 +81,7 @@ function fillDropdown() {
 		}
 
 		//fill input from current optionSets
-		optionSets.forEach(function (element, index) {
+		optionSets.forEach(function (element) {
 			var opt = document.createElement("option");
 			opt.className = "PDTTracerOption"
 			//console.log("Loaded profile " + element.name);
@@ -111,23 +111,22 @@ function loadOptionSet() {
 
 function loadEventTypes(eventTypes) {
 	document.querySelectorAll("div#EventTypesDisplay table table td.dataLabelStyle").forEach(function (val) { 
-		let cbox = val.querySelector("input[type='CHECKBOX']");
-		if(cbox) {
-			cbox.checked = (eventTypes.findIndex(function(element) { return element === val.textContent; }) >-1 );
+		let checkBox = val.querySelector("input[type='CHECKBOX']");
+		if(checkBox) {
+			checkBox.checked = (eventTypes.findIndex(function(element) { return element === val.textContent; }) >-1 );
 		}
 	});
 }
 
 function loadRulesets(rulesets) {
 	document.querySelectorAll("div#RuleSetDisplay table table td.dataLabelStyle").forEach(function (val) { 
-		let cbox = val.querySelector("input[type='CHECKBOX']");
-		if(cbox) {
-			cbox.checked = (rulesets.findIndex(function(element) { return element === val.textContent; }) >-1 );
+		let checkBox = val.querySelector("input[type='CHECKBOX']");
+		if(checkBox) {
+			checkBox.checked = (rulesets.findIndex(function(element) { return element === val.textContent; }) >-1 );
 		}
 	});
 }
 
-//TODO: add to configuration and call
 function makeFullscreen() {
 	window.resizeTo(screen.width,screen.height);
 }
@@ -137,9 +136,8 @@ function responsiveLayout() {
 	document.querySelectorAll("div#ProfileDiv div.dialogDataContainer table table td")[2].className = "PDTrow";
 }
 
-
 //get config
-function siteConfigCallback(siteConfig, globalConfig) {
+function siteConfigCallback(_siteConfig, globalConfig) {
 	if (!globalConfig.settings || (globalConfig.settings && globalConfig.settings.tracer.disabled)) {
 		console.log('PDT tracer disabled');
 	} else {
@@ -149,5 +147,20 @@ function siteConfigCallback(siteConfig, globalConfig) {
 		}
 	}
 }
+
+function eventTypesSetAll(checkState) {
+	document.querySelectorAll("div#EventTypesDisplay table table td.dataLabelStyle input[type='CHECKBOX']").forEach(function (el) { el.checked = checkState } )
+}
+
+fetch(browser.runtime.getURL("tracer/tracer_eventTypeSelection.html"))
+	.then(response => response.text())
+    .then( (text) => {
+	document.querySelector("div#EventTypesDisplay table table table tr").insertAdjacentHTML("afterend", text);
+});
+
+document.arrive("button#PDTDeselectAllEventTypes", {onceOnly: true}, () => 	{
+	document.querySelector("button#PDTSelectAllEventTypes").addEventListener("click", () => document.querySelectorAll("div#EventTypesDisplay table table td.dataLabelStyle input[type='CHECKBOX']").forEach(function (el) { el.checked = true } ));
+	document.querySelector("button#PDTDeselectAllEventTypes").addEventListener("click", () => document.querySelectorAll("div#EventTypesDisplay table table td.dataLabelStyle input[type='CHECKBOX']").forEach(function (el) { el.checked = false } ));
+});
 
 siteConfig(siteConfigCallback);

@@ -1,9 +1,10 @@
 const containerTabListNames = document.querySelector("div.tStrCntr ul");
 
-const containerTabListCallbackNames = function (mutationsList, observer) {
+const containerTabListCallbackNames = function (mutationsList, _observer) {
     mutationsList.forEach((mutation) => { 
         if(mutation.attributeName == "aria-label"){
             if (mutation.target.nodeName == "LI") {
+                mutation.target.classList.add("PDTmakeRuleNamesLonger");
                 let title = mutation.target.getAttribute("aria-label");
                 if (title) {
                     title = title.length > 20 ? title.substring(0, 20) + "..." : title;

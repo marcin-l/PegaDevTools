@@ -39,6 +39,7 @@
 			"js": [
 				"resources/jquery-3.4.1.min.js",				
 				"resources/tinycon.min.js",
+				"resources/arrive.min.js",
 				"resources/shared.js"
 			],
 			"all_frames": true,
@@ -230,7 +231,12 @@
 			"js": [
 				"resources/jquery-3.4.1.min.js",
 				"resources/jquery.filtertable.min.js",
+				"resources/contextmenu.min.js",
 				"tracer/tracer_event.js"
+			],
+			"css": [
+				"resources/contextmenu.min.css",
+				"tracer/tracer_event.css"
 			],
 			"all_frames": true,
 			"match_about_blank": true
@@ -326,7 +332,22 @@
 			"all_frames": true,
 			"match_about_blank": true,
 			"run_at": "document_end"
-
+		},
+		{
+			"matches": [
+				"*://*.pegacloud.net/prweb/*/*"
+			],
+			"js": [
+				"agilestudio/agilestudio.js"
+			]
+		},
+		{
+			"matches": [
+				"*://*.pegacloud.net/prweb/*/*"
+			],
+			"js": [
+				"dm/deploymentmanager.js"
+			]
 		}
 	],
 	"web_accessible_resources": [

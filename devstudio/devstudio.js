@@ -57,9 +57,9 @@ function applyPDTCustomization() {
           siteConfig.color.replace("#", '');
       }
     }
-
+    var settings;
     if (globalConfig && globalConfig.settings) {
-      var settings = globalConfig.settings;
+      settings = globalConfig.settings;
     }
     if (! PDT.isDevstudioEnabled()) {
       console.log("PDT DevStudio disabled");
@@ -82,6 +82,19 @@ function applyPDTCustomization() {
         );
       }
 
+      if (PDT.settings.devstudio.expandTabOnHover) {
+        //inject script which will apply it for newly opened tabs
+        injectScript("/js/", "expandTabOnHover.js");
+      }      
+
+      if (PDT.settings.devstudio.checkoutIndicator) {
+        showCheckoutIndicator();
+      }
+
+      addHeaderShortcuts();
+      customizeText();
+      injectSidebarToggle();
+
       //FEATURE: close tab on middle click
       if (PDT.settings.devstudio.closeTabMiddleClick) {
         //inject script which will apply it for newly opened tabs
@@ -96,14 +109,6 @@ function applyPDTCustomization() {
           })
         })
       }
-
-      if (PDT.settings.devstudio.checkoutIndicator) {
-        showCheckoutIndicator();
-      }
-
-      addHeaderShortcuts();
-      customizeText();
-      injectSidebarToggle();
     }
     PDT.alterFavicon();
   }
@@ -205,33 +210,25 @@ function customizeText() {
   //FEATURE: shorten Application label and make it bold
   if (document.querySelector("div.current-application label").innerText) {
     document.querySelector("div.current-application label").innerText = "App:";
-    document.querySelector("div.current-application div a").style.fontWeight =
-      "bolder";
+    document.querySelector("div.current-application div a").style.fontWeight = "bolder";
   }
 
   /**** FOOTER ****/
 
   //FEATURE: shorten Accessibility
-  document.querySelector("div.accessibility-toggle a").innerHTML = document
-    .querySelector("div.accessibility-toggle a")
-    .innerHTML.replace("Accessibility", "");
+  document.querySelector("div.accessibility-toggle a").innerHTML = document.querySelector("div.accessibility-toggle a").innerHTML.replace(document.querySelector("div.accessibility-toggle a").textContent, '');
   //FEATURE: shorten Performance
-  document.querySelector("div.pal-link a").innerHTML = document
-    .querySelector("div.pal-link a")
-    .innerHTML.replace("</i>Performance", "</i>");
+  document.querySelector("div.pal-link a").innerHTML = document.querySelector("div.pal-link a").innerHTML.replace(document.querySelector("div.pal-link a").textContent, '');
+  document.querySelector("div.pal-link a").innerHTML = document.querySelector("div.pal-link a").innerHTML.replace(document.querySelector("div.pal-link a").textContent, '');
   //FEATURE: shorten Issues
-  document.querySelector("div.alerts a").innerHTML = document
-    .querySelector("div.alerts a")
-    .innerHTML.replace("Issues", "");
+  document.querySelector("div.alerts a").innerHTML = document.querySelector("div.alerts a").innerHTML.replace(document.querySelector("div.alerts a").textContent, '');
 
   //FEATURE: shorten Live Data
   var DataInspectorButton = document.querySelector(
     "div a[data-test-id='DataInspectorButton']"
   );
   if (DataInspectorButton) {
-    DataInspectorButton.innerHTML = DataInspectorButton.innerHTML.replace("Live Data", "");
-    //TODO:
-    //replaceInnerHTML(DataInspectorButton, DataInspectorButton.innerHTML.replace("Live Data", ""));
+    DataInspectorButton.innerHTML = DataInspectorButton.innerHTML.replace(DataInspectorButton.textContent, '');
   }
 }
 

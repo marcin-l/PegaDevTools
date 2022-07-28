@@ -45,7 +45,7 @@ function siteConfigCallback(siteConfig, globalConfig) {
 }
 
 function waitUntilRenderRS() {
-    mainDiv =  document.querySelector("a[name^='RuleFormHeader']") || document.querySelector('a.custom_RuleOpener') ;
+    mainDiv =  document.querySelector("a[name^='RuleFormHeader']") || document.querySelector('a.custom_RuleOpener') || document.querySelector('div[node_name="pzRuleFormKeysAndDescription"]');
     if (mainDiv) {
         siteConfig(siteConfigCallback);
     } else {

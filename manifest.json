@@ -48,19 +48,6 @@
 		},
 		{
 			"matches": [
-				"*://*/prweb/*"
-			],
-			"exclude_globs": [
-				"*blank.htm*"
-			],
-			"js": [
-				"resources/main.js"
-			],
-			"match_about_blank": false,
-			"run_at": "document_end"
-		},
-		{
-			"matches": [
 				"*://*/prweb/*!STANDARD*",
 				"*://*/prweb/*/app/*!STANDARD*",
 				"*://*/prweb/*app/*!OpenPortal_*"

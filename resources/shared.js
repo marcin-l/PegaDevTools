@@ -301,9 +301,10 @@ class PDT {
 			//this.settings = await getObjectFromLocalStorage("settings");
 
 			this.settings = data.settings;
-			if(! this.settings.tracer) this.settings.tracer = {};
-			if(! this.settings.clipboard) this.settings.clipboard = {};
-			if(! this.settings.devstudio) this.settings.devstudio = {};
+			if(typeof this.settings === "undefined") this.settings = {};
+			if(typeof this.settings.tracer === "undefined") this.settings.tracer = {};
+			if(typeof this.settings.clipboard === "undefined") this.settings.clipboard = {};
+			if(typeof this.settings.devstudio === "undefined") this.settings.devstudio = {};
 			PDT.debug("storage settings load");
 
 			//var siteConfigs = await getObjectFromLocalStorage("siteConfig");

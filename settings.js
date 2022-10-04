@@ -1,3 +1,4 @@
+browser = (window.browser)? window.browser : window.chrome;
 
 // Saves options to browser.storage
 function saveSiteConfig() {

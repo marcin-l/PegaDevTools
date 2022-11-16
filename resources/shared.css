@@ -70,24 +70,26 @@ div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle {
 	padding: 3px;
 }
 
-.right {
-	transform: rotate(-45deg);
+/* TODO: .transformLeft and .transformRight considered to be removed */
+.transformRight {
 	-webkit-transform: rotate(-45deg);
+	transform: rotate(-45deg);	
 }
 
-.left {
-	transform: rotate(135deg);
+.transformLeft {
 	-webkit-transform: rotate(135deg);
+	transform: rotate(135deg);
 }
 
-.up {
-	transform: rotate(-135deg);
+
+.transformUp {
 	-webkit-transform: rotate(-135deg);
+	transform: rotate(-135deg);
 }
 
-.down {
-	transform: rotate(45deg);
+.transformDown {
 	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
 }
 
 .rightPill {

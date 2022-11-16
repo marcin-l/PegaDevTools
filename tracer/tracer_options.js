@@ -27,7 +27,7 @@ function getSelectedRulesets() {
 	document.querySelectorAll("div#RuleSetDisplay table table td.dataLabelStyle").forEach(function (val) { if (val.querySelector("input[type='CHECKBOX']:checked")) (rulesetArray.push(val.textContent)) });
 	return rulesetArray;
 }
-var optionSets = new Array();
+let optionSets = new Array();
 
 function addSaveOptionSet() {
 	let optionSet = new Object();
@@ -47,7 +47,7 @@ function saveOptionSets() {
 		restoreOptionSets();
 		document.getElementById("PDTConfigurationProfileNew").style.display = "none";
 		//Update status to let user know options were saved
-		var status = document.getElementById('status');
+		let status = document.getElementById('status');
 		status.textContent = 'Configuration saved';
 		setTimeout(function () {
 			status.textContent = '';
@@ -71,18 +71,18 @@ function restoreOptionSets() {
 }
 
 function fillDropdown() {
-	var select = document.getElementById("configList");
+	let select = document.getElementById("configList");
 	if (!select)
 		console.log("Could not find configList");
 	else {
 		//clear input
-		for (var o of document.querySelectorAll('#configList > option')) {
+		for (let o of document.querySelectorAll('#configList > option')) {
 			o.remove()
 		}
 
 		//fill input from current optionSets
 		optionSets.forEach(function (element) {
-			var opt = document.createElement("option");
+			let opt = document.createElement("option");
 			opt.className = "PDTTracerOption"
 			//console.log("Loaded profile " + element.name);
 			opt.value = opt.innerHTML = element.name;
@@ -152,15 +152,28 @@ function eventTypesSetAll(checkState) {
 	document.querySelectorAll("div#EventTypesDisplay table table td.dataLabelStyle input[type='CHECKBOX']").forEach(function (el) { el.checked = checkState } )
 }
 
+//FEATURE: Select/deselect all event types
 fetch(browser.runtime.getURL("tracer/tracer_eventTypeSelection.html"))
 	.then(response => response.text())
     .then( (text) => {
 	document.querySelector("div#EventTypesDisplay table table table tr").insertAdjacentHTML("afterend", text);
 });
 
-document.arrive("button#PDTDeselectAllEventTypes", {onceOnly: true}, () => 	{
+document.arrive("button#PDTDeselectAllEventTypes", {onceOnly: true, existing: true}, () => 	{
 	document.querySelector("button#PDTSelectAllEventTypes").addEventListener("click", () => document.querySelectorAll("div#EventTypesDisplay table table td.dataLabelStyle input[type='CHECKBOX']").forEach(function (el) { el.checked = true } ));
 	document.querySelector("button#PDTDeselectAllEventTypes").addEventListener("click", () => document.querySelectorAll("div#EventTypesDisplay table table td.dataLabelStyle input[type='CHECKBOX']").forEach(function (el) { el.checked = false } ));
+});
+
+//FEATURE: Select/deselect all Pega rulesets
+fetch(browser.runtime.getURL("tracer/tracer_PegaRulesetSelection.html"))
+	.then(response => response.text())
+    .then( (text) => {
+	document.querySelector("div#RuleSetDisplay table tr").insertAdjacentHTML("beforeend", text);
+});
+
+document.arrive("button#PDTDeselectPegaRulesets", {onceOnly: true, existing: true}, () => 	{
+	document.querySelector("button#PDTSelectPegaRulesets").addEventListener("click", () => document.querySelectorAll("div#RuleSetDisplay table table table td.dataLabelStyle input[type='CHECKBOX']").forEach(function (el) { if(el.nextSibling.textContent.trim().startsWith("Pega")) el.checked = true } ));
+	document.querySelector("button#PDTDeselectPegaRulesets").addEventListener("click", () => document.querySelectorAll("div#RuleSetDisplay table table table td.dataLabelStyle input[type='CHECKBOX']").forEach(function (el) { if(el.nextSibling.textContent.trim().startsWith("Pega")) el.checked = false } ));
 });
 
 siteConfig(siteConfigCallback);

@@ -1,5 +1,7 @@
 console.log("PDT: devstudio/devstudio_rule.js");
 
+PDT.setScriptsApplied();
+
 var tries = 0;
 var mainDiv;
 
@@ -27,7 +29,7 @@ function siteConfigCallback(siteConfig, globalConfig) {
 
         //FEATURE: copy rule info (name, class, ruleset) in a format to be pasted into a table
         if($('a.custom_RuleOpener').eq(0)) {
-            $('a.custom_RuleOpener').eq(0).after('<a class="rule-details" style="margin-top:0; margin-bottom:0;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopyNameAndClass()" title="Copy name, class and ruleset"><i  class="icons pi pi-copy" id="CopyNameAndClass"></i></a>');
+            $('a.custom_RuleOpener').eq(0).after('<a class="rule-details" style="margin-top:0; margin-bottom:0;padding-left: 4px;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopyNameAndClass()" title="Copy name, class and ruleset"><i  class="icons pi pi-copy" id="CopyNameAndClass"></i></a>');
         }
         
         //FEATURE: copy class name
@@ -61,3 +63,4 @@ function waitUntilRenderRS() {
 waitUntilRenderRS();
 injectSidebarToggle();
 injectCloseShortcut();
+

@@ -1,4 +1,5 @@
 console.log("PDT: devstudio/devstudio_ruleset.js");
+PDT.setScriptsApplied();
 
 var tries = 0, pagerDiv;
 var rsvListObserver;

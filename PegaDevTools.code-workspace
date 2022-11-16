@@ -9,12 +9,15 @@
 			"*.yaml": "home-assistant"
 		},
 		"cSpell.words": [
+			"agilestudio",
 			"closetag",
 			"cntr",
 			"codemirror",
 			"Copypz",
+			"copypzinskey",
 			"datapage",
 			"devstudio",
+			"favico",
 			"foldcode",
 			"foldgutter",
 			"fullscreen",
@@ -24,16 +27,20 @@
 			"inanchor",
 			"lesniak",
 			"marcin",
+			"Marcin",
 			"matchtags",
 			"nocopy",
 			"ootb",
+			"OOTB",
 			"pagesort",
 			"prweb",
+			"pzInskey",
 			"Recordkey",
 			"str",
 			"t",
 			"tabanchor",
-			"tooltiptext"
+			"tooltiptext",
+			"tracertop"
 		],
 		"favorites.resources": [
 			{

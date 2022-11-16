@@ -2,25 +2,25 @@
 
 //TODO: make page navigation float on scroll (https://stackoverflow.com/questions/31184298/how-to-float-a-div-on-scroll)
 
-var tries = 0;
+// var tries = 0;
 var mainDiv;
 
-function waitUntilRender() {
-    mainDiv = document.querySelector("div#MainDiv");
-    if (mainDiv) {
-        addPageNavigation();
-        if(PDT.isDebugEnabled())
-            addSearch();
-        return true;
-    } else {
-        tries = tries + 1;
-        console.log(tries);
-        if (tries > 10) return false;
-        setTimeout(() => {
-            waitUntilRender();
-        }, 500);
-    }
-}
+// function waitUntilRender() {
+//     mainDiv = document.querySelector("div#MainDiv");
+//     if (mainDiv) {
+//         addPageNavigation();
+//         if(PDT.isDebugEnabled())
+//             addSearch();
+//         return true;
+//     } else {
+//         tries = tries + 1;
+//         console.log(tries);
+//         if (tries > 10) return false;
+//         setTimeout(() => {
+//             waitUntilRender();
+//         }, 500);
+//     }
+// }
 
 //sorting based on https://stackoverflow.com/questions/14267781/sorting-html-table-with-javascript by Nick Grealy
 const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
@@ -72,12 +72,12 @@ function addPageNavigation() {
 
 
             //TODO: attempt at sorting the results
-            var embeddedPages = mainTable.querySelectorAll(":scope > tbody > tr.eventTable > td > table");
+            let embeddedPages = mainTable.querySelectorAll(":scope > tbody > tr.eventTable > td > table");
             Array.from(embeddedPages).sort(
                 function(a, b) {
-                    var textA = a.parentNode.parentNode.querySelector("td").innerText.trim().toUpperCase();
-                    var textB = b.parentNode.parentNode.querySelector("td").innerText.trim().toUpperCase();
-                    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                    let textA = a.parentNode.parentNode.querySelector("td").innerText.trim().toUpperCase();
+                    let textB = b.parentNode.parentNode.querySelector("td").innerText.trim().toUpperCase();
+                    return (textA < textB) ? -1 : ((textA > textB) ? 1 : 0);
                 }
             ).forEach(elem => {
                 let pelem = elem.parentNode.parentNode.querySelector("td");
@@ -102,18 +102,27 @@ function addSearch() {
 }
 
 //TODO: convert to PDT settings
-function siteConfigCallback(siteConfig, globalConfig) {
+function siteConfigCallback(_siteConfig, globalConfig) {
 	if (! PDT.isTracerEnabled()) {
 		console.log('PDT tracer disabled');
 	} else {
-		if (!waitUntilRender()) {
-            console.log("PDT tracer_page: No div#MainDiv");
-        }
-        
-        //FEATURE: Sort properties alphabetically in page view
-		else if (globalConfig.settings.tracer.pagesort) {
-			sortTopLevel();
-		}
+		// if (!waitUntilRender()) {
+        //     console.log("PDT tracer_page: No div#MainDiv");
+        // }
+        document.arrive("div#MainDiv", { onceOnly: true, existing: true}, () => {
+            mainDiv = document.querySelector("div#MainDiv");
+            addPageNavigation();
+
+            //FEATURE: Sort properties alphabetically in page view
+		    if (globalConfig.settings.tracer.pagesort) {
+			    sortTopLevel();
+		    }
+
+            if(PDT.isDebugEnabled())
+                addSearch();
+
+            PDT.alterFavicon();
+        });
 	}
 }
 

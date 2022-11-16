@@ -1,14 +1,15 @@
+browser = (window.browser)? window.browser : window.chrome;
 
 // Saves options to browser.storage
 function saveSiteConfig() {
   let siteConfig = new Array();
-  $("div#siteRow").each(function (index, element) {
-    var site = $(this).find("input#site")[0].value;
+  $("div#siteRow").each(function (_index, _element) {
+    let site = $(this).find("input#site")[0].value;
     if(site) {
-      var label = $(this).find("input#label")[0].value;
-      var useColorTop = $(this).find("input#useColorTop")[0].checked;
-      var color = $(this).find("button#color")[0].innerText;
-      var version = $(this).find("select#version")[0].value;
+      let label = $(this).find("input#label")[0].value;
+      let useColorTop = $(this).find("input#useColorTop")[0].checked;
+      let color = $(this).find("button#color")[0].innerText;
+      let version = $(this).find("select#version")[0].value;
 
       siteConfig.push({ site: site, label: label, color: color, useColorTop: useColorTop, version: version });
     } else {
@@ -21,7 +22,7 @@ function saveSiteConfig() {
     siteConfig: siteConfig
   }, function () {
     //update status to let user know options were saved
-    var status = document.getElementById('status');
+    let status = document.getElementById('status');
     status.textContent = 'Site configuration saved';
     setTimeout(function () {
       status.textContent = '';
@@ -50,6 +51,9 @@ function saveSettings() {
   settings.devstudio.hideCloseButton = document.querySelector("input#devstudioHideCloseButton").checked;
   settings.devstudio.longerRuleNames = document.querySelector("input#devstudioLongerRuleNames").checked;
   settings.devstudio.checkoutIndicator = document.querySelector("input#devstudioCheckoutIndicator").checked;
+  settings.devstudio.mouseScrollTabs = document.querySelector("input#devstudioMouseScrollTabs").checked;
+  settings.devstudio.useTabMenu = document.querySelector("input#devstudioUseTabMenu").checked;
+  settings.devstudio.tabColorCoding = document.querySelector("input#devstudioTabColorCoding").checked;
 
   settings.agilestudio = new Object();
   settings.agilestudio.enabled = document.querySelector("input#enableAgilestudio").checked;
@@ -64,7 +68,7 @@ function saveSettings() {
   browser.storage.sync.set({
     settings: settings
   }, function () {
-    var status = document.getElementById('settingsStatus');
+    let status = document.getElementById('settingsStatus');
     status.textContent = 'Settings saved';
     setTimeout(function () {
       status.textContent = '';
@@ -85,26 +89,36 @@ function restore_options() {
       $("select#version").eq(index).val(element.version);
    });
     
+    if(typeof data.settings === "undefined") data.settings = {};
     document.querySelector("input#debug").checked = (data.settings.debug)?data.settings.debug:false;
     document.querySelector("input#useSiteLabelForBrowserTitle").checked = (data.settings.useSiteLabelForBrowserTitle)?data.settings.useSiteLabelForBrowserTitle:"";
     document.querySelector("input#hideEnvironmentHeader").checked = (data.settings.hideEnvironmentHeader)?data.settings.hideEnvironmentHeader:"";
     document.querySelector("select#favicon").value = (data.settings.favicon)?data.settings.favicon:"small";
+    if(typeof data.settings.clipboard === "undefined") data.settings.clipboard = {};
     document.querySelector("input#clipboardSplit5050").checked = (data.settings.clipboard.split5050)?data.settings.clipboard.split5050:"";
     document.querySelector("input#disableClipboard").checked = (data.settings.clipboard.disabled)?data.settings.clipboard.disabled:"";
+    if(typeof data.settings.tracer === "undefined") data.settings.tracer = {};
     document.querySelector("input#disableTracer").checked = (data.settings.tracer.disabled)?data.settings.tracer.disabled:"";
     document.querySelector("input#tracerPageSort").checked = (data.settings.tracer.pagesort)?data.settings.tracer.pagesort:"";
     document.querySelector("input#tracerSettingsFullscreen").checked = (data.settings.tracer.settingsFullscreen)?data.settings.tracer.settingsFullscreen:"";
     //if(data.settings.tracer.openBehavior) document.getElementById(data.settings.tracer.openBehavior).checked = true;
 
+    if(typeof data.settings.devstudio === "undefined") data.settings.devstudio = {};
     document.querySelector("input#disableDevStudioCustomization").checked = (data.settings.devstudio.disabled)?data.settings.devstudio.disabled:"";
     document.querySelector("input#devstudioCloseTabMiddleClick").checked = (data.settings.devstudio.closeTabMiddleClick)?data.settings.devstudio.closeTabMiddleClick:"";
     document.querySelector("input#devstudioExpandTabOnHover").checked = (data.settings.devstudio.expandTabOnHover)?data.settings.devstudio.expandTabOnHover:"";    
     document.querySelector("input#devstudioHideCloseButton").checked = (data.settings.devstudio.hideCloseButton)?data.settings.devstudio.hideCloseButton:"";
     document.querySelector("input#devstudioLongerRuleNames").checked = (data.settings.devstudio.longerRuleNames)?data.settings.devstudio.longerRuleNames:"";
     document.querySelector("input#devstudioCheckoutIndicator").checked = (data.settings.devstudio.devstudioCheckoutIndicator)?data.settings.devstudio.devstudioCheckoutIndicator:"";
-
+    document.querySelector("input#devstudioMouseScrollTabs").checked = (data.settings.devstudio.mouseScrollTabs)?data.settings.devstudio.mouseScrollTabs:"";
+    document.querySelector("input#devstudioUseTabMenu").checked = (data.settings.devstudio.useTabMenu)?data.settings.devstudio.useTabMenu:"";
+    document.querySelector("input#devstudioTabColorCoding").checked = (data.settings.devstudio.tabColorCoding)?data.settings.devstudio.tabColorCoding:"";
+    devstudioTabColorCoding
+    
+    if(typeof data.settings.agilestudio === "undefined") data.settings.agilestudio = {};
     document.querySelector("input#enableAgilestudio").checked = (data.settings.agilestudio.enabled)?data.settings.agilestudio.enabled:"";
 
+    if(typeof data.settings.deploymentmanager === "undefined") data.settings.deploymentmanager = {};
     document.querySelector("input#enableDeploymentManager").checked = (data.settings.deploymentmanager.enabled)?data.settings.deploymentmanager.enabled:"";
 
   });
@@ -115,7 +129,7 @@ document.getElementById('saveSettings').addEventListener('click', saveSettings);
 
 
 function addSite() {
-  var newOptionsHtml = '<div id="siteRow">'
+  let newOptionsHtml = '<div id="siteRow">'
   newOptionsHtml += '<input id="site" placeholder="domain, without https://"></input>';
   newOptionsHtml += '<input id="label" placeholder="DEV, STG, UAT, etc."></input>';
   newOptionsHtml += '<button id="color" class="color-button" data-huebee>Pick a color</button>';
@@ -123,8 +137,8 @@ function addSite() {
   newOptionsHtml += '<select id="version"><option value="" disabled selected hidden>Version:</option><option value=""></option><option value="7">Pega 7</option><option value="81">Pega 8.1</option><option value="82">Pega 8.2</option><option value="83">Pega 8.3</option><option value="84">Pega 8.4</option><option value="85">Pega 8.5</option><option value="86">Pega 8.6</option><option value="87">Pega 8.7</option><option value="88">Pega 8.8</option></select>';
   newOptionsHtml += '&nbsp;&nbsp;<a href="#" class="siteRem">remove</a></div>';
   $("#siteConfig").append(newOptionsHtml);
-  var hueb = new Huebee($("button#color").last()[0], { notation: 'hex', saturations: 1, setBGColor: true, shades: 7, hue0: 80, customColors: [ '#FFF', '#0E0', '#FFA30F', '#C25', '#FFF000', '#19F' ]});
-  hueb.on('change', function(color) { //sets text color to chosen color so hex is not visible
+  let huebee = new Huebee($("button#color").last()[0], { notation: 'hex', saturations: 1, setBGColor: true, shades: 7, hue0: 80, customColors: [ '#FFF', '#0E0', '#FFA30F', '#C25', '#FFF000', '#19F' ]});
+  huebee.on('change', function(color) { //sets text color to chosen color so hex is not visible
     this.anchor.style.color = color;
   });
 }
@@ -132,7 +146,6 @@ function addSite() {
 document.getElementById('addSite').addEventListener('click', addSite);
 
 //event delegation
-$("div#siteConfig").on("click", "a", function (event) {
-  //event.preventDefault();
+$("div#siteConfig").on("click", "a", function (_event) {
   $(this).closest("div#siteRow").remove();
 });

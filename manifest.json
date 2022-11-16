@@ -10,7 +10,8 @@
 		"contextMenus",
 		"storage",
 		"notifications",
-		"scripting"
+		"scripting",
+		"webRequest"
 	],
 	"host_permissions": ["<all_urls>"],
 	"incognito":"spanning",
@@ -37,10 +38,11 @@
 				"resources/shared.css"
 			],
 			"js": [
-				"resources/jquery-3.4.1.min.js",				
-				"resources/tinycon.min.js",
-				"resources/arrive.min.js",
-				"resources/shared.js"
+				"resources/jquery-3.4.1.min.js",
+				"resources/arrive.min.js",				
+				"resources/shared.js",
+				"resources/tinycon.min.js"
+		
 			],
 			"all_frames": true,
 			"match_about_blank": true,
@@ -53,12 +55,12 @@
 			"exclude_globs": [
 				"*blank.htm*"
 			],
-			"js": [
-				"resources/main.js"
+			"js": [			
+				"resources/registerWithServiceWorker.js"
 			],
-			"match_about_blank": false,
-			"run_at": "document_end"
-		},
+			"all_frames": true,
+			"run_at": "document_idle"
+		},		
 		{
 			"matches": [
 				"*://*/prweb/*!STANDARD*",
@@ -69,7 +71,9 @@
 				"*agile*"
 			],
 			"js": [
-				"devstudio/devstudio.js"
+				"resources/ctxmenu.min.js",
+				"devstudio/devstudio.js",
+				"devstudio/devstudio_tabs.js"
 			],
 			"css": [
 				"devstudio/devstudio.css"
@@ -231,11 +235,10 @@
 			"js": [
 				"resources/jquery-3.4.1.min.js",
 				"resources/jquery.filtertable.min.js",
-				"resources/contextmenu.min.js",
+				"resources/ctxmenu.min.js",
 				"tracer/tracer_event.js"
 			],
 			"css": [
-				"resources/contextmenu.min.css",
 				"tracer/tracer_event.css"
 			],
 			"all_frames": true,
@@ -335,6 +338,14 @@
 		},
 		{
 			"matches": [
+				"*://*/prweb/*/*RefactorClass*PegaAccel-Management-Refactor-Class*"
+			],
+			"js": [
+				"devstudio/refactorClass.js"
+			]
+		},		
+		{
+			"matches": [
 				"*://*.pegacloud.net/prweb/*/*"
 			],
 			"js": [
@@ -357,9 +368,11 @@
 				"clipboard/*",
 				"tracer/*",
 				"devstudio/*",
-				"js/*"
+				"js/*",
+				"/*"
 			],
 			"matches": ["<all_urls>"]
 		}
 	]
 }
+

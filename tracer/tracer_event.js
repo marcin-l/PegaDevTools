@@ -1,44 +1,167 @@
-//FEATURE mark row on right-click
-$("div#traceEvent-CONTAINER").on("contextmenu", "td#eventLineNumber", function (evt) { evt.preventDefault(); $(this).parent().toggleClass("PegaDevToolsTextRed"); });
+console.log("PDT: tracer/tracer_event.js");
+PDT.setScriptsApplied();
 
-//FEATURE hide columns
-var removeThreadNameButton = $('<span title="Remove" style="margin-left:3px; cursor:pointer">x</span>');
+//FEATURE: hide columns
+const removeThreadNameButton = $('<span title="Remove column" class="removeColumn">x</span>');
 removeThreadNameButton.click(function () { injectStyles('td.EventDataCenter#threadname { display: none}'); $('td.eventTitleBarStyle[title="Thread"]').css('display', 'none'); });
 $('td.eventTitleBarStyle[title="Thread"]').append(removeThreadNameButton);
 
-var removeIntBtn = $('<span title="Remove" style="margin-left:3px; cursor:pointer">x</span>');
+const removeIntBtn = $('<span title="Remove column" class="removeColumn">x</span>');
 removeIntBtn.click(function () { injectStyles('div#traceEvent-CONTAINER table td:nth-child(6) { display: none}'); $('td.eventTitleBarStyle[title="Int"]').css('display', 'none'); });
 $('td.eventTitleBarStyle[title="Int"]').append(removeIntBtn);
 
-var removeElapsedBtn = $('<span title="Remove" style="margin-left:3px; cursor:pointer">x</span>');
+const removeElapsedBtn = $('<span title="Remove column" class="removeColumn">x</span>');
 removeElapsedBtn.click(function () { injectStyles('div#traceEvent-CONTAINER table td:nth-child(13) { display: none}'); $('td.eventTitleBarStyle[title="Elapsed"]').css('display', 'none'); });
 $('td.eventTitleBarStyle[title="Elapsed"]').append(removeElapsedBtn);
 
-var removeRuleNoBtn = $('<span title="Remove" style="margin-left:3px; cursor:pointer">x</span>');
+const removeRuleNoBtn = $('<span title="Remove column" class="removeColumn">x</span>');
 removeRuleNoBtn.click(function () { injectStyles('div#traceEvent-CONTAINER table td:nth-child(7) { display: none}'); $('td.eventTitleBarStyle[title="Rule#"]').css('display', 'none'); });
 $('td.eventTitleBarStyle[title="Rule#"]').append(removeRuleNoBtn);
 
-//TODO
+const removeAllColumnsBtn = $('<div title="Remove all columns" class="removeColumn">X</div>');
+removeAllColumnsBtn.click(function () { $('span.removeColumn').click(); $(this).css('display', 'none'); });
+$('td.eventTitleBarStyle[title="Line"]').prev().append(removeAllColumnsBtn);
 
-//TODO - requestor div element added when events are captured
-// var removeRequestorBtn = '<span id="PDTRemoveRequestor" title="Remove" style="margin-left:3px; cursor:pointer">x</span>';
-// document.querySelector('div#traceEvent-CONTAINER div div h2').insertAdjacentHTML("beforeend", removeRequestorBtn);
-// document.querySelector('div#traceEvent-CONTAINER div div span#PDTRemoveRequestor').click(function () { injectStyles('div#traceEvent-CONTAINER div div { display: none}');  });
+const menuLineNumberStructure = [
+    {
+        text: "&nbsp;⚐ Mark",
+        action: () => {
+            contextTarget.parentNode.classList.toggle("PegaDevToolsTextRed")
+        }
+    },
+    {
+        text: "🔖 Add to bookmarks",
+        action: () => {
+            contextTarget.parentNode.classList.toggle("PegaDevToolsTextBlue");
+            contextTarget.setAttribute("data-PDTbookmark", true);
 
-//TODO
-// var dropdown = document.createElement("div");
-// dropdown.className = "dropdown-content";
-// document.querySelector("body#main").appendChild(dropdown);
+            let bookmarksButton = window.parent.frames[0].document.querySelector("div.btnPDTGroup.greyPDT");
+            bookmarksButton.classList.remove("initiallyHidden");
 
+            let newTextContent = "Bookmarks";
+                if (bookmarksButton.getAttribute("data-count")) {
+                    newTextContent = "Bookmarks" + String.fromCharCode(160);
+                    newTextContent += "" + document.querySelectorAll("td[data-PDTbookmark]").length;
+                }
+            bookmarksButton.querySelector("button#btnPDTBookmarks").textContent = newTextContent;
 
-oncontextmenu = (e) => {
-    if(e.srcElement.getAttribute("class") === "eventElementDataSelect") {
-        e.preventDefault();
-        let menu = document.createElement("div");
-        menu.id = "ctxmenu";
-        menu.style = "top:${e.pageY-10}px;left:${e.pageX-40}px";
-        menu.onmouseleave = () => ctxmenu.outerHTML = '';
-        menu.innerHTML = "<p onclick='alert(`Thank you!`)'>Highlight</p>";
-        document.body.appendChild(menu);
+        }
+    },    
+    { isDivider: true },
+    {
+        text: "⇑ Remove next events",
+        action: () => {
+            let eventNumber = parseInt(contextTarget.getAttribute("title"));
+            document.querySelectorAll('tr#eventRow').forEach( row => { if(parseInt(row.querySelector("td#eventLineNumber").getAttribute("title")) > eventNumber) row.remove() });
+        }
+    },
+    {
+        text: "⇓ Remove previous events",
+        action: () => {
+            let eventNumber = parseInt(contextTarget.getAttribute("title"));
+            document.querySelectorAll('tr#eventRow').forEach( row => { if(parseInt(row.querySelector("td#eventLineNumber").getAttribute("title")) < eventNumber) row.remove() });
+        }
+    },
+    { isDivider: true }, 
+    {
+        text: "☓ Close this menu",
+        action: () => { /* empty action just closes menu */  }   
+    } 
+];
+
+const menuInstanceNameStructure = [
+    {
+        text: "↪ Jump to",
+        subMenu: [           
+            {
+                text: "↟ Last occurrence",
+                action: () => {
+                    let eventInstance = contextTarget.title;
+                    let instancesByTitle = document.querySelector("td#elementInstanceName[title='" + eventInstance + "']");
+                    instancesByTitle.scrollIntoView(false);                    
+                }                
+            },
+            {
+                text: "↟ Last step (if applicable)",
+                action: () => {
+                    let tmpNodeList = contextTarget.parentElement.querySelectorAll("td.eventDataCenter");
+                    let ruleNo = tmpNodeList[tmpNodeList.length-1].getAttribute("title");
+                    let instancesByRuleNo = document.querySelector("td.eventDataCenter[title='" + ruleNo + "']");
+                    instancesByRuleNo.scrollIntoView(false);                 
+                }                
+            },
+            {
+                text: "↡ First occurrence",
+                action: () => {
+                    let eventInstance = contextTarget.title;
+                    let instancesByTitle = document.querySelectorAll("td#elementInstanceName[title='" + eventInstance + "']");
+                    instancesByTitle[instancesByTitle.length - 1].scrollIntoView(false);
+                }                
+            },
+            {
+                text: "↡ First step (if applicable)",
+                action: () => {
+                    let tmpNodeList = contextTarget.parentElement.querySelectorAll("td.eventDataCenter");
+                    let ruleNo = tmpNodeList[tmpNodeList.length-1].getAttribute("title");
+                    let instancesByRuleNo = document.querySelectorAll("td.eventDataCenter[title='" + ruleNo + "']");
+                    instancesByRuleNo[instancesByRuleNo.length - 1].scrollIntoView(false);
+                }                
+            }            
+        ]
+    },
+    {
+        text: "☖ Highlight all occurrences",
+        action: () => {
+            let color = getEventElementDataSelectColor();
+            let instanceName = contextTarget.getAttribute("title");
+            document.querySelectorAll("td.eventElementDataSelect[title='" + instanceName + "']").forEach( row => row.style.backgroundColor = color );
+        }
+    },
+    {
+        text: "🗑 Remove all occurrences",
+        action: () => {
+            let instanceName = contextTarget.getAttribute("title");
+            document.querySelectorAll('tr#eventRow').forEach( row => { 
+                let eventElement = row.querySelector("td.eventElementDataSelect");
+                if(eventElement && eventElement.hasAttribute("title") && eventElement.getAttribute("title") == instanceName)
+                    row.remove() 
+            });            
+        }
+    },   
+    { isDivider: true }, 
+    {
+        text: "☓ Close this menu",
+        action: () => { /* empty action just closes menu */  } 
     }
-  }
+];
+
+let contextTarget;
+
+//FEATURE: menus
+$("div#traceEvent-CONTAINER").on(
+    "contextmenu", 
+    "td#eventLineNumber", 
+    function (evt) {
+        evt.preventDefault();
+        contextTarget = this;
+        ctxmenu.show(menuLineNumberStructure, evt);
+}).on(
+    "contextmenu", 
+    "td#elementInstanceName", 
+    function (evt) {
+        evt.preventDefault();
+        contextTarget = this;
+        ctxmenu.show(menuInstanceNameStructure, evt);
+});
+
+const eventElementDataSelectColors = ["PeachPuff", "lavender", "PaleGreen", "#C0448f", "#FFFACD", "#E0FFFF", "#FFD700", "#FFE1FF", "#FF8C69"];
+let currentColorIndex = 0;
+
+function getEventElementDataSelectColor() {
+	let returnColor = eventElementDataSelectColors[currentColorIndex];
+    currentColorIndex++;
+	if(currentColorIndex == eventElementDataSelectColors.length) {
+		currentColorIndex = 0;
+	}
+    return returnColor;
+}

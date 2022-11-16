@@ -1,6 +1,56 @@
 {
     "cSpell.ignoreWords": [
         "filtertable",
-        "openlanding"
+        "openlanding",
+        "Recordkey"
+    ],
+    "cSpell.words": [
+        "agilestudio",
+        "bgcolor",
+        "closetag",
+        "Cntr",
+        "codemirror",
+        "contextmenu",
+        "ctxmenu",
+        "datapage",
+        "datatransform",
+        "deploymentmanager",
+        "devstudio",
+        "endregion",
+        "foldcode",
+        "foldgutter",
+        "fullscreen",
+        "htmlmixed",
+        "Huebee",
+        "inanchor",
+        "logfile",
+        "Marcin",
+        "matchtags",
+        "OOTB",
+        "origprocess",
+        "pagesort",
+		"Pega",        
+        "pegacloud",
+        "prweb",
+        "rightborder",
+        "ruleform",
+		"ruleset",        
+        "rulesets",
+        "rulespecific",
+        "Subflow",
+        "TABANCHOR",
+        "TABSPAN",
+        "tabtitle",
+        "threadname",
+        "tracertop",
+        "uicolors",
+        "valign",
+        
+        "bsimplelayout",
+		"editaction",
+		"Leśniak",
+
+
+		"Tinycon"
     ]
 }

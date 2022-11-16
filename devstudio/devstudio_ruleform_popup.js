@@ -1,4 +1,5 @@
 console.log("PDT: devstudio/devstudio_ruleform_popup.js");
+PDT.setScriptsApplied();
 
 var tries = 0;
 var mainDiv;
@@ -60,4 +61,5 @@ function waitUntilRender() {
 	}
 }
 
+//TODO: use arrive.js
 waitUntilRender();

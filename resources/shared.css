@@ -181,3 +181,8 @@ div#PDTTracerIndicator button {
 .margin-bottom-small {
 	margin-bottom: 4px;
 }
+
+/* Fixes additional vertical scrollbar in Dev Studio - artifact of one of the libraries used? */
+main {
+	overflow: unset;
+}

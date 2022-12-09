@@ -1,26 +1,7 @@
-//jQuery("div.dialogDataContainer table table table").eq(1).filterTable();
-
-//TODO: make page navigation float on scroll (https://stackoverflow.com/questions/31184298/how-to-float-a-div-on-scroll)
-
-var tries = 0;
-var mainDiv;
-
-function waitUntilRender() {
-    mainDiv = document.querySelector("div#MainDiv");
-    if (mainDiv) {
-        addPageNavigation();
-        if(PDT.isDebugEnabled())
-            addSearch();
-        return true;
-    } else {
-        tries = tries + 1;
-        console.log(tries);
-        if (tries > 10) return false;
-        setTimeout(() => {
-            waitUntilRender();
-        }, 500);
-    }
-}
+document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
+    addPageNavigation();
+    addSearch();
+});
 
 //sorting based on https://stackoverflow.com/questions/14267781/sorting-html-table-with-javascript by Nick Grealy
 const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
@@ -38,80 +19,100 @@ function sortTopLevel() {
 }
 
 function addPageNavigation() {
-    if (mainDiv) {
-        console.log("PDT tracer_page");
-        mainDiv.style.display = "flex";
-        let divTag = document.createElement("div");
-        divTag.id = "PDT_embeddedPageList";
-        divTag.style.maxWidth = "20%";
-        mainDiv.prepend(divTag);
+    let mainDiv = document.querySelector("div#MainDiv");
+    mainDiv.style.display = "flex";
+    let divTag = document.createElement("div");
+    divTag.id = "PDT_embeddedPageList";
+    divTag.style.maxWidth = "20%";
+    mainDiv.prepend(divTag);
 
-        let mainTable = getMainTable();
-        // if (!mainTable) {
+    let mainTable = getMainTable();
+    if (mainTable) {
+        injectScript("/js/", "tracerMarkNavigatedPage.js");
 
-        //     mainTable = document.querySelector("div#scrollingDIV table td[valign='TOP'] table tbody tr td table[border='0']");
-        // }
-        if (mainTable) {
-            injectScript("/js/", "tracerMarkNavigatedPage.js");
+        //let subHeader = document.querySelector("td.dialogSubHeaderBackground");
+        //subHeader.innerHTML = "";
 
-            //TODO: needed?
-            mainTable.setAttribute("id", "mainTable");
-            //let subHeader = document.querySelector("td.dialogSubHeaderBackground");
-            //subHeader.innerHTML = "";
+        //FEATURE: add navigation link
+        let embeddedPages = mainTable.querySelectorAll(":scope > tbody > tr.eventTable > td > table");
+        Array.from(embeddedPages).sort(
+            function(a, b) {
+                let textA = a.parentNode.parentNode.querySelector("td").innerText.trim().toUpperCase();
+                let textB = b.parentNode.parentNode.querySelector("td").innerText.trim().toUpperCase();
+                return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+            }
+        ).forEach(elem => {
+            let pElem = elem.parentNode.parentNode.querySelector("td");
+            pElem.setAttribute("id", "mainPageNode" + pElem.innerText.trim());
+            let linkTag = document.createElement("a");
+            linkTag.innerHTML = pElem.innerText.trim();
+            linkTag.setAttribute("href", "#" + "mainPageNode" + pElem.innerText.trim());
+            linkTag.setAttribute("onclick", "markNavigatedPage(this)");
+            linkTag.setAttribute("title", pElem.innerText.trim());
+            divTag.appendChild(linkTag);
+            divTag.appendChild(document.createElement("br"));
+        })
+        console.log("PDT tracer_page: navigation added");
 
-            // //without sorting
-            // document.querySelectorAll("table#mainTable > tbody > tr.eventTable > td > table").forEach(function (elem) {
-            //     let pelem = elem.parentNode.parentNode.querySelector("td");
-            //     pelem.setAttribute("id", "mainPageNode" + pelem.innerText.trim());
-            //     let linktag = document.createElement("a");
-            //     linktag.innerHTML = pelem.innerText.trim();
-            //     linktag.setAttribute("href", "#" + "mainPageNode" + pelem.innerText.trim());
-            //     divTag.appendChild(linktag);
-            //     divTag.appendChild(document.createElement("br"));
-            // })
-
-
-            //TODO: attempt at sorting the results
-            var embeddedPages = mainTable.querySelectorAll(":scope > tbody > tr.eventTable > td > table");
-            Array.from(embeddedPages).sort(
-                function(a, b) {
-                    var textA = a.parentNode.parentNode.querySelector("td").innerText.trim().toUpperCase();
-                    var textB = b.parentNode.parentNode.querySelector("td").innerText.trim().toUpperCase();
-                    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-                }
-            ).forEach(elem => {
-                let pelem = elem.parentNode.parentNode.querySelector("td");
-                pelem.setAttribute("id", "mainPageNode" + pelem.innerText.trim());
-                let linktag = document.createElement("a");
-                linktag.innerHTML = pelem.innerText.trim();
-                linktag.setAttribute("href", "#" + "mainPageNode" + pelem.innerText.trim());
-                linktag.setAttribute("onclick", "markNavigatedPage(this)");
-                linktag.setAttribute("title", pelem.innerText.trim());
-                divTag.appendChild(linktag);
-                divTag.appendChild(document.createElement("br"));
-            })
-        }
-
-    } else {
-        return false;
+        //FEATURE: make page navigation float
+        //TODO: Ugly. Copies navigation div as a transparent placeholder to keep width and sets navigation position as fixed. Needs a nice CSS solution.
+        let divTagClone = divTag.cloneNode(true);
+        divTagClone.id = "PDT_placeholder";
+        divTagClone.style.setProperty("color", "transparent");
+        divTag.style.setProperty("position", "fixed");
+        mainDiv.prepend(divTagClone);
     }
 }
 
+//FEATURE: search
 function addSearch() {
-    $('table#mainTable').filterTable({label:"Search:", placeholder:"properties and values"});
+    function createSearchBox(table) {
+        let searchBox = document.createElement('input');
+        searchBox.type = 'text';
+        searchBox.placeholder = 'properties and values';
+        searchBox.onkeyup = function() {
+          let searchText = searchBox.value.toLowerCase();
+          let rows = table.getElementsByTagName('tr');
+          for (let i = 1; i < rows.length; i++) {
+            let row = rows[i];
+            let cells = row.getElementsByTagName('td');
+            let found = false;
+            for (let j = 0; j < cells.length; j++) {
+                let cell = cells[j];
+                if (cell.innerHTML.toLowerCase().indexOf(searchText) > -1) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+              row.style.display = '';
+            } else {
+              row.style.display = 'none';
+            }
+          }
+        };
+
+        return searchBox;
+      }
+    
+    let searchBox = createSearchBox(getMainTable());
+    let searchBoxWithLabel = document.createElement('p');
+    searchBoxWithLabel.id = "PDTSearchBox";
+    searchBoxWithLabel.innerHTML = 'Search: ';
+    searchBoxWithLabel.appendChild(searchBox);
+    getMainTable().insertAdjacentElement("beforebegin", searchBoxWithLabel);
+    document.arrive("p#PDTSearchBox", {onceOnly: true, existing: true}, () => 	{
+        searchBox.focus();
+    });
 }
 
 //TODO: convert to PDT settings
 function siteConfigCallback(siteConfig, globalConfig) {
 	if (! PDT.isTracerEnabled()) {
 		console.log('PDT tracer disabled');
-	} else {
-		if (!waitUntilRender()) {
-            console.log("PDT tracer_page: No div#MainDiv");
-        }
-        
+	} else {      
         //FEATURE: Sort properties alphabetically in page view
-		else if (globalConfig.settings.tracer.pagesort) {
+		if (globalConfig.settings.tracer.pagesort) {
 			sortTopLevel();
 		}
 	}

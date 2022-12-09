@@ -1,4 +1,4 @@
-console.log("PDT: devstudio/logfile.js");
+console.log("PDT: devstudio/logFile.js");
 
 //if last page then scroll to bottom
 if(document.querySelector("div#LogContentDiv > div b.page").nextElementSibling === null) {

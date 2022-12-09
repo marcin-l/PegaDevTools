@@ -8,3 +8,4 @@ resources/codemirror/css.html
 resources/codemirror/htmlmixed.html
 resources/codemirror/javascript.html
 resources/codemirror/jsxjava.html
+clipboard.experimental.js

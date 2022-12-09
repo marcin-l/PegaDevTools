@@ -233,8 +233,6 @@
 				"*://*/prweb/*/*pyStream=TraceMain*pzPrimaryPageName=*pzTracerSettingsForRequestor*"
 			],
 			"js": [
-				"resources/jquery-3.4.1.min.js",
-				"resources/jquery.filtertable.min.js",
 				"tracer/tracer_page.js"
 			],
 			"all_frames": true,
@@ -314,7 +312,7 @@
 				"*://*/prweb/*/*pyStream=LogViewer*"
 			],
 			"js": [
-				"devstudio/logfile.js"
+				"devstudio/logFile.js"
 			],
 			"all_frames": true,
 			"match_about_blank": true,

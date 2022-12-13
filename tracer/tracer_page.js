@@ -1,8 +1,3 @@
-document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
-    addPageNavigation();
-    addSearch();
-});
-
 //sorting based on https://stackoverflow.com/questions/14267781/sorting-html-table-with-javascript by Nick Grealy
 const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
 const comparer = (idx) => (a, b) => ((v1, v2) => 
@@ -58,7 +53,7 @@ function addPageNavigation() {
         //TODO: Ugly. Copies navigation div as a transparent placeholder to keep width and sets navigation position as fixed. Needs a nice CSS solution.
         let divTagClone = divTag.cloneNode(true);
         divTagClone.id = "PDT_placeholder";
-        divTagClone.style.setProperty("color", "transparent");
+        divTagClone.classList.add("PegaDevToolsTransparent");
         divTag.style.setProperty("position", "fixed");
         mainDiv.prepend(divTagClone);
     }
@@ -101,7 +96,7 @@ function addSearch() {
     searchBoxWithLabel.innerHTML = 'Search: ';
     searchBoxWithLabel.appendChild(searchBox);
     getMainTable().insertAdjacentElement("beforebegin", searchBoxWithLabel);
-    document.arrive("p#PDTSearchBox", {onceOnly: true, existing: true}, () => 	{
+    document.arrive("p#PDTSearchBox", {onceOnly: true, existing: true}, () => {
         searchBox.focus();
     });
 }
@@ -110,12 +105,24 @@ function addSearch() {
 function siteConfigCallback(siteConfig, globalConfig) {
 	if (! PDT.isTracerEnabled()) {
 		console.log('PDT tracer disabled');
-	} else {      
-        //FEATURE: Sort properties alphabetically in page view
-		if (globalConfig.settings.tracer.pagesort) {
-			sortTopLevel();
-		}
+	} else {             
+        document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
+            //FEATURE: Sort properties alphabetically in page view
+            if (globalConfig.settings.tracer.pagesort) {
+                sortTopLevel();
+            }
+
+            //FEATURE: Always expand step page messages 
+            if (globalConfig.settings.tracer.pageMessagesExpand) {
+                injectScript("/js/", "expandTracerMessagesOnLoad.js");
+            }
+        });
 	}
 }
 
 siteConfig(siteConfigCallback);
+
+document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
+    addPageNavigation();
+    addSearch();
+});

@@ -4,12 +4,12 @@ browser = (window.browser)? window.browser : window.chrome;
 function saveSiteConfig() {
   let siteConfig = new Array();
   $("div#siteRow").each(function (index, element) {
-    var site = $(this).find("input#site")[0].value;
+    let site = $(this).find("input#site")[0].value;
     if(site) {
-      var label = $(this).find("input#label")[0].value;
-      var useColorTop = $(this).find("input#useColorTop")[0].checked;
-      var color = $(this).find("button#color")[0].innerText;
-      var version = $(this).find("select#version")[0].value;
+      let label = $(this).find("input#label")[0].value;
+      let useColorTop = $(this).find("input#useColorTop")[0].checked;
+      let color = $(this).find("button#color")[0].innerText;
+      let version = $(this).find("select#version")[0].value;
 
       siteConfig.push({ site: site, label: label, color: color, useColorTop: useColorTop, version: version });
     } else {
@@ -22,7 +22,7 @@ function saveSiteConfig() {
     siteConfig: siteConfig
   }, function () {
     //update status to let user know options were saved
-    var status = document.getElementById('status');
+    let status = document.getElementById('status');
     status.textContent = 'Site configuration saved';
     setTimeout(function () {
       status.textContent = '';
@@ -42,6 +42,7 @@ function saveSettings() {
   settings.tracer.disabled = document.querySelector("input#disableTracer").checked;
   settings.tracer.pagesort = document.querySelector("input#tracerPageSort").checked;
   settings.tracer.settingsFullscreen = document.querySelector("input#tracerSettingsFullscreen").checked;
+  settings.tracer.pageMessagesExpand = document.querySelector("input#tracerPageMessagesExpand").checked;
   settings.tracer.openBehavior = (document.querySelector("input[name=tracerOpenBehavior]:checked") ?  document.querySelector("input[name=tracerOpenBehavior]:checked").id : "");
 
   settings.devstudio = new Object();
@@ -65,7 +66,7 @@ function saveSettings() {
   browser.storage.sync.set({
     settings: settings
   }, function () {
-    var status = document.getElementById('settingsStatus');
+    let status = document.getElementById('settingsStatus');
     status.textContent = 'Settings saved';
     setTimeout(function () {
       status.textContent = '';
@@ -95,6 +96,7 @@ function restore_options() {
     document.querySelector("input#disableTracer").checked = (data.settings.tracer.disabled)?data.settings.tracer.disabled:"";
     document.querySelector("input#tracerPageSort").checked = (data.settings.tracer.pagesort)?data.settings.tracer.pagesort:"";
     document.querySelector("input#tracerSettingsFullscreen").checked = (data.settings.tracer.settingsFullscreen)?data.settings.tracer.settingsFullscreen:"";
+    document.querySelector("input#tracerPageMessagesExpand").checked = (data.settings.tracer.settingsFullscreen)?data.settings.tracer.pageMessagesExpand:"";
     //if(data.settings.tracer.openBehavior) document.getElementById(data.settings.tracer.openBehavior).checked = true;
 
     document.querySelector("input#disableDevStudioCustomization").checked = (data.settings.devstudio.disabled)?data.settings.devstudio.disabled:"";
@@ -116,7 +118,7 @@ document.getElementById('saveSettings').addEventListener('click', saveSettings);
 
 
 function addSite() {
-  var newOptionsHtml = '<div id="siteRow">'
+  let newOptionsHtml = '<div id="siteRow">'
   newOptionsHtml += '<input id="site" placeholder="domain, without https://"></input>';
   newOptionsHtml += '<input id="label" placeholder="DEV, STG, UAT, etc."></input>';
   newOptionsHtml += '<button id="color" class="color-button" data-huebee>Pick a color</button>';
@@ -124,7 +126,7 @@ function addSite() {
   newOptionsHtml += '<select id="version"><option value="" disabled selected hidden>Version:</option><option value=""></option><option value="7">Pega 7</option><option value="81">Pega 8.1</option><option value="82">Pega 8.2</option><option value="83">Pega 8.3</option><option value="84">Pega 8.4</option><option value="85">Pega 8.5</option><option value="86">Pega 8.6</option><option value="87">Pega 8.7</option><option value="88">Pega 8.8</option></select>';
   newOptionsHtml += '&nbsp;&nbsp;<a href="#" class="siteRem">remove</a></div>';
   $("#siteConfig").append(newOptionsHtml);
-  var hueb = new Huebee($("button#color").last()[0], { notation: 'hex', saturations: 1, setBGColor: true, shades: 7, hue0: 80, customColors: [ '#FFF', '#0E0', '#FFA30F', '#C25', '#FFF000', '#19F' ]});
+  let hueb = new Huebee($("button#color").last()[0], { notation: 'hex', saturations: 1, setBGColor: true, shades: 7, hue0: 80, customColors: [ '#FFF', '#0E0', '#FFA30F', '#C25', '#FFF000', '#19F' ]});
   hueb.on('change', function(color) { //sets text color to chosen color so hex is not visible
     this.anchor.style.color = color;
   });

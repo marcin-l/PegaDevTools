@@ -10,3 +10,8 @@
 span.removeColumn {
     margin-left: 4px;
 }
+
+.removeColumn:hover {
+    background-color: darkred;
+    color: white;
+}

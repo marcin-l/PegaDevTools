@@ -8,9 +8,11 @@ function getMainTable() {  return document.querySelector("div#scrollingDIV table
 
 function sortTopLevel() {
     let mainTable = getMainTable();
-    Array.from(mainTable.querySelectorAll(':scope > tbody > tr.eventTable:nth-child(n+2)'))
-        .sort(comparer(0))
-        .forEach(tr => mainTable.appendChild(tr) );
+    if(mainTable) {
+        Array.from(mainTable.querySelectorAll(':scope > tbody > tr.eventTable:nth-child(n+2)'))
+            .sort(comparer(0))
+            .forEach(tr => mainTable.appendChild(tr) );
+    }
 }
 
 function addPageNavigation() {
@@ -18,6 +20,7 @@ function addPageNavigation() {
     mainDiv.style.display = "flex";
     let divTag = document.createElement("div");
     divTag.id = "PDT_embeddedPageList";
+    divTag.style.minWidth = "15%";
     divTag.style.maxWidth = "20%";
     mainDiv.prepend(divTag);
 
@@ -89,16 +92,18 @@ function addSearch() {
 
         return searchBox;
       }
-    
-    let searchBox = createSearchBox(getMainTable());
-    let searchBoxWithLabel = document.createElement('p');
-    searchBoxWithLabel.id = "PDTSearchBox";
-    searchBoxWithLabel.innerHTML = 'Search: ';
-    searchBoxWithLabel.appendChild(searchBox);
-    getMainTable().insertAdjacentElement("beforebegin", searchBoxWithLabel);
-    document.arrive("p#PDTSearchBox", {onceOnly: true, existing: true}, () => {
-        searchBox.focus();
-    });
+    let mainTable = getMainTable();
+    if (mainTable) {
+        let searchBox = createSearchBox(mainTable);
+        let searchBoxWithLabel = document.createElement('p');
+        searchBoxWithLabel.id = "PDTSearchBox";
+        searchBoxWithLabel.innerHTML = 'Search: ';
+        searchBoxWithLabel.appendChild(searchBox);
+        mainTable.insertAdjacentElement("beforebegin", searchBoxWithLabel);
+        document.arrive("p#PDTSearchBox", {onceOnly: true, existing: true}, () => {
+            searchBox.focus();
+        });
+    }
 }
 
 //TODO: convert to PDT settings
@@ -107,14 +112,16 @@ function siteConfigCallback(siteConfig, globalConfig) {
 		console.log('PDT tracer disabled');
 	} else {             
         document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
-            //FEATURE: Sort properties alphabetically in page view
-            if (globalConfig.settings.tracer.pagesort) {
-                sortTopLevel();
-            }
+            if(getMainTable()) {
+                //FEATURE: Sort properties alphabetically in page view
+                if (globalConfig.settings.tracer.pagesort) {
+                    sortTopLevel();
+                }
 
-            //FEATURE: Always expand step page messages 
-            if (globalConfig.settings.tracer.pageMessagesExpand) {
-                injectScript("/js/", "expandTracerMessagesOnLoad.js");
+                //FEATURE: Always expand step page messages 
+                if (globalConfig.settings.tracer.pageMessagesExpand) {
+                    injectScript("/js/", "expandTracerMessagesOnLoad.js");
+                }
             }
         });
 	}

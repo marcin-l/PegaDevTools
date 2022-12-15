@@ -1,5 +1,5 @@
 function CopyDPCall(nocopy) {
-	dpCallString = document.querySelector("span[title='Page Name']").innerText + "[";
+	let dpCallString = document.querySelector("span[title='Page Name']").innerText + "[";
 	document.querySelectorAll("div[node_name='pzRuleFormParameters'] div#gridBody_right table.gridTable  tr.cellCont").forEach(function (row) {
 		if (row.querySelector("input") && row.querySelector("input").value) {
 			dpCallString += row.querySelector("input").value + ": \"" + "\", "
@@ -11,7 +11,7 @@ function CopyDPCall(nocopy) {
 		copyToClipboard(dpCallString);
 
 		//let user know 
-		var status = document.getElementById('status');
+		let status = document.getElementById('status');
 		status.textContent = 'copied';
 		setTimeout(function () {
 			status.textContent = '';

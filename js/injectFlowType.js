@@ -1,4 +1,3 @@
-
 if(typeof flowTypeCategory !== 'undefined' && flowTypeCategory !== null) {
     let flowType = flowTypeCategory;
     if(flowType.includes("Standard"))

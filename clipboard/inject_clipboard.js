@@ -17,12 +17,10 @@ function handleRightPanelChange() {
 		//handle newAssignPage
 		else if(jQuery(".heading_2").length > 0 && jQuery(".heading_2")[0].textContent == 'newAssignPage') {
 			let addedText = "";
-			let addedTextTooltip = "";
 			let napElem = jQuery('div#gridBody_right table.gridTable td.dataLabelRead.gridCell').filter(function(){return this.textContent.trim() === "pxObjClass"});
 			if(napElem.length > 0) {
 				let cls = napElem.next()[0].innerText;
 				if(cls) {
-					addedTextTooltip = cls;
 					if(cls.includes("-"))
 						cls = cls.split('-')[1];
 					addedText += cls;					
@@ -46,6 +44,7 @@ function handleRightPanelChange() {
 				}
 			}
 		}
+		//TODO: change to own implementation, like tracer_page, and remove jQuery.filterTable
 		if(jQuery('table.gridTable') && jQuery('table.gridTable').eq(2)) {
 			document.querySelectorAll("table.gridTable table tr tr").forEach((e) => { e.classList.add("noFilter") });
 			//immediately invoked function expression to avoid "$" conflicts using plugins
@@ -64,7 +63,7 @@ function stripeTable(table) {
 };
 
 if(pega && pega.ui && pega.ui.Doc) {
-	var origprocessActionGridDetail_Success = pega.ui.Doc.prototype.processActionGridDetail_Success;
+	let origprocessActionGridDetail_Success = pega.ui.Doc.prototype.processActionGridDetail_Success;
 	pega.ui.Doc.prototype.processActionGridDetail_Success = function() {        
     	origprocessActionGridDetail_Success.apply(this, arguments);
     	handleRightPanelChange();

@@ -13,7 +13,7 @@ function CopyNameAndClass() {
 
 function CopyClassName() {
     let xml = $('textarea#PRXML');
-	var copyText;
+	let copyText;
 	if(xml && xml.val()) {
 		xml = xml.val().replace('<?xml version="1.0" ?>', '').replace("<?xml version='1.0' ?>", "");
     	$xml = $($.parseXML(xml));
@@ -36,8 +36,8 @@ function CopypzInsKey() {
 
 function copyToClipboard(textContent) {
 	// create hidden text element, if it doesn't already exist
-	var targetId = "_hiddenCopyText_";
-	var target = document.createElement("textarea");
+	let targetId = "_hiddenCopyText_";
+	let target = document.createElement("textarea");
 	target.style.position = "absolute";
 	target.style.left = "-9999px";
 	target.style.top = "0";
@@ -46,12 +46,12 @@ function copyToClipboard(textContent) {
 	target.textContent = textContent;
 
 	// select the content
-	var currentFocus = document.activeElement;
+	let currentFocus = document.activeElement;
 	target.focus();
 	target.setSelectionRange(0, target.value.length);
 
 	// copy the selection
-	var succeed;
+	let succeed;
 	try {
 		succeed = document.execCommand("copy");
 	} catch (e) {

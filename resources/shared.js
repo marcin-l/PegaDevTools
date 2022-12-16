@@ -22,7 +22,8 @@ class PDT {
 			if(typeof this.settings.tracer === "undefined") this.settings.tracer = {};
 			if(typeof this.settings.clipboard === "undefined") this.settings.clipboard = {};
 			if(typeof this.settings.devstudio === "undefined") this.settings.devstudio = {};
-			
+			PDT.debug("storage settings load");
+
 			//var siteConfigs = await getObjectFromLocalStorage("siteConfig");
 
 			this.hasConfigForSite = false;

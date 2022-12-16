@@ -165,7 +165,7 @@ document.arrive("button#PDTDeselectAllEventTypes", {onceOnly: true, existing: tr
 });
 
 //FEATURE: Select/deselect all Pega rulesets
-fetch(browser.runtime.getURL("tracer/tracer_PegaRulesetSelection.html"))
+fetch(browser.runtime.getURL("tracer/tracer_pegaRulesetSelection.html"))
 	.then(response => response.text())
     .then( (text) => {
 	document.querySelector("div#RuleSetDisplay table tr").insertAdjacentHTML("beforeend", text);

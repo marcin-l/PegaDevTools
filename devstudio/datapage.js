@@ -20,4 +20,3 @@ document.arrive("div[node_name='pzRuleFormParameters'] h2", {onceOnly: true, exi
 	);
 
 });
-

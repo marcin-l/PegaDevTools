@@ -80,22 +80,23 @@ div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle {
 	padding: 3px;
 }
 
-.right {
+/* TODO: .transformLeft and .transformRight considered to be removed */
+.transformRight {
 	-webkit-transform: rotate(-45deg);
-	transform: rotate(-45deg);
-}	
+	transform: rotate(-45deg);	
+}
 
-.left {
+.transformLeft {
 	-webkit-transform: rotate(135deg);
 	transform: rotate(135deg);
 }
 
-.up {
+.transformUp {
 	-webkit-transform: rotate(-135deg);
-	transform: rotate(-135deg);	
+	transform: rotate(-135deg);
 }
 
-.down {
+.transformDown {
 	-webkit-transform: rotate(45deg);
 	transform: rotate(45deg);
 }
@@ -221,13 +222,11 @@ div#PDTTracerIndicator button {
 	display: none;
 }
 
-.pulse {
-	animation-duration: 2s;
-  	animation-name: fadeInOut;
-  	animation-iteration-count: 2;
+.PegaDevToolsTransparent, .PegaDevToolsTransparent a {
+	color: transparent !important;
 }
 
-.pulse2 {
-	transition: background-color 0.5s ease;
-	background-color: darkseagreen !important;
+/* Fixes additional vertical scrollbar in Dev Studio - artifact of one of the libraries used? */
+main {
+	overflow: unset;
 }

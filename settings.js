@@ -42,6 +42,7 @@ function saveSettings() {
   settings.tracer.disabled = document.querySelector("input#disableTracer").checked;
   settings.tracer.pagesort = document.querySelector("input#tracerPageSort").checked;
   settings.tracer.settingsFullscreen = document.querySelector("input#tracerSettingsFullscreen").checked;
+  settings.tracer.pageMessagesExpand = document.querySelector("input#tracerPageMessagesExpand").checked;
   settings.tracer.openBehavior = (document.querySelector("input[name=tracerOpenBehavior]:checked") ?  document.querySelector("input[name=tracerOpenBehavior]:checked").id : "");
 
   settings.devstudio = new Object();
@@ -101,6 +102,7 @@ function restore_options() {
     document.querySelector("input#disableTracer").checked = (data.settings.tracer.disabled)?data.settings.tracer.disabled:"";
     document.querySelector("input#tracerPageSort").checked = (data.settings.tracer.pagesort)?data.settings.tracer.pagesort:"";
     document.querySelector("input#tracerSettingsFullscreen").checked = (data.settings.tracer.settingsFullscreen)?data.settings.tracer.settingsFullscreen:"";
+    document.querySelector("input#tracerPageMessagesExpand").checked = (data.settings.tracer.settingsFullscreen)?data.settings.tracer.pageMessagesExpand:"";
     //if(data.settings.tracer.openBehavior) document.getElementById(data.settings.tracer.openBehavior).checked = true;
 
     if(typeof data.settings.devstudio === "undefined") data.settings.devstudio = {};

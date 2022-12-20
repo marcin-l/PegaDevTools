@@ -1,4 +1,4 @@
-browser = (window.browser)? window.browser : window.chrome;
+browser = (window.browser) ? window.browser : window.chrome;
 
 // Saves options to browser.storage
 function saveSiteConfig() {
@@ -78,7 +78,7 @@ function saveSettings() {
 }
 
 // Restores select box and checkbox state using the preferences stored in browser.storage
-function restore_options() {
+function restoreOptions() {
   browser.storage.sync.get(["siteConfig", "settings"], function (data) {
     console.log(data);
     $(data.siteConfig).each(function (index, element) {
@@ -115,20 +115,14 @@ function restore_options() {
     document.querySelector("input#devstudioMouseScrollTabs").checked = (data.settings.devstudio.mouseScrollTabs)?data.settings.devstudio.mouseScrollTabs:"";
     document.querySelector("input#devstudioUseTabMenu").checked = (data.settings.devstudio.useTabMenu)?data.settings.devstudio.useTabMenu:"";
     document.querySelector("input#devstudioTabColorCoding").checked = (data.settings.devstudio.tabColorCoding)?data.settings.devstudio.tabColorCoding:"";
-    devstudioTabColorCoding
-    
+
     if(typeof data.settings.agilestudio === "undefined") data.settings.agilestudio = {};
     document.querySelector("input#enableAgilestudio").checked = (data.settings.agilestudio.enabled)?data.settings.agilestudio.enabled:"";
 
     if(typeof data.settings.deploymentmanager === "undefined") data.settings.deploymentmanager = {};
     document.querySelector("input#enableDeploymentManager").checked = (data.settings.deploymentmanager.enabled)?data.settings.deploymentmanager.enabled:"";
-
   });
 }
-document.addEventListener('DOMContentLoaded', restore_options);
-document.getElementById('saveSiteConfig').addEventListener('click', saveSiteConfig);
-document.getElementById('saveSettings').addEventListener('click', saveSettings);
-
 
 function addSite() {
   let newOptionsHtml = '<div id="siteRow">'
@@ -145,6 +139,9 @@ function addSite() {
   });
 }
 
+document.addEventListener('DOMContentLoaded', restoreOptions);
+document.getElementById('saveSiteConfig').addEventListener('click', saveSiteConfig);
+document.getElementById('saveSettings').addEventListener('click', saveSettings);
 document.getElementById('addSite').addEventListener('click', addSite);
 
 //event delegation

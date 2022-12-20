@@ -156,15 +156,24 @@
 			<br />							
 			</span>
 			<span data-pdt-setting="devstudio">
+				<div><b>Tabs:</b></div>
 				<input type="checkbox" id="devstudioCloseTabMiddleClick" data-pdt-setting-name="closeTabMiddleClick" />
-				<label for="devstudioCloseTabMiddleClick" class="tooltip">Close tabs with middle click
+				<label for="devstudioCloseTabMiddleClick" class="tooltip">Close with middle click
 					<span class="tooltipText">
 						Known issue: might not work for already opened tabs when you reload the browser window.
 					</span>
 				</label>
-				<br /> 
+				<br />
+				<input type="checkbox" id="devstudioHideCloseButton" data-pdt-setting-name="hideCloseButton" />
+				<label for="devstudioHideCloseButton" class="tooltip">Hide close button
+					<span class="tooltipText">
+						Allows to fit more tabs on the screen at once. Close button is not needed when "Close tabs with
+						middle click" feature is enabled when using a mouse.
+					</span>
+				</label>
+				<br />				
 				<input type="checkbox" id="devstudioLongerRuleNames" data-pdt-setting-name="longerRuleNames" />
-				<label for="devstudioLongerRuleNames" class="tooltip">Allow longer rule names in tabs
+				<label for="devstudioLongerRuleNames" class="tooltip">Allow longer rule names
 					<span class="tooltipText">By default rule names in
 						tabs are trimmed to 14 characters,
 						making it sometimes difficult to know which rule is open. <br />This option increases length to
@@ -172,14 +181,6 @@
 					</span>
 				</label>				
 				<br />				
-				<input type="checkbox" id="devstudioHideCloseButton" data-pdt-setting-name="hideCloseButton" />
-				<label for="devstudioHideCloseButton" class="tooltip">Hide tab close button
-					<span class="tooltipText">
-						Allows to fit more tabs on the screen at once. Close button is not needed when "Close tabs with
-						middle click" feature is enabled.
-					</span>
-				</label>
-				<br />
 				<input type="checkbox" id="devstudioMouseScrollTabs" data-pdt-setting-name="mouseScrollTabs" />
 				<label for="devstudioMouseScrollTabs" class="tooltip">Scrollable tab list
 					<span class="tooltipText">
@@ -188,19 +189,12 @@
 				</label>
 				<br />	
 				<input type="checkbox" id="devstudioUseTabMenu" data-pdt-setting-name="useTabMenu" />
-				<label for="devstudioUseTabMenu" class="tooltip">Use tab menu
+				<label for="devstudioUseTabMenu" class="tooltip">Tab menu
 					<span class="tooltipText">
 						Tab menu allows you to rearrange and mark tabs
 					</span>
 				</label>
-				<br />	
-				<input type="checkbox" id="devstudioTabColorCoding" data-pdt-setting-name="tabColorCoding" />
-				<label for="devstudioTabColorCoding" class="tooltip">Tab color coding
-					<span class="tooltipText">
-						Color tabs based on rule type
-					</span>
-				</label>				
-				<br />								
+				<br />							
 				<input type="checkbox" id="devstudioExpandTabOnHover" data-pdt-setting-name="expandTabOnHover" />
 				<label for="devstudioExpandTabOnHover" class="tooltip">Expand rule names in tab on hover (BETA)
 					<span class="tooltipText">
@@ -215,6 +209,13 @@
 						stage</span>
 				</label>
 				<br />
+				<input type="checkbox" id="devstudioTabColorCoding" data-pdt-setting-name="tabColorCoding" />
+				<label for="devstudioTabColorCoding" class="tooltip">Color coding (IN DEVELOPMENT)
+					<span class="tooltipText">
+						Color tabs based on rule type
+					</span>
+				</label>				
+				<br />		
 			</span>
 
 			<h3>
@@ -236,24 +237,25 @@
 				<hr />
 			</h3>
 			<span data-pdt-setting="tracer">
+				<div><b>Settings:</b></div>
+				<input type="checkbox" id="tracerSettingsFullscreen" data-pdt-setting-name="settingsFullscreen" />
+				<label for="tracerSettingsFullscreen" class="tooltip">Display fullscreen
+					<span class="tooltipText">Resizes settings</span>
+				</label>
+				<br />				
+				<div><b>Step Page popup:</b></div>
+				
+				<input type="checkbox" id="tracerPageMessagesExpand" data-pdt-setting-name="pageMessagesExpand" />
+				<label for="tracerPageMessagesExpand" class="tooltip">Expand messages on load
+					<span class="tooltipText">Always expand page messages</span>
+				</label>
+				<br />
 				<input type="checkbox" id="tracerPageSort" data-pdt-setting-name="pagesort" />
-				<label for="tracerPageSort" class="tooltip">Sort properties alphabetically in page view
+				<label for="tracerPageSort" class="tooltip">Sort properties alphabetically
 					<span class="tooltipText">When viewing a page or parameters top-level properties and pages will be
 						sorted alphabetically in descending order. OOTB order appears to be random.</span>
 				</label>
-				<br />
-
-				<input type="checkbox" id="tracerSettingsFullscreen" data-pdt-setting-name="settingsFullscreen" />
-				<label for="tracerSettingsFullscreen" class="tooltip">Display settings in fullscreen
-					<span class="tooltipText">Resizes settings</span>
-				</label>
-				<br />
-
-				<input type="checkbox" id="tracerPageMessagesExpand" data-pdt-setting-name="pageMessagesExpand" />
-				<label for="tracerPageMessagesExpand" class="tooltip">Expand messages on load of Step Page view
-					<span class="tooltipText">Always expand page messages</span>
-				</label>
-				<br />				
+				<br />		
 				
 				<!-- 
 					Open:
@@ -348,6 +350,12 @@
 				<label for="debug" class="tooltip">Enable debug mode
 					<span class="tooltipText"></span>
 				</label>
+			</div>
+			<div>
+				<p>please consider supporting development of the extension</p>
+				<a href='https://ko-fi.com/X8X0H5EOT' target='_blank' rel="noopener noreferrer">
+					<img height='36' style='border:0px;height:48px;' src='https://storage.ko-fi.com/cdn/brandasset/kofi_s_tag_dark.png' border='0' alt='Buy Me a Beer at ko-fi.com' />
+				</a>
 			</div>
 		</div>
 	</div>

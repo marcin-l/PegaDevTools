@@ -1,10 +1,9 @@
+//TODO: remove jQuery
 console.log("PDT: tracer/tracer_event.js");
 PDT.setScriptsApplied();
 
-//TODO: remove jQuery
-
-//FEATURE: Mark row on right-click
-$("div#traceEvent-CONTAINER").on("contextmenu", "td#eventLineNumber", function (evt) { evt.preventDefault(); $(this).parent().toggleClass("PegaDevToolsTextRed"); });
+// //FEATURE: Mark row on right-click
+// $("div#traceEvent-CONTAINER").on("contextmenu", "td#eventLineNumber", function (evt) { evt.preventDefault(); $(this).parent().toggleClass("PegaDevToolsTextRed"); });
 
 //FEATURE: Remove columns
 const removeThreadNameButton = $('<span title="Remove column" class="removeColumn">x</span>');
@@ -64,7 +63,6 @@ const menuLineNumberStructure = [
                     newTextContent += "" + document.querySelectorAll("td[data-PDTbookmark]").length;
                 }
             bookmarksButton.querySelector("button#btnPDTBookmarks").textContent = newTextContent;
-
         }
     },    
     { isDivider: true },

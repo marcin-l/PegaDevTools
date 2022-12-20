@@ -1,9 +1,9 @@
-browser = (window.browser)? window.browser : window.chrome;
+browser = (window.browser) ? window.browser : window.chrome;
 
 // Saves options to browser.storage
 function saveSiteConfig() {
   let siteConfig = new Array();
-  $("div#siteRow").each(function (index, element) {
+  $("div#siteRow").each(function (_index, _element) {
     let site = $(this).find("input#site")[0].value;
     if(site) {
       let label = $(this).find("input#label")[0].value;
@@ -75,7 +75,7 @@ function saveSettings() {
 }
 
 // Restores select box and checkbox state using the preferences stored in browser.storage
-function restore_options() {
+function restoreOptiions() {
   browser.storage.sync.get(["siteConfig", "settings"], function (data) {
     console.log(data);
     $(data.siteConfig).each(function (index, element) {
@@ -85,20 +85,24 @@ function restore_options() {
       $("input#useColorTop").eq(index).prop("checked", element.useColorTop);
       $("input#label").eq(index).val(element.label);
       $("select#version").eq(index).val(element.version);
-   });
+    });
     
+    if(typeof data.settings === "undefined") data.settings = {};
     document.querySelector("input#debug").checked = (data.settings.debug)?data.settings.debug:false;
     document.querySelector("input#useSiteLabelForBrowserTitle").checked = (data.settings.useSiteLabelForBrowserTitle)?data.settings.useSiteLabelForBrowserTitle:"";
     document.querySelector("input#hideEnvironmentHeader").checked = (data.settings.hideEnvironmentHeader)?data.settings.hideEnvironmentHeader:"";
     document.querySelector("select#favicon").value = (data.settings.favicon)?data.settings.favicon:"small";
+    if(typeof data.settings.clipboard === "undefined") data.settings.clipboard = {};
     document.querySelector("input#clipboardSplit5050").checked = (data.settings.clipboard.split5050)?data.settings.clipboard.split5050:"";
     document.querySelector("input#disableClipboard").checked = (data.settings.clipboard.disabled)?data.settings.clipboard.disabled:"";
+    if(typeof data.settings.tracer === "undefined") data.settings.tracer = {};
     document.querySelector("input#disableTracer").checked = (data.settings.tracer.disabled)?data.settings.tracer.disabled:"";
     document.querySelector("input#tracerPageSort").checked = (data.settings.tracer.pagesort)?data.settings.tracer.pagesort:"";
     document.querySelector("input#tracerSettingsFullscreen").checked = (data.settings.tracer.settingsFullscreen)?data.settings.tracer.settingsFullscreen:"";
     document.querySelector("input#tracerPageMessagesExpand").checked = (data.settings.tracer.settingsFullscreen)?data.settings.tracer.pageMessagesExpand:"";
     //if(data.settings.tracer.openBehavior) document.getElementById(data.settings.tracer.openBehavior).checked = true;
 
+    if(typeof data.settings.devstudio === "undefined") data.settings.devstudio = {};
     document.querySelector("input#disableDevStudioCustomization").checked = (data.settings.devstudio.disabled)?data.settings.devstudio.disabled:"";
     document.querySelector("input#devstudioCloseTabMiddleClick").checked = (data.settings.devstudio.closeTabMiddleClick)?data.settings.devstudio.closeTabMiddleClick:"";
     document.querySelector("input#devstudioExpandTabOnHover").checked = (data.settings.devstudio.expandTabOnHover)?data.settings.devstudio.expandTabOnHover:"";    
@@ -106,16 +110,13 @@ function restore_options() {
     document.querySelector("input#devstudioLongerRuleNames").checked = (data.settings.devstudio.longerRuleNames)?data.settings.devstudio.longerRuleNames:"";
     document.querySelector("input#devstudioCheckoutIndicator").checked = (data.settings.devstudio.devstudioCheckoutIndicator)?data.settings.devstudio.devstudioCheckoutIndicator:"";
 
+    if(typeof data.settings.agilestudio === "undefined") data.settings.agilestudio = {};
     document.querySelector("input#enableAgilestudio").checked = (data.settings.agilestudio.enabled)?data.settings.agilestudio.enabled:"";
 
+    if(typeof data.settings.deploymentmanager === "undefined") data.settings.deploymentmanager = {};
     document.querySelector("input#enableDeploymentManager").checked = (data.settings.deploymentmanager.enabled)?data.settings.deploymentmanager.enabled:"";
-
   });
 }
-document.addEventListener('DOMContentLoaded', restore_options);
-document.getElementById('saveSiteConfig').addEventListener('click', saveSiteConfig);
-document.getElementById('saveSettings').addEventListener('click', saveSettings);
-
 
 function addSite() {
   let newOptionsHtml = '<div id="siteRow">'
@@ -132,6 +133,9 @@ function addSite() {
   });
 }
 
+document.addEventListener('DOMContentLoaded', restoreOptiions);
+document.getElementById('saveSiteConfig').addEventListener('click', saveSiteConfig);
+document.getElementById('saveSettings').addEventListener('click', saveSettings);
 document.getElementById('addSite').addEventListener('click', addSite);
 
 //event delegation

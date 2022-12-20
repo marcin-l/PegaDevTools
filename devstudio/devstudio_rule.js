@@ -43,9 +43,13 @@ function siteConfigCallback(siteConfig, globalConfig) {
         
         //FEATURE: show button to copy pzInskey to clipboard
         document.querySelectorAll('div[node_name="pzRuleFormKeysAndDescription"] span.workarea_header_titles')[0].insertAdjacentHTML('beforebegin', '<a style="margin-top:0; margin-bottom:0;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopypzInsKey()" title="Copy pzInsKey"><i  class="icons pi pi-copy" style="color: white" id="CopypzInsKey"></i></a>')
+
+        //FEATURE: extra refresh button
+        document.querySelector("div.layout-noheader-workarea_header div.item-2.float-right").insertAdjacentHTML("afterend", '<div class="float-right content-item"><button onclick="pd(event);" class="Simple pzhc pzbutton" tabindex="0" role="menuitem" data-ctl="" data-click="[[&quot;refresh&quot;,[&quot;currentharness&quot;,&quot;&quot;,&quot;pxLPRefreshActivity&quot;,&quot;{\&quot;sp\&quot;:\&quot;=\&quot;,\&quot;dp\&quot;:\&quot;\&quot;}&quot;,&quot;&quot;,&quot;pxLPRefreshTransform,{\&quot;sp\&quot;:\&quot;\&quot;,\&quot;dp\&quot;:\&quot;\&quot;}&quot;,&quot;:event&quot;,&quot;&quot;,&quot;pyLanding&quot;]]]">Refresh</button></div>')
     }
 }
 
+//TODO: use arrive.js
 function waitUntilRenderRS() {
     mainDiv =  document.querySelector("a[name^='RuleFormHeader']") || document.querySelector('a.custom_RuleOpener') || document.querySelector('div[node_name="pzRuleFormKeysAndDescription"]');
     if (mainDiv) {

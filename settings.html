@@ -156,15 +156,24 @@
 			<br />							
 			</span>
 			<span data-pdt-setting="devstudio">
+				<div><b>Tabs:</b></div>
 				<input type="checkbox" id="devstudioCloseTabMiddleClick" data-pdt-setting-name="closeTabMiddleClick" />
-				<label for="devstudioCloseTabMiddleClick" class="tooltip">Close tabs with middle click
+				<label for="devstudioCloseTabMiddleClick" class="tooltip">Close with middle click
 					<span class="tooltipText">
 						Known issue: might not work for already opened tabs when you reload the browser window.
 					</span>
 				</label>
 				<br /> 
+				<input type="checkbox" id="devstudioHideCloseButton" data-pdt-setting-name="hideCloseButton" />
+				<label for="devstudioHideCloseButton" class="tooltip">Hide close button
+					<span class="tooltipText">
+						Allows to fit more tabs on the screen at once. Close button is not needed when "Close tabs with
+						middle click" feature is enabled when using a mouse.
+					</span>
+				</label>
+				<br />				
 				<input type="checkbox" id="devstudioLongerRuleNames" data-pdt-setting-name="longerRuleNames" />
-				<label for="devstudioLongerRuleNames" class="tooltip">Allow longer rule names in tabs
+				<label for="devstudioLongerRuleNames" class="tooltip">Allow longer rule names
 					<span class="tooltipText">By default rule names in
 						tabs are trimmed to 14 characters,
 						making it sometimes difficult to know which rule is open. <br />This option increases length to
@@ -172,14 +181,6 @@
 					</span>
 				</label>				
 				<br />				
-				<input type="checkbox" id="devstudioHideCloseButton" data-pdt-setting-name="hideCloseButton" />
-				<label for="devstudioHideCloseButton" class="tooltip">Hide tab close button
-					<span class="tooltipText">
-						Allows to fit more tabs on the screen at once. Close button is not needed when "Close tabs with
-						middle click" feature is enabled.
-					</span>
-				</label>
-				<br />
 				<input type="checkbox" id="devstudioExpandTabOnHover" data-pdt-setting-name="expandTabOnHover" />
 				<label for="devstudioExpandTabOnHover" class="tooltip">Expand rule names in tab on hover (BETA)
 					<span class="tooltipText">
@@ -207,6 +208,11 @@
 					<span class="tooltipText">Makes navigation easier on bigger monitors.</span>
 				</label>
 				<br />
+				<input type="checkbox" id="clipboardFullscreen" data-pdt-setting-name="clipboardFullscreen" />
+				<label for="clipboardFullscreen" class="tooltip">Display fullscreen
+					<span class="tooltipText">Resizes Clipboard popup</span>
+				</label>
+				<br />				
 			</span>
 
 			<h3>
@@ -215,24 +221,25 @@
 				<hr />
 			</h3>
 			<span data-pdt-setting="tracer">
-				<input type="checkbox" id="tracerPageSort" data-pdt-setting-name="pagesort" />
-				<label for="tracerPageSort" class="tooltip">Sort properties alphabetically in page view
-					<span class="tooltipText">When viewing a page or parameters top-level properties and pages will be
-						sorted alphabetically in descending order. OOTB order appears to be random.</span>
-				</label>
-				<br />
-
+				<div><b>Settings:</b></div>
 				<input type="checkbox" id="tracerSettingsFullscreen" data-pdt-setting-name="settingsFullscreen" />
-				<label for="tracerSettingsFullscreen" class="tooltip">Display settings in fullscreen
+				<label for="tracerSettingsFullscreen" class="tooltip">Display fullscreen
 					<span class="tooltipText">Resizes settings</span>
 				</label>
 				<br />
+				<div><b>Step Page popup:</b></div>
 
 				<input type="checkbox" id="tracerPageMessagesExpand" data-pdt-setting-name="pageMessagesExpand" />
-				<label for="tracerPageMessagesExpand" class="tooltip">Expand messages on load of Step Page view
+				<label for="tracerPageMessagesExpand" class="tooltip">Expand messages on load
 					<span class="tooltipText">Always expand page messages</span>
 				</label>
 				<br />				
+				<input type="checkbox" id="tracerPageSort" data-pdt-setting-name="pagesort" />
+				<label for="tracerPageSort" class="tooltip">Sort properties alphabetically
+					<span class="tooltipText">When viewing a page or parameters top-level properties and pages will be
+						sorted alphabetically in descending order. OOTB order appears to be random.</span>
+				</label>
+				<br />		
 				
 				<!-- 
 					Open:
@@ -279,13 +286,14 @@
 					Deployment Manager
 					<hr />
 				</h3>
-				<span>
-					<p class="margin-top-0 margin-bottom-small">
-						Changes favicon
-					</p>
-	
-					<input class="margin-top-0" type="checkbox" id="enableDeploymentManager" /><label for="enableDeploymentManager">Enable</label><br />				
-		</span>			
+			</span>
+			<span>
+				<p class="margin-top-0 margin-bottom-small">
+					Changes favicon
+				</p>
+
+				<input class="margin-top-0" type="checkbox" id="enableDeploymentManager" /><label for="enableDeploymentManager">Enable</label><br />				
+			</span>			
 
 			<div id="settingsStatus"></div>
 			<button id="saveSettings" class="actionButton">Save settings</button>

@@ -167,6 +167,10 @@ class PDT {
 			}
 		}
 	}
+
+	static makeFullscreen() {
+		window.resizeTo(screen.width, screen.height);
+	}
 }
 
 if(typeof PDT.settings ===  "undefined")

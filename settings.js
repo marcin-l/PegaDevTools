@@ -37,6 +37,7 @@ function saveSettings() {
   settings.favicon = document.querySelector("select#favicon").value;
   settings.clipboard = new Object();
   settings.clipboard.split5050 = document.querySelector("input#clipboardSplit5050").checked;
+  settings.clipboard.fullscreen = document.querySelector("input#clipboardFullscreen").checked;
   settings.clipboard.disabled = document.querySelector("input#disableClipboard").checked;
   settings.tracer = new Object();
   settings.tracer.disabled = document.querySelector("input#disableTracer").checked;
@@ -94,6 +95,7 @@ function restoreOptiions() {
     document.querySelector("select#favicon").value = (data.settings.favicon)?data.settings.favicon:"small";
     if(typeof data.settings.clipboard === "undefined") data.settings.clipboard = {};
     document.querySelector("input#clipboardSplit5050").checked = (data.settings.clipboard.split5050)?data.settings.clipboard.split5050:"";
+    document.querySelector("input#clipboardFullscreen").checked = (data.settings.clipboard.fullscreen)?data.settings.clipboard.fullscreen:"";
     document.querySelector("input#disableClipboard").checked = (data.settings.clipboard.disabled)?data.settings.clipboard.disabled:"";
     if(typeof data.settings.tracer === "undefined") data.settings.tracer = {};
     document.querySelector("input#disableTracer").checked = (data.settings.tracer.disabled)?data.settings.tracer.disabled:"";

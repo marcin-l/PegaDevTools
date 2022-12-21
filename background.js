@@ -1,8 +1,4 @@
-if (typeof browser === "undefined") {
-    var browser = chrome;
-}
-
-
+var browser = (browser) ? browser : chrome;
 
 //TODO: modularize
 // try {
@@ -10,11 +6,6 @@ if (typeof browser === "undefined") {
 //   } catch (e) {
 // 	console.error(e);
 //}
-// chrome.webNavigation.onCompleted.addListener(info => {
-// 	if (changeInfo.status === "complete") {
-// 	  // ...
-// 	}
-//   });
 
 function injectScript(injectedScript, tabId, frameId) {
 	browser.scripting.executeScript({
@@ -45,10 +36,6 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 	}	
 	else if (request.purpose == "getFrameId")
 		sendResponse({ frameId: sender.frameId });
-	// else if (request.purpose == "paragraphRule") {
-	// 	injectScriptsToIframe(sender.tab.id, sender.frameId, paragraphScriptList);
-	// 	sendResponse("ok ");
-	//} 
 	else if (request.purpose == "appendScript") {
 		appendScript(request.appendedScript, sender.tab.id, sender.frameId);
 		sendResponse("appending to tab " + sender.tab.id + " frame " + sender.frameId);		
@@ -222,7 +209,6 @@ function reloadContentScripts(tabId, frameId, url) {
 	})
 
 }
-
 
 function pingFrame(tabId, frameId) {
 	browser.tabs.sendMessage(

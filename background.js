@@ -1,4 +1,4 @@
-var browser = (browser)? browser : chrome;
+var browser = (browser) ? browser : chrome;
 
 function injectScript(injectedScript, tabId, frameId) {
 	browser.scripting.executeScript({
@@ -20,11 +20,8 @@ var tracerIsRunningAppended = false;
 // handle content script messages
 browser.runtime.onMessage.addListener(async  (request, sender, sendResponse) => {
 	console.debug(request);
-	if (request.purpose == "getFrameId")
+	if (request.purpose == "getFrameId") {
 		sendResponse({ frameId: sender.frameId });
-	else if (request.purpose == "paragraphRule") {
-		injectScriptsToIframe(sender.tab.id, sender.frameId, paragraphScriptList);
-		sendResponse("ok ");
 	} else if (request.purpose == "appendScript") {
 		appendScript(request.appendedScript, sender.tab.id, sender.frameId);
 		sendResponse("appending to tab " + sender.tab.id + " frame " + sender.frameId);
@@ -145,23 +142,13 @@ const injectScriptsToIframe = (tabId, frameId, scriptList) => {
 	// });
 };
 
-var arrDevTabs = new Map(), arrTracerTabs = new Map();
+let arrDevTabs = new Map(), arrTracerTabs = new Map();
 
-const paragraphScriptList = [
-	"resources/codemirror/codemirror.js",
-	"resources/codemirror/foldcode.js",
-	"resources/codemirror/foldgutter.js",
-	"resources/codemirror/brace-fold.js",
-	"resources/codemirror/indent-fold.js",
-	"resources/codemirror/comment-fold.js",
-	"resources/codemirror/xml-fold.js",
-	"resources/codemirror/matchtags.js",
-	"resources/codemirror/closetag.js",
-	"resources/codemirror/fullscreen.js",
-	"resources/codemirror/active-line.js",
-	"resources/codemirror/xml.js",
-	"resources/codemirror/javascript.js",
-	"resources/codemirror/css.js",
-	"resources/codemirror/htmlmixed.js",
-	"devstudio/devstudio_paragraph.js",
-];
+async function setup() {
+	browser.runtime.onInstalled.addListener(async () => {
+		let url = browser.runtime.getURL("settings.html");
+		await browser.tabs.create({ url });
+	});
+}
+
+setup();

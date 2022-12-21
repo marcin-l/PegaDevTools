@@ -69,7 +69,7 @@ function addSearch() {
         searchBox.type = 'text';
         searchBox.placeholder = 'properties and values';
         searchBox.onkeyup = function() {
-          let searchText = searchBox.value.toLowerCase();
+          let searchText = searchBox.value.toLowerCase().trim();
           let rows = table.getElementsByTagName('tr');
           for (let i = 1; i < rows.length; i++) {
             let row = rows[i];
@@ -91,7 +91,8 @@ function addSearch() {
         };
 
         return searchBox;
-      }
+    }
+
     let mainTable = getMainTable();
     if (mainTable) {
         let searchBox = createSearchBox(mainTable);

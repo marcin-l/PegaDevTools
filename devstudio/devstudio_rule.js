@@ -31,7 +31,7 @@ function siteConfigCallback(siteConfig, globalConfig) {
         }
         
         //FEATURE: copy class name
-        let classElem = document.querySelector("a[name^='RuleFormHeader']") || (document.querySelector("span[tile='Class Name']"));
+        let classElem = document.querySelector("a[name^='RuleFormHeader']") || (document.querySelector("span[title='Class Name']"));
         if(classElem) {
             classElem.insertAdjacentHTML('afterend', '<a style="margin-top:0; margin-bottom:0;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopyClassName()" title="Copy class name"><i  class="icons pi pi-copy" id="CopyClassName"></i></a>');
         } else {
@@ -45,7 +45,7 @@ function siteConfigCallback(siteConfig, globalConfig) {
 }
 
 function waitUntilRenderRS() {
-    mainDiv =  document.querySelector("a[name^='RuleFormHeader']") || document.querySelector('a.custom_RuleOpener') || document.querySelector('div[node_name="pzRuleFormKeysAndDescription"]');
+    mainDiv =  document.querySelector("a[name^='RuleFormHeader']") || document.querySelector('a.custom_RuleOpener') || document.querySelector('div[node_name="pzRuleFormKeysAndDescription"]' || document.querySelector("span[title='Class Name']"));
     if (mainDiv) {
         siteConfig(siteConfigCallback);
     } else {

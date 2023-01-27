@@ -17,7 +17,10 @@ function CopyClassName() {
 	if(xml && xml.val()) {
 		xml = xml.val().replace('<?xml version="1.0" ?>', '').replace("<?xml version='1.0' ?>", "");
     	$xml = $($.parseXML(xml));
-    	copyText = $xml.find("pyClassName")[0].textContent;
+		if($xml.find("pyClassName").length>0)
+	    	copyText = $xml.find("pyClassName")[0].textContent;
+		else
+			copyText = document.querySelector("span[title='Class Name'").innerText;
 	} else if(document.querySelector("a[name^='pzDataTypeKeysAndDescription'")){
 		copyText = document.querySelector("a[name^='pzDataTypeKeysAndDescription'").innerText;
 	}

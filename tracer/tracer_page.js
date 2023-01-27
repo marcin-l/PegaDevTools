@@ -4,7 +4,7 @@ const comparer = (idx) => (a, b) => ((v1, v2) =>
     v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
     )(getCellValue(a, idx), getCellValue(b, idx));
 
-function getMainTable() {  return document.querySelector("div#scrollingDIV table td[valign='TOP'] table tbody tr td table[border='0']"); } 
+function getMainTable() { return document.querySelector("div#scrollingDIV table td[valign='TOP'] table tbody tr td table[border='0']"); } 
 
 function sortTopLevel() {
     let mainTable = getMainTable();
@@ -27,7 +27,7 @@ function addPageNavigation() {
     let mainTable = getMainTable();
     if (mainTable) {
         injectScript("/js/", "tracerMarkNavigatedPage.js");
-
+        
         //let subHeader = document.querySelector("td.dialogSubHeaderBackground");
         //subHeader.innerHTML = "";
 

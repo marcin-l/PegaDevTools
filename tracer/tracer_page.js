@@ -1,3 +1,8 @@
+document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
+    addPageNavigation();
+    addSearch();
+});
+
 //sorting based on https://stackoverflow.com/questions/14267781/sorting-html-table-with-javascript by Nick Grealy
 const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
 const comparer = (idx) => (a, b) => ((v1, v2) => 
@@ -41,9 +46,17 @@ function addPageNavigation() {
             }
         ).forEach(elem => {
             let pElem = elem.parentNode.parentNode.querySelector("td");
-            pElem.setAttribute("id", "mainPageNode" + pElem.innerText.trim());
+			let pElemText = pElem.innerText.trim();
+			if(pElemText.endsWith("(1)")) {
+				pElemText = pElemText.replace("(1)", "()");
+            }			
+            //FEATURE: skip list items with index > 1, only one link representing the list will be shown for clarity
+			if(pElemText.endsWith(")") && !pElemText.endsWith("(1)")) {
+				return;
+            }
+            pElem.setAttribute("id", "mainPageNode" + pElemText);
             let linkTag = document.createElement("a");
-            linkTag.innerHTML = pElem.innerText.trim();
+            linkTag.innerHTML = pElemText;
             linkTag.setAttribute("href", "#" + "mainPageNode" + pElem.innerText.trim());
             linkTag.setAttribute("onclick", "markNavigatedPage(this)");
             linkTag.setAttribute("title", pElem.innerText.trim());
@@ -129,8 +142,3 @@ function siteConfigCallback(siteConfig, globalConfig) {
 }
 
 siteConfig(siteConfigCallback);
-
-document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
-    addPageNavigation();
-    addSearch();
-});

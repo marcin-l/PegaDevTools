@@ -32,10 +32,45 @@ function applyTabMenu() {
         },
         { isDivider: true },
         {
+            text: "ŀ Move to split view",
+            action: () => {
+                let tabId = document.querySelector("div[data-node-id='pzStudioContainerTabs'] div.tStrCntr ul li[aria-selected='true']").id;
+                let tabDynamicContainer = document.querySelector(`div.dynamicContainer[aria-labelledby='${tabId}']`)
+                if(tabDynamicContainer) {
+                    tabDynamicContainer.style.width = "50%";
+                    tabDynamicContainer.style.display = "block";
+                }
+
+                tabId = tabClicked.id;
+                tabDynamicContainer = document.querySelector(`div.dynamicContainer[aria-labelledby='${tabId}']`)
+                if(tabDynamicContainer) {
+                    tabDynamicContainer.style.width = "50%";
+                    tabDynamicContainer.style.right = "0";
+                    tabDynamicContainer.style.display = "block";
+                }
+                else {
+                    alert('Oops, something went wrong');
+                }                
+            }
+        },
+        {
+            text: "ŀ Exit split view",
+            action: () => {
+                let tabId = document.querySelector("div[data-node-id='pzStudioContainerTabs'] div.tStrCntr ul li[aria-selected='true']").id;
+                let tabDynamicContainer = document.querySelector(`div.dynamicContainer[aria-labelledby='${tabId}']`)
+                if(tabDynamicContainer) {
+                    tabDynamicContainer.style.width = "100%";
+                    tabDynamicContainer.style.display = "block";
+                }
+
+                document.querySelector('div.dynamicContainer[style*="width: 50%"]').style = "display: hidden";               
+            }
+        },          
+        { isDivider: true },
+        {
             text: "⦻ Close tab",
             action: () => { if(tabClicked.querySelector('#close')) tabClicked.querySelector('#close').click(); }
         },    
-        { isDivider: true },
         {
             text: "☓ Close this menu",
             action: () => { /* empty action just closes menu */  }        
@@ -49,7 +84,17 @@ function applyTabMenu() {
         function (evt) { 
             evt.preventDefault();
             tabClicked = this;
-            ctxmenu.show(menuDefinition, evt);
+            let menuDefinitionEditable = menuDefinition.slice();;
+            //let menuDefinitionEditable = structuredClone(menuDefinition);
+            //let menuDefinitionEditable = JSON.parse(JSON.stringify(menuDefinition));
+
+            if(evt.currentTarget.classList.contains("selected")) {
+                //remove split view
+                menuDefinitionEditable.splice(5, 1);
+            } else {
+                menuDefinitionEditable.splice(6, 1);
+            }
+            ctxmenu.show(menuDefinitionEditable, evt);
     });
 }
 

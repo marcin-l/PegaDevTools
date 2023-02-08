@@ -4,7 +4,7 @@ const comparer = (idx) => (a, b) => ((v1, v2) =>
     v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
     )(getCellValue(a, idx), getCellValue(b, idx));
 
-function getMainTable() {  return document.querySelector("div#scrollingDIV table td[valign='TOP'] table tbody tr td table[border='0']"); } 
+function getMainTable() { return document.querySelector("div#scrollingDIV table td[valign='TOP'] table tbody tr td table[border='0']"); } 
 
 function sortTopLevel() {
     let mainTable = getMainTable();
@@ -27,7 +27,7 @@ function addPageNavigation() {
     let mainTable = getMainTable();
     if (mainTable) {
         injectScript("/js/", "tracerMarkNavigatedPage.js");
-
+        
         //let subHeader = document.querySelector("td.dialogSubHeaderBackground");
         //subHeader.innerHTML = "";
 
@@ -69,7 +69,7 @@ function addSearch() {
         searchBox.type = 'text';
         searchBox.placeholder = 'properties and values';
         searchBox.onkeyup = function() {
-          let searchText = searchBox.value.toLowerCase();
+          let searchText = searchBox.value.toLowerCase().trim();
           let rows = table.getElementsByTagName('tr');
           for (let i = 1; i < rows.length; i++) {
             let row = rows[i];
@@ -91,7 +91,8 @@ function addSearch() {
         };
 
         return searchBox;
-      }
+    }
+
     let mainTable = getMainTable();
     if (mainTable) {
         let searchBox = createSearchBox(mainTable);

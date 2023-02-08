@@ -75,6 +75,11 @@ function siteConfigCallback(siteConfig, globalConfig) {
 		injectScript("/resources/", "jquery-3.4.1.min.js");
 		injectScript("/resources/", "jquery.filtertable.min.js");
 
+		//FEATURE: Display in fullscreen
+		if (globalConfig.settings.clipboard.fullscreen) {
+			PDT.makeFullscreen();
+		}
+
 		addpyWorkPageLink();
 		addnewAssignPage();
 		injectScript("/clipboard/", "inject_clipboard.js");

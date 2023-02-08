@@ -64,7 +64,7 @@ var errorList = [],
 
 function getErrorList() {
 	return window.parent.frames[1].document.querySelectorAll(
-		'td[title="FAIL"], td[title="Exception"], tr.eventTableAlertTrace td#eventNodeId'
+		'td[title="FAIL"], td[title="Exception"], tr.eventTableAlertTrace td.eventElementData'
 	);
 }
 

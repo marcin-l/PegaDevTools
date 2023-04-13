@@ -5,10 +5,17 @@ const containerTabListCallbackNames = function (mutationsList, _observer) {
         if(mutation.attributeName == "aria-label"){
             if (mutation.target.nodeName == "LI") {
                 mutation.target.classList.add("PDTmakeRuleNamesLonger");
-                let title = mutation.target.getAttribute("aria-label");
-                if (title) {
-                    title = title.length > 20 ? title.substring(0, 20) + "..." : title;
-                    mutation.target.querySelector("span[inanchor]").innerText = title;
+                let titleOriginal = mutation.target.querySelector("span[inanchor]").innerText;
+                if(titleOriginal.endsWith("...")) {                    
+                    let title = mutation.target.getAttribute("aria-label").replace("Press Delete to close the current tab", "").trim();
+                    titleOriginal = titleOriginal.replace("...", "");
+                    if(!title.startsWith(titleOriginal)) {
+                        title = mutation.target.getAttribute("title").trim();
+                    }
+                    if (title && title.startsWith(titleOriginal)) {
+                        title = title.length > 20 ? title.substring(0, 20) + "..." : title;
+                        mutation.target.querySelector("span[inanchor]").innerText = title;
+                    }
                 }
             }
         }

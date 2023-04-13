@@ -377,12 +377,8 @@ function sleep(milliseconds) {
 function isInDevStudio() {
 	//NOTE: ugly but works
 	return (
-		document.querySelector(
-			"span#TABANCHOR span.textIn, span#TABANCHOR[tabtitle='Home']"
-		) &&
-		document.querySelector(
-			"span#TABANCHOR span.textIn, span#TABANCHOR[tabtitle='Home']"
-		).innerText.startsWith("Home")
+		document.querySelector("div[data-portalharnessinsname") &&
+		document.querySelector("div[data-portalharnessinsname").getAttribute("data-portalharnessinsname").includes("DesignerStudio")
 	);
 	//TODO: get Pega api object
 	// if(pega.desktop.support.isInDesignerDesktop)

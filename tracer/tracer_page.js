@@ -1,6 +1,36 @@
+console.log("PDT: tracer_page");
+
 document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
-    addPageNavigation();
-    addSearch();
+    if(getMainTable()) {
+        addPageNavigation();
+        addSearch();
+	    injectScript("/js/", "expandTracerMessagesOnLoad.js");
+    } else {
+        //FEATURE: full SQL query
+        let sql = "", inserts = "", insertsRow;
+
+        for (tr of document.querySelectorAll("div.dialogDataContainer tr.eventTable")) {
+            if (tr.children[0].textContent.trim() == "SQL") {
+                sql = tr.children[1].textContent.trim();
+            } else if (tr.children[0].textContent.trim() == "SQL Inserts") {
+                inserts = tr.children[1].textContent.trim();
+                insertsRow = tr;
+            }
+        }
+
+        if(sql && inserts) {
+            let fullSQL = prepareSQL(sql, inserts);
+            if(fullSQL) {
+                let fullSQLElement = document.createElement('td');
+                fullSQLElement.colSpan = 2;
+                fullSQLElement.style.border = "thin solid black";
+                fullSQLElement.style.padding = "4px";
+                fullSQLElement.style.fontFamily = "monospace";
+                fullSQLElement.innerText = fullSQL;
+                insertsRow.insertAdjacentElement("afterend", fullSQLElement);
+            }
+        }
+    }
 });
 
 //sorting based on https://stackoverflow.com/questions/14267781/sorting-html-table-with-javascript by Nick Grealy
@@ -9,15 +39,15 @@ const comparer = (idx) => (a, b) => ((v1, v2) =>
     v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
     )(getCellValue(a, idx), getCellValue(b, idx));
 
-function getMainTable() { return document.querySelector("div#scrollingDIV table td[valign='TOP'] table tbody tr td table[border='0']"); } 
+function getMainTable() {  return document.querySelector("div#scrollingDIV table td[valign='TOP'] table tbody tr td table[border='0']"); } 
 
 function sortTopLevel() {
     let mainTable = getMainTable();
     if(mainTable) {
-        Array.from(mainTable.querySelectorAll(':scope > tbody > tr.eventTable:nth-child(n+2)'))
-            .sort(comparer(0))
-            .forEach(tr => mainTable.appendChild(tr) );
-    }
+    	Array.from(mainTable.querySelectorAll(':scope > tbody > tr.eventTable:nth-child(n+2)'))
+        	.sort(comparer(0))
+        	.forEach(tr => mainTable.appendChild(tr) );
+	}
 }
 
 function addPageNavigation() {
@@ -32,7 +62,7 @@ function addPageNavigation() {
     let mainTable = getMainTable();
     if (mainTable) {
         injectScript("/js/", "tracerMarkNavigatedPage.js");
-        
+
         //let subHeader = document.querySelector("td.dialogSubHeaderBackground");
         //subHeader.innerHTML = "";
 
@@ -47,19 +77,20 @@ function addPageNavigation() {
         ).forEach(elem => {
             let pElem = elem.parentNode.parentNode.querySelector("td");
 			let pElemText = pElem.innerText.trim();
-			if(pElemText.endsWith("(1)")) {
-				pElemText = pElemText.replace("(1)", "()");
-            }			
             //FEATURE: skip list items with index > 1, only one link representing the list will be shown for clarity
 			if(pElemText.endsWith(")") && !pElemText.endsWith("(1)")) {
 				return;
-            }
+            }		
+
             pElem.setAttribute("id", "mainPageNode" + pElemText);
-            let linkTag = document.createElement("a");
-            linkTag.innerHTML = pElemText;
+            let linkTag = document.createElement("a");         
             linkTag.setAttribute("href", "#" + "mainPageNode" + pElem.innerText.trim());
             linkTag.setAttribute("onclick", "markNavigatedPage(this)");
-            linkTag.setAttribute("title", pElem.innerText.trim());
+			if(pElemText.endsWith("(1)")) {
+				pElemText = pElemText.replace("(1)", "()");
+            }
+            linkTag.setAttribute("title", pElemText);
+            linkTag.innerHTML = pElemText;
             divTag.appendChild(linkTag);
             divTag.appendChild(document.createElement("br"));
         })
@@ -104,8 +135,8 @@ function addSearch() {
         };
 
         return searchBox;
-    }
-
+      }
+    
     let mainTable = getMainTable();
     if (mainTable) {
         let searchBox = createSearchBox(mainTable);
@@ -120,11 +151,42 @@ function addSearch() {
     }
 }
 
+function prepareSQL(sql, inserts) {
+    //regex would be much nicer
+    // function sanitize(inText) {
+    //     if(inText.includes("< ") || inText.includes(" >")) {
+    //         inText = inText.replace("< ", "<").replace(" >", ">");
+    //         return(sanitize(inText));
+    //     }
+    //     return inText;
+    // }
+
+    // inserts = sanitize(inserts);
+    // inserts = inserts.replaceAll("<", "'").replaceAll(">", "'").trim();
+
+    // let insertsSplit = inserts.split(" ");
+
+    inserts = inserts.replaceAll("> <", ">\t<").trim();;
+    inserts = inserts.replaceAll("<", "'").replaceAll(">", "'");
+    let insertsSplit = inserts.split("\t");
+    // for (let i = 0; i < insertsSplit.length; i++) {
+    //     insertsSplit[i] = insertsSplit[i].replace("<", "").replace(">", "");
+    // }
+    let sqlSplit = sql.split("?");
+    let resultSql = "";
+    for (let i = 0; i < sqlSplit.length-1; i++) {
+        resultSql += sqlSplit[i] + insertsSplit[i];
+    }
+
+    resultSql = resultSql.replaceAll("''null''", "NULL");
+    return resultSql;
+}
+
 //TODO: convert to PDT settings
 function siteConfigCallback(siteConfig, globalConfig) {
 	if (! PDT.isTracerEnabled()) {
 		console.log('PDT tracer disabled');
-	} else {             
+	} else {      
         document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
             if(getMainTable()) {
                 //FEATURE: Sort properties alphabetically in page view

@@ -286,14 +286,19 @@ function appendScript(appendedScript) {
 	); 
 }
 
-function injectScript(aBasePath, aScriptURL) {
+function injectScript(basePath, scriptURL) {
+	injectScriptWithCallback(basePath, scriptURL, function (response) {
+		console.log(response);
+	});
+}
+
+function injectScriptWithCallback(basePath, scriptURL, callback) {
 	chrome.runtime.sendMessage(
-		{ purpose: "injectScript", injectedScript: aBasePath+aScriptURL },
-		function (response) {
-			console.log(response);
-		}
+		{ purpose: "injectScript", injectedScript: basePath+scriptURL },
+		callback
 	); 
 }
+
 //inject script to toggle sidebar using keyboard shortcut
 function injectSidebarToggle() {
 	injectScript("/js/", "sidebarToggle.js");
@@ -388,7 +393,7 @@ function isInDevStudio() {
 function injectRuleExport() {
 	let selection = document.querySelector("div[data-node-id='pzRuleFormRuleset'] div.primary-navigation-links");
 	if(selection) {
-		selection.insertAdjacentHTML("beforeend", "<a onclick='copyRuleTableContent()'>Export</a>");
+		selection.insertAdjacentHTML("beforeend", "<a onclick='copyRuleTableContent()' title='Copy to clipboard'>Export</a>");
 		injectScript("/js/", "copyRuleTableContent.js");
 	}
 }

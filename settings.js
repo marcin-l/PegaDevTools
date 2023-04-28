@@ -76,7 +76,7 @@ function saveSettings() {
 }
 
 // Restores select box and checkbox state using the preferences stored in browser.storage
-function restoreOptiions() {
+function restoreOptions() {
   browser.storage.sync.get(["siteConfig", "settings"], function (data) {
     console.log(data);
     $(data.siteConfig).each(function (index, element) {
@@ -135,7 +135,7 @@ function addSite() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', restoreOptiions);
+document.addEventListener('DOMContentLoaded', restoreOptions);
 document.getElementById('saveSiteConfig').addEventListener('click', saveSiteConfig);
 document.getElementById('saveSettings').addEventListener('click', saveSettings);
 document.getElementById('addSite').addEventListener('click', addSite);
@@ -145,3 +145,16 @@ $("div#siteConfig").on("click", "a", function (event) {
   //event.preventDefault();
   $(this).closest("div#siteRow").remove();
 });
+
+
+function onDebugModeChange() {
+  if (document.querySelector("input#debug").checked) {
+    document.querySelector("input#devstudioExpandTabOnHover").closest("div").style.display = "block";
+    document.querySelector("input#devstudioCheckoutIndicator").closest("div").style.display = "block";
+  } else {
+    document.querySelector("input#devstudioExpandTabOnHover").closest("div").style.display = "none";
+    document.querySelector("input#devstudioCheckoutIndicator").closest("div").style.display = "none";
+  }
+}
+
+document.querySelector("input#debug").addEventListener("change", onDebugModeChange);

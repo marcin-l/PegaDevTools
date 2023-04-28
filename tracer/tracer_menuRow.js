@@ -70,7 +70,7 @@ function getErrorList() {
 
 function getMessagesList() {
 	return window.parent.frames[1].document.querySelectorAll(
-		'td[bgcolor="orange"]'
+		'td[bgcolor="orange"], td[title="WARN"]'
 	);
 }
 

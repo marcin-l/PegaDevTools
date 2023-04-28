@@ -86,7 +86,7 @@
 
 		h2,
 		h3 {
-			margin-bottom: 0;
+			margin-bottom: 3px;
 		}
 
 		.actionButton {
@@ -100,7 +100,7 @@
 		}
 
 		a {
-			color: #0080BC;
+			color: #beeaff;
 			text-decoration: none;
 			font-weight: bold;
 		}
@@ -115,6 +115,14 @@
 
 		.noCheckBox {
 			margin-left: 20px;
+		}
+
+		span.feature a::after {
+			content: '\1F517'; /* Unicode for a link icon */
+		}
+
+		select {
+			margin-top: 2px;
 		}
 	</style>
 	<link rel="stylesheet" href="resources\shared.css" />
@@ -135,11 +143,11 @@
 			<h3>
 				Dev Studio <span class="feature"><a
 						href="https://github.com/marcin-l/PegaDevTools/wiki/Developer-Studio" target="_blank"
-						rel="noopener noreferrer">features</a></span>
+						rel="noopener noreferrer" title="Go to PegaDevTools wiki">features</a></span>
 				<hr />
 			</h3>
 			<span data-pdt-setting="main">
-				<label for="favicon" class="tooltip noCheckBox">Favicon
+				<label for="favicon" class="tooltip noCheckBox">Favicon:
 				<span class="tooltipText">Alters favicon to improve environment identification in browser tabs. <br>
 					"Abbreviated name" will be the first character of Site name plus the last character if it exists, i.e. <strong>STG1</strong> will become <strong>S1</strong>.</span> </label>
 				<select id="favicon" data-pdt-setting-name="favicon"> 
@@ -203,7 +211,7 @@
 
 			<h3>
 				Clipboard <span class="feature"><a href="https://github.com/marcin-l/PegaDevTools/wiki/Clipboard"
-						target="_blank" rel="noopener noreferrer">features</a></span>
+						target="_blank" rel="noopener noreferrer" title="Go to PegaDevTools wiki">features</a></span>
 				<hr />
 			</h3>
 			<span data-pdt-setting="clipboard">
@@ -221,7 +229,7 @@
 
 			<h3>
 				Tracer <span class="feature"><a href="https://github.com/marcin-l/PegaDevTools/wiki/Tracer"
-						target="_blank" rel="noopener noreferrer">features</a></span>
+						target="_blank" rel="noopener noreferrer" title="Go to PegaDevTools wiki">features</a></span>
 				<hr />
 			</h3>
 			<span data-pdt-setting="tracer">
@@ -342,11 +350,11 @@
 			</div>
 			<h2>Support	</h2>
 			<div>
-				<p>Thank you for using PegaDevTools! If you find our browser extension valuable and want to help support its continued development, please consider contributing through one of the following platforms:</p>
+				<p style="max-width: 600px;">Thank you for using PegaDevTools! If you find our browser extension valuable and want to help support its continued development, please consider contributing through one of the following platforms:</p>
 				<p>
 					<a style="display:none" href='https://ko-fi.com/X8X0H5EOT' target='_blank' rel="noopener"><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a> 
 					
-					<br><a href="https://ko-fi.com/pegadevguy" rel="noopener">Ko-Fi</a> - help us maintain and grow PegaDevTools with a recurring or one-time contribution. Your generosity helps fuel our progress</p>
+					<br><a href="https://ko-fi.com/pegadevguy" rel="noopener">Ko-Fi</a> - help us maintain and grow PegaDevTools with a recurring or one-time contribution</p>
 				<p><a href="https://www.patreon.com/pegadevguy" rel="noopener">Patreon</a> - become a patron and enjoy exclusive benefits at various tier levels</p>
 				<p><form style="display:none" action="https://www.paypal.com/donate" method="post" target="_top">
 					<input type="hidden" name="business" value="XK4QTBJRLE3H6" />
@@ -355,7 +363,9 @@
 					<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
 					<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
 					</form>
-					<a href="https://www.paypal.com/donate/?business=XK4QTBJRLE3H6&no_recurring=0&currency_code=USD" rel="noopener">Paypal</a> - make a one-time donation to show your appreciation and help fuel the ongoing development of PegaDevTools
+					<a href="https://www.paypal.com/donate/?business=XK4QTBJRLE3H6&no_recurring=0&currency_code=USD" rel="noopener">Paypal</a> - make a one-time donation to show your appreciation and help fuel the ongoing development
+				<p>
+					Your generosity helps fuel our progress!
 				</p>
 			</div>
 		</div>

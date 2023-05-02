@@ -26,7 +26,7 @@ document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
                 fullSQLElement.style.border = "thin solid black";
                 fullSQLElement.style.padding = "4px";
                 fullSQLElement.style.fontFamily = "monospace";
-                fullSQLElement.innerText = fullSQL;
+                fullSQLElement.innerHTML = fullSQL;
                 insertsRow.insertAdjacentElement("afterend", fullSQLElement);
             }
         }
@@ -174,9 +174,10 @@ function prepareSQL(sql, inserts) {
     // }
     let sqlSplit = sql.split("?");
     let resultSql = "";
-    for (let i = 0; i < sqlSplit.length-1; i++) {
-        resultSql += sqlSplit[i] + insertsSplit[i];
+    for (let i = 0; i < sqlSplit.length - 1; i++) {
+        resultSql += sqlSplit[i] + "<b>" + insertsSplit[i] + "</b>";
     }
+    resultSql += sqlSplit[sqlSplit.length - 1];
 
     resultSql = resultSql.replaceAll("''null''", "NULL");
     return resultSql;

@@ -28,8 +28,8 @@ function siteConfigCallback(siteConfig, globalConfig) {
         });
         
         //FEATURE: copy class name
-        document.arrive("a[name^='RuleFormHeader'], span[tile='Class Name']", {onceOnly: true, existing: true}, function() {
-            this.insertAdjacentHTML('afterend', '<a style="margin-top:0; margin-bottom:0;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopyClassName()" title="Copy class name"><i  class="icons pi pi-copy" id="CopyClassName"></i></a>');
+        document.arrive("a[name^='RuleFormHeader'], span[title='Class Name']", {onceOnly: true, existing: true}, function() {
+            this.insertAdjacentHTML('afterend', '<a style="margin-top:0; margin-bottom:0;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopyClassName()" title="Copy class name"><i class="icons pi pi-copy" id="CopyClassName"></i></a>');
         //} else {
             //TODO: show class name
             //document.querySelector('div#PEGA_HARNESS').getAttribute('classname');

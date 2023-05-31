@@ -24,7 +24,10 @@ function getSelectedEventTypes() {
 
 function getSelectedRulesets() {
 	let rulesetArray = new Array();
-	document.querySelectorAll("div#RuleSetDisplay table table td.dataLabelStyle").forEach(function (val) { if (val.querySelector("input[type='CHECKBOX']:checked")) (rulesetArray.push(val.textContent)) });
+	if(document.querySelector("input[type='CHECKBOX']#pzTraceAllRulesets").checked != true)
+		document.querySelectorAll("div#RuleSetDisplay table table td.dataLabelStyle").forEach(function (val) { if (val.querySelector("input[type='CHECKBOX']:checked")) (rulesetArray.push(val.textContent)) });
+	else
+		rulesetArray.push("ENABLE_ALL");
 	return rulesetArray;
 }
 let optionSets = new Array();
@@ -107,6 +110,12 @@ function loadOptionSet() {
 		loadEventTypes(selectedOptionSet.eventTypes);
 		loadRulesets(selectedOptionSet.rulesets);
 	}
+	//Update status to let user know options were loaded
+	let status = document.getElementById('status');
+	status.textContent = 'Configuration loaded';
+	setTimeout(function () {
+		status.textContent = '';
+	}, 750);
 }
 
 function loadEventTypes(eventTypes) {
@@ -119,6 +128,20 @@ function loadEventTypes(eventTypes) {
 }
 
 function loadRulesets(rulesets) {
+	let allRulesetsCheckbox = document.querySelector("input[type='CHECKBOX']#pzTraceAllRulesets");
+
+	if(rulesets[0] === "ENABLE_ALL" && allRulesetsCheckbox.checked != true) {
+		allRulesetsCheckbox.click();
+		allRulesetsCheckbox.checked = true;
+		return;
+	}
+
+	if(rulesets[0] !== "ENABLE_ALL" && allRulesetsCheckbox.checked == true) {
+		allRulesetsCheckbox.click();
+		allRulesetsCheckbox.checked = false;
+		//sleep(100);
+	}
+
 	document.querySelectorAll("div#RuleSetDisplay table table td.dataLabelStyle").forEach(function (val) { 
 		let checkBox = val.querySelector("input[type='CHECKBOX']");
 		if(checkBox) {

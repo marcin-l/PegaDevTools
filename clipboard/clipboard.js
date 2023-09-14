@@ -12,6 +12,7 @@ function addpyWorkPageLink() {
 		let clsNameFull = extractClassName(title, true);
 		if (clsName)
 			jQuery("header").append(' <i class="dark_background_label_dataLabelForRead" title="' + clsNameFull + '">(' + clsName + ')</i> ');
+		pyWorkPage.style.fontWeight = "bold";
 		console.log('PDT pyWorkPage found');
 	}
 
@@ -25,6 +26,7 @@ function addpyWorkPageLink() {
 		let clsNameFull = extractClassName(title, true);
 		if (clsName)
 			jQuery("header").append(' <i class="dark_background_label_dataLabelForRead" title="' + clsNameFull + '">(' + clsName + ')</i> ');
+		pyWorkPage.style.fontWeight = "bold";
 		console.log('PDT RH_1 found');
 	}
 		// else {
@@ -38,11 +40,12 @@ function addnewAssignPage() {
 
 	let newAssignPage = jQuery("#gridNode li.gridRow ul li").has("span[title^='newAssignPage']")[0];
 	if (newAssignPage) {
-		jQuery("header").append(" <a id='devToolsGoToAssignPage' class='Explorer_action'>newAssignPage</a>");
-		jQuery("#devToolsGoToAssignPage").click(function () { jQuery("#gridNode li.gridRow ul li").has("span[title^='newAssignPage']").first().trigger("click"); });
 		let clsName = extractClassName(jQuery("#gridNode li.gridRow ul li span[title^='newAssignPage']")[0].title);
-		if (clsName) {
+		if (clsName && clsName !== "Assign-") {
+			jQuery("header").append(" <a id='devToolsGoToAssignPage' class='Explorer_action'>newAssignPage</a>");
+			jQuery("#devToolsGoToAssignPage").click(function () { jQuery("#gridNode li.gridRow ul li").has("span[title^='newAssignPage']").first().trigger("click"); });
 			jQuery("header").append(' <i class="dark_background_label_dataLabelForRead" title="' + clsName + '">(' + clsName + ')</i>');
+			newAssignPage.style.fontWeight = "bold";
 		}
 	}
 }

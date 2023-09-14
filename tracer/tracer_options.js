@@ -191,8 +191,8 @@ fetch(browser.runtime.getURL("tracer/tracer_pegaRulesetSelection.html"))
 });
 
 document.arrive("button#PDTDeselectPegaRulesets", {onceOnly: true, existing: true}, () => 	{
-	document.querySelector("button#PDTSelectPegaRulesets").addEventListener("click", () => document.querySelectorAll("div#RuleSetDisplay table table table td.dataLabelStyle input[type='CHECKBOX']").forEach(function (el) { if(el.nextSibling.textContent.trim().startsWith("Pega")) el.checked = true } ));
-	document.querySelector("button#PDTDeselectPegaRulesets").addEventListener("click", () => document.querySelectorAll("div#RuleSetDisplay table table table td.dataLabelStyle input[type='CHECKBOX']").forEach(function (el) { if(el.nextSibling.textContent.trim().startsWith("Pega")) el.checked = false } ));
+	document.querySelector("button#PDTSelectPegaRulesets").addEventListener("click", () => document.querySelectorAll("div#RuleSetDisplay table table table td.dataLabelStyle input[type='CHECKBOX']").forEach(function (el) { if(el.nextSibling.textContent.trim().startsWith("Pega")  || el.nextSibling.textContent.trim().startsWith("UI-")) el.checked = true } ));
+	document.querySelector("button#PDTDeselectPegaRulesets").addEventListener("click", () => document.querySelectorAll("div#RuleSetDisplay table table table td.dataLabelStyle input[type='CHECKBOX']").forEach(function (el) { if(el.nextSibling.textContent.trim().startsWith("Pega")  || el.nextSibling.textContent.trim().startsWith("UI-")) el.checked = false } ));
 });
 
 siteConfig(siteConfigCallback);

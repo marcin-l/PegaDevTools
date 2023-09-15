@@ -30,4 +30,4 @@ containerTabListNamesObserver.observe(containerTabListNames,
     }
 );
 
-console.log("PDT: makeRuleNamesLonger.js loaded"); 
+console.log("PDT: makeRuleNamesLonger.js loaded");

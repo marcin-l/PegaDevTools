@@ -1,6 +1,6 @@
-# **PegaDevTools (PDT)**
+# **PegaDevTools**
 
-PDT is a browser-based developer productivity tool for Pega 8, designed to enhance your development experience without the need for ruleset deployment. The extension primarily targets Chromium-based browsers (Chrome, Edge, Opera, etc.).
+PDT is browser-only (i.e. no ruleset deployment is required) Pega 8 developer productivity tool.
 
 **Check out available features in the [PDT Wiki](https://github.com/marcin-l/PegaDevTools/wiki)**
 
@@ -35,9 +35,8 @@ If you found a bug or have a new idea/feature for the extension, [you can report
 ### Post-installation steps
 - Go to [Extension Options](https://github.com/marcin-l/PegaDevTools/wiki/Configuration). In the **Site config** section add your environment by domain name (e.g. *client-dt1.pegacloud.net*, without *https://*) and click **Save site configuration**. Turn on features in the **Settings** section and click **Save settings**.
 - Reload your Pega tabs if needed
-<br>Some features will not work if this step is skipped
 
-## Updating to a New Version
+### Updating
 - Overwrite extension with new download, your settings will be left intact
 - Go to Chrome/Edge settings
 - Click **Extensions**

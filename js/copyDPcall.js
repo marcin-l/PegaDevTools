@@ -1,5 +1,5 @@
 function CopyDPCall(noCopy) {
-	dpCallString = document.querySelector("span[title='Page Name']").innerText + "[";
+	let dpCallString = document.querySelector("span[title='Page Name']").innerText + "[";
 	document.querySelectorAll("div[node_name='pzRuleFormParameters'] div#gridBody_right table.gridTable  tr.cellCont").forEach(function (row) {
 		if (row.querySelector("input") && row.querySelector("input").value) {
 			dpCallString += row.querySelector("input").value + ": \"" + "\", "

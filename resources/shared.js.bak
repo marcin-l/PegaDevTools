@@ -425,7 +425,7 @@ function isInDevStudio() {
 function injectRuleExport() {
 	let selection = document.querySelector("div[data-node-id='pzRuleFormRuleset'] div.primary-navigation-links");
 	if(selection) {
-		selection.insertAdjacentHTML("beforeend", "<a onclick='copyRuleTableContent()' title='Copy to clipboard'>Export</a>");
+		selection.insertAdjacentHTML("beforeend", "<a onclick='copyRuleTableContent()'>Export</a>");
 		injectScript("/js/", "copyRuleTableContent.js");
 	}
 }

@@ -1,5 +1,5 @@
 if(window.location.href.includes("agilestudio")) {
-
+    PDT.setScriptsApplied();
     console.log("agilestudio.js");
 
     if (PDT.isAgilestudioEnabled()) {

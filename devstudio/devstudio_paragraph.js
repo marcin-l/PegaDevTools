@@ -1,31 +1,42 @@
+
+PDT.setScriptsApplied();
 console.log("PDT: devstudio/devstudio_paragraph.js");
 
-var tries = 0;
-var mainDiv;
+/* //TODO: currently broken. does not work on reload
+document.arrive("span.TextAreaContainer textarea", {onceOnly: true, existing: true}, () => {
+    applyCodeMirror();
+});
 
-function addObserver() {
-    const paragraphSection = document.querySelector("div[node_name='pzViewParagraph']");
-    
-    const paragraphCallback = function (mutationsList, observer) {
-        mutationsList.forEach((mutation) => {
-            applyCodeMirror();
-        });
-    };
-    
-    const paragraphObserver = new MutationObserver(paragraphCallback);
-    paragraphObserver.observe(paragraphSection, {
-        childList: true,
-    })
-}
+// var tries = 0;
+// var mainDiv;
 
-var myCodeMirror;
+// function addObserver() {
+//     const paragraphSection = document.querySelector("div[node_name='pzViewParagraph']");
+    
+//     const paragraphCallback = function (mutationsList, observer) {
+//         mutationsList.forEach((mutation) => {
+//             applyCodeMirror();
+//         });
+//     };
+    
+//     const paragraphObserver = new MutationObserver(paragraphCallback);
+//     paragraphObserver.observe(paragraphSection, {
+//         childList: true,
+//     })
+// }
+if(typeof myCodeMirror !== "undefined")
+    myCodeMirror.destroy();
+
+let myCodeMirror;
 
 function applyCodeMirror() {
     //injectStyles(".CodeMirror { height: auto;}");
-    var tarea = document.querySelector("span.TextAreaContainer textarea");
-	if (tarea) {
+    if(document.querySelector("divCodeMirror-wrap"))
+        document.querySelector("divCodeMirror-wrap").remove();
+    let textArea = document.querySelector("span.TextAreaContainer textarea");
+	if (textArea) {
         console.log("PDT: devstudio/devstudio_paragraph.js applying CodeMirror");
-		myCodeMirror = CodeMirror.fromTextArea(tarea, {
+		myCodeMirror = CodeMirror.fromTextArea(textArea, {
 			mode: "htmlmixed",
 			lineNumbers: true,
 			lineWrapping: true,
@@ -56,32 +67,33 @@ function applyCodeMirror() {
 }
 
 
-function waitUntilRenderRS() {
-    mainDiv =  document.querySelector("div[node_name='pzViewParagraph']");
-    if (mainDiv) {
-        applyCodeMirror();
-        addObserver();
-    } else {
-        tries = tries + 1;
-        console.log(tries);
-        if (tries > 10) return;
-        setTimeout(() => {
-            waitUntilRenderRS();
-        }, 500);
-    }
-}
+// function waitUntilRenderRS() {
+//     mainDiv =  document.querySelector("div[node_name='pzViewParagraph']");
+//     if (mainDiv) {
+//         applyCodeMirror();
+//         addObserver();
+//     } else {
+//         tries = tries + 1;
+//         console.log(tries);
+//         if (tries > 10) return;
+//         setTimeout(() => {
+//             waitUntilRenderRS();
+//         }, 500);
+//     }
+// }
 
-waitUntilRenderRS();
+// waitUntilRenderRS();
 
 
 
-var dom_observer = new MutationObserver(function(mutationsList) {
-    mutationsList.forEach((mutation) => {
-        console.log(mutation);
-    });
-});
-var container = document.documentElement || document.body;
-console.log(container);
-var config = { attributes: true, childList: true };
-dom_observer.observe(container, config);
+// var dom_observer = new MutationObserver(function(mutationsList) {
+//     mutationsList.forEach((mutation) => {
+//         console.log(mutation);
+//     });
+// });
+// var container = document.documentElement || document.body;
+// console.log(container);
+// var config = { attributes: true, childList: true };
+// dom_observer.observe(container, config);
 
+*/

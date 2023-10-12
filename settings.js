@@ -120,8 +120,6 @@ function restoreOptions() {
 
     onDebugModeChange();
   });
-
-
 }
 
 function addSite() {
@@ -133,8 +131,8 @@ function addSite() {
   newOptionsHtml += '<select id="version"><option value="" disabled selected hidden>Version:</option><option value=""></option><option value="7">Pega 7</option><option value="81">Pega 8.1</option><option value="82">Pega 8.2</option><option value="83">Pega 8.3</option><option value="84">Pega 8.4</option><option value="85">Pega 8.5</option><option value="86">Pega 8.6</option><option value="87">Pega 8.7</option><option value="88">Pega 8.8</option></select>';
   newOptionsHtml += '&nbsp;&nbsp;<a href="#" class="siteRem">remove</a></div>';
   $("#siteConfig").append(newOptionsHtml);
-  let hueb = new Huebee($("button#color").last()[0], { notation: 'hex', saturations: 1, setBGColor: true, shades: 7, hue0: 80, customColors: [ '#FFF', '#0E0', '#FFA30F', '#C25', '#FFF000', '#19F' ]});
-  hueb.on('change', function(color) { //sets text color to chosen color so hex is not visible
+  let huebee = new Huebee($("button#color").last()[0], { notation: 'hex', saturations: 1, setBGColor: true, shades: 7, hue0: 80, customColors: [ '#FFF', '#0E0', '#FFA30F', '#C25', '#FFF000', '#19F' ]});
+  huebee.on('change', function(color) { //sets text color to chosen color so hex is not visible
     this.anchor.style.color = color;
   });
 }
@@ -145,8 +143,7 @@ document.getElementById('saveSettings').addEventListener('click', saveSettings);
 document.getElementById('addSite').addEventListener('click', addSite);
 
 //event delegation
-$("div#siteConfig").on("click", "a", function (event) {
-  //event.preventDefault();
+$("div#siteConfig").on("click", "a", function (_event) {
   $(this).closest("div#siteRow").remove();
 });
 

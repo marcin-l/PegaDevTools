@@ -5,8 +5,8 @@ if(document.querySelector("div#LogContentDiv > div b.page").nextElementSibling =
     window.scrollTo(0, document.body.scrollHeight);
 }
 
-var pager = document.querySelector("div#LogContentDiv > div").cloneNode(true);
-var target = document.querySelector("div#LogContentDiv");
+let pager = document.querySelector("div#LogContentDiv > div").cloneNode(true);
+let target = document.querySelector("div#LogContentDiv");
 if(target) {
     target.insertBefore(pager, target.firstChild);
 }

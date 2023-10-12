@@ -1,4 +1,5 @@
 console.log("PDT: devstudio/devstudio_flow.js");
+PDT.setScriptsApplied();
 
 injectSidebarToggle();
 injectCloseShortcut();

@@ -1,6 +1,7 @@
 
 
 console.log("PDT: devstudio/devstudio_data.js");
+PDT.setScriptsApplied();
 
 //TODO: to be reviewed
 

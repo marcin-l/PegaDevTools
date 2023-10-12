@@ -9,14 +9,14 @@ function applyPDTCustomization() {
         globalConfig.settings &&
         globalConfig.settings.useSiteLabelForBrowserTitle
       ) {
-        var newTitle = siteConfig.label + " Pega";
+        let newTitle = siteConfig.label + " Pega";
         if (siteConfig.version)
           newTitle += " " + siteConfig.version.slice(0, 1) + "." + siteConfig.version.slice(1, 2);
         parent.document.title = newTitle;
       }
     
       //FEATURE: environment header
-      var productionEnvElement = document.querySelector(
+      let productionEnvElement = document.querySelector(
         "div[data-ui-meta*='D_pzGetCurrentSystemRecord.pyActiveProductionLevelName']"
       );
       if (productionEnvElement) {
@@ -43,9 +43,7 @@ function applyPDTCustomization() {
           );
       }
 
-      if (
-        globalConfig.settings && globalConfig.settings.hideEnvironmentHeader
-      ) {
+      if (globalConfig.settings && globalConfig.settings.hideEnvironmentHeader) {
         if (productionEnvElement) productionEnvElement.style.display = "none";
       }
 
@@ -57,7 +55,7 @@ function applyPDTCustomization() {
           siteConfig.color.replace("#", '');
       }
     }
-    var settings;
+    let settings;
     if (globalConfig && globalConfig.settings) {
       settings = globalConfig.settings;
     }
@@ -70,46 +68,11 @@ function applyPDTCustomization() {
           alterTracerOpenBehavior(settings.tracer.openBehavior);
       }
 
-      //FEATURE: hide close button
-      if (PDT.settings.devstudio.hideCloseButton)
-        injectStyles("div.tStrCntr ul #close {display: none}");
-
-      if (PDT.settings.devstudio.longerRuleNames) {
-        //inject script which will apply it for newly opened tabs
-        injectScript("/js/", "makeRuleNamesLonger.js");
-        injectStyles(
-          ".Temporary_top_tabs .Temporary_top_tabsList LI span#TABANCHOR { padding-right: 4px !important; padding-left: 4px; !important}"
-        );
-      }
-
-      if (PDT.settings.devstudio.expandTabOnHover) {
-        //inject script which will apply it for newly opened tabs
-        injectScript("/js/", "expandTabOnHover.js");
-      }      
-
-      if (PDT.settings.devstudio.checkoutIndicator) {
-        showCheckoutIndicator();
-      }
-
       addHeaderShortcuts();
       customizeText();
       injectSidebarToggle();
-
-      //FEATURE: close tab on middle click
-      if (PDT.settings.devstudio.closeTabMiddleClick) {
-        //inject script which will apply it for newly opened tabs
-        injectScript("/js/", "closeTabMiddleClick.js");
-
-        // apply for existing tabs
-        document.querySelectorAll("div.tStrCntr ul table#RULE_KEY span[data-stl='1'], div.tStrCntr ul table#RULE_KEY svg").forEach(function (elem) {
-          elem.addEventListener("mousedown", function (e) {
-            console.log(e);
-            if (e && (e.which == 2 || e.button == 4))
-              this.parentNode.parentNode.querySelector('#close').click();
-          })
-        })
-      }
     }
+    
     PDT.alterFavicon();
   }
 
@@ -150,20 +113,16 @@ function showCheckoutIndicator() {
   if (containerTabListIndicator) {
     const containerTabListCallbackIndicator = function (
       mutationsList,
-      observer
+      _observer
     ) {
       mutationsList.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
           if (DEBUG) console.log(node.nodeName);
+          let elem;
           document.querySelectorAll("iframe").forEach((iframe) => {
-            if (
-              iframe.contentWindow.document.querySelectorAll(
-                "button[title^='Check in']"
-              ).length > 0
-            )
-              var elem = document.querySelector(
-                "div.tStrCntr ul li[aria-label='" + iframe.title + "'] td span"
-              );
+            if (iframe.contentWindow.document.querySelectorAll("button[title^='Check in']").length > 0) {
+              elem = document.querySelector("div.tStrCntr ul li[aria-label='" + iframe.title + "'] td span");
+            }
             if (elem && !elem.innerText.startsWith("*")) {
               elem.innerText = "*" + elem.innerText;
               if (DEBUG) console.log(iframe.title);
@@ -225,7 +184,7 @@ function customizeText() {
   document.querySelector("div.alerts a").innerHTML = document.querySelector("div.alerts a").innerHTML.replace(document.querySelector("div.alerts a").textContent, '');
 
   //FEATURE: shorten Live Data
-  var DataInspectorButton = document.querySelector(
+  let DataInspectorButton = document.querySelector(
     "div a[data-test-id='DataInspectorButton']"
   );
   if (DataInspectorButton) {

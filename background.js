@@ -288,6 +288,17 @@ async function setup() {
 	// 	"contexts": ["all"],
 	// 	parentId: "toggleMenu"
 	// });
+
+};
+
+let arrDevTabs = new Map(), arrTracerTabs = new Map();
+
+async function setup() {
+	browser.runtime.onInstalled.addListener(async () => {
+		let url = browser.runtime.getURL("settings.html");
+		await browser.tabs.create({ url });
+	});
 }
 
 setup();
+

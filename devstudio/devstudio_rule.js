@@ -1,7 +1,5 @@
 console.log("PDT: devstudio/devstudio_rule.js");
 
-PDT.setScriptsApplied();
-
 //TODO: open rule class in app explorer
 // function openRuleClassInAppExplorer() {
 //     showRuleInAppExplorer("Rule-HTML-Section", "RULE-OBJ-CLASS");

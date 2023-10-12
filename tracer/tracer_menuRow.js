@@ -1,6 +1,6 @@
 /* tracer - top menu iframe */
 document.arrive("body#main", { onceOnly: true, existing: true}, () => {
-	PDT.setScriptsApplied();
+
 	console.log("[PDT] tracer/tracer_menuRow.js");
 
 	function isTracerActive() {
@@ -58,22 +58,22 @@ document.arrive("body#main", { onceOnly: true, existing: true}, () => {
 		}
 	}
 
-	var errorIndex = 0,
-		messageIndex = 0,
-		accessDeniedIndex,
-		bookmarkIndex = 1;
-	var errorList = [],
-		messagesList = [],
-		accessDeniedList = [],
-		bookmarkList = [];
+var errorIndex = 0,
+	messageIndex = 0,
+	accessDeniedIndex,
+	bookmarkIndex = 1;
+var errorList = [],
+	messagesList = [],
+	accessDeniedList = [],
+	bookmarkList = [];
 
-	function getErrorList() {
-		return window.parent.frames[1].document.querySelectorAll(
-			'td[title="FAIL"], td[title="Exception"], tr.eventTableAlertTrace td#eventNodeId'
-		);
-	}
+function getErrorList() {
+	return window.parent.frames[1].document.querySelectorAll(
+		'td[title="FAIL"], td[title="Exception"], tr.eventTableAlertTrace td.eventElementData'
+	);
+}
 
-	function getMessagesList() {
+  function getMessagesList() {
 		return window.parent.frames[1].document.querySelectorAll(
 			'td[bgcolor="orange"], td[title="WARN"]'
 		);
@@ -93,7 +93,7 @@ document.arrive("body#main", { onceOnly: true, existing: true}, () => {
 
 	function updateErrorCount(count, index) {
 		let newTextContent = "Errors";
-		if (count !== undefined) {
+		if (!(count === undefined)) {
 			newTextContent = "Errors" + String.fromCharCode(160);
 			if (index) newTextContent += "" + index + "/" + count;
 			else newTextContent += "" + count;
@@ -177,45 +177,6 @@ document.arrive("body#main", { onceOnly: true, existing: true}, () => {
 			// });
 		}
 	}
-
-	function addDropdownHandler(dropdown, itemList, offset) {
-		if (dropdown && itemList) {
-			Array.prototype.forEach.call(
-				dropdown.querySelectorAll("a"),
-				function (node) {
-					node.parentNode.removeChild(node);
-				}
-			);
-
-			if(itemList.length === 0)
-				return false;
-
-			dropdown.style.display = "block";
-			dropdown.style.left = offset;
-
-			itemList.forEach((element) => {
-				let newElem = document.createElement("a");
-				newElem.value = element.parentNode.querySelector("td#eventLineNumber").innerText;
-				newElem.textContent = newElem.value;
-				if(element.parentNode.querySelector("td#elementInstanceName"))
-					newElem.textContent += ' - ' + element.parentNode.querySelector("td#elementInstanceName").title;
-				newElem.onclick = function () {
-					window.parent.frames[1].document.querySelector("td#eventLineNumber[title='" + this.value + "']").scrollIntoView(false, { behavior: "smooth" });
-				};
-				dropdown.appendChild(newElem);
-			})
-			
-			let elem = document.createElement("a");
-			elem.style = "border-top: 1px solid #aaa;"
-			elem.textContent = "Close";
-			elem.onclick = function () {
-				dropdown.style.display = "none";
-			};
-			dropdown.appendChild(elem);
-			return false;
-		} else console.log("[PDT] addDropdownHandler - wrong arguments");
-	}
-
 	function addEventHandlers() {
 
 		function navigateTo(itemList, nextOrPrev, currentIndex, text, clickedButton) {
@@ -382,6 +343,45 @@ document.arrive("body#main", { onceOnly: true, existing: true}, () => {
 		/* #endregion */
 	}
 
+
+	function addDropdownHandler(dropdown, itemList, offset) {
+		if (dropdown && itemList) {
+			Array.prototype.forEach.call(
+				dropdown.querySelectorAll("a"),
+				function (node) {
+					node.parentNode.removeChild(node);
+				}
+			);
+
+			if(itemList.length === 0)
+				return false;
+
+			dropdown.style.display = "block";
+			dropdown.style.left = offset;
+
+			itemList.forEach((element) => {
+				let newElem = document.createElement("a");
+				newElem.value = element.parentNode.querySelector("td#eventLineNumber").innerText;
+				newElem.textContent = newElem.value;
+				if(element.parentNode.querySelector("td#elementInstanceName"))
+					newElem.textContent += ' - ' + element.parentNode.querySelector("td#elementInstanceName").title;
+				newElem.onclick = function () {
+					window.parent.frames[1].document.querySelector("td#eventLineNumber[title='" + this.value + "']").scrollIntoView(false, { behavior: "smooth" });
+				};
+				dropdown.appendChild(newElem);
+			})
+			
+			let elem = document.createElement("a");
+			elem.style = "border-top: 1px solid #aaa;"
+			elem.textContent = "Close";
+			elem.onclick = function () {
+				dropdown.style.display = "none";
+			};
+			dropdown.appendChild(elem);
+			return false;
+		} else console.log("[PDT] addDropdownHandler - wrong arguments");
+	}	
+
 	//make sure buttons are part of the DOM before adding event handlers
 	//TODO: use arrive.js
 	function waitUntilRenderTracerButtons() {
@@ -413,6 +413,4 @@ document.arrive("body#main", { onceOnly: true, existing: true}, () => {
 
 	//TODO:
 	//displayPage = new Function('pageXML','pageName','pagePropertyName', displayPage.toString().match(/{([\s\S]*)}/)[1].replace('window.open(strURL,strForm,"status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=yes"  + strFeatures)', "window.open(strURL,'_blank')"));
-	//TODO:  Access Deny list
-	//window.parent.frames[1].document.querySelectorAll('td[title="Access Denied"]')
 });

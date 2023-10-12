@@ -22,8 +22,7 @@ class PDT {
 			if(typeof this.settings.tracer === "undefined") this.settings.tracer = {};
 			if(typeof this.settings.clipboard === "undefined") this.settings.clipboard = {};
 			if(typeof this.settings.devstudio === "undefined") this.settings.devstudio = {};
-			PDT.debug("storage settings load");
-
+      
 			//var siteConfigs = await getObjectFromLocalStorage("siteConfig");
 
 			this.hasConfigForSite = false;
@@ -46,17 +45,6 @@ class PDT {
 					}
 				}
 			}
-
-			document.arrive("body", { onceOnly: true, existing: true}, (elem) => {
-				let skip = PDT.shouldSkipContentForDocument(elem);
-				if(!skip)
-					elem.setAttribute("data-PDTSettings", "loaded");
-				else
-					PDT.debug("skipped data-PDTSettings");
-			});
-
-			PDT.debug("storage settings load");
-
 		});
 	}
 
@@ -137,13 +125,6 @@ class PDT {
 		return (L > contrastThreshold) ? "#000000" : "#FFFFFF";
 	}
 
-	static tabColorCoding = new Map([
-		['RULE-HTML-SECTION', 'green'],
-		['RULE-OBJ-ACTIVITY', 'red'],
-		['RULE-OBJ-MODEL', 'blue'],
-	  ]);
-
-
 	static alterFavicon(forceSmall = false, forceLargeLabel = "", forceColor = "") {
 		//favicon fallback
 		let favicon = document.querySelector("link[rel~='icon']");
@@ -187,25 +168,11 @@ class PDT {
 		}
 	}
 
-	static setScriptsApplied() {
-		if(!document.querySelector("input#PDTContent"))
-			document.querySelector("div[data-node-id='RuleFormHeader'], body").insertAdjacentHTML("beforeend",'<input type="hidden" id="PDTContent" value="loaded" />');
-	}
-
-	//TODO: not really working, probably CKE starts with empty body
-	static shouldSkipContentForDocument(document){ 
-		//CKE editor loads a body element which causes hidden input to be appended to paragraph source
-		let skip = false;
-		document.classList.forEach((className) => { if(className.includes("cke")) skip = true; });
-		if(skip) {
-			if(document.querySelector("body"))
-				document.querySelector("body").setAttribute("data-PDTskipContent", true);
-			else
-				PDT.debug("could not set data-PDTskipContent");
-		}
-		return skip;
+	static makeFullscreen() {
+		window.resizeTo(screen.width, screen.height);
 	}
 }
+
 if(typeof PDT.settings ===  "undefined")
 	PDT.init();
 
@@ -319,14 +286,19 @@ function appendScript(appendedScript) {
 	); 
 }
 
-function injectScript(aBasePath, aScriptURL) {
-	browser.runtime.sendMessage(
-		{ purpose: "injectScript", injectedScript: aBasePath+aScriptURL },
-		function (response) {
-			console.log(response);
-		}
+function injectScript(basePath, scriptURL) {
+	injectScriptWithCallback(basePath, scriptURL, function (response) {
+		console.log(response);
+	});
+}
+
+function injectScriptWithCallback(basePath, scriptURL, callback) {
+	chrome.runtime.sendMessage(
+		{ purpose: "injectScript", injectedScript: basePath+scriptURL },
+		callback
 	); 
 }
+
 //inject script to toggle sidebar using keyboard shortcut
 function injectSidebarToggle() {
 	injectScript("/js/", "sidebarToggle.js");
@@ -410,12 +382,8 @@ function sleep(milliseconds) {
 function isInDevStudio() {
 	//NOTE: ugly but works
 	return (
-		document.querySelector(
-			"span#TABANCHOR span.textIn, span#TABANCHOR[tabtitle='Home']"
-		) &&
-		document.querySelector(
-			"span#TABANCHOR span.textIn, span#TABANCHOR[tabtitle='Home']"
-		).innerText.startsWith("Home")
+		document.querySelector("div[data-portalharnessinsname") &&
+		document.querySelector("div[data-portalharnessinsname").getAttribute("data-portalharnessinsname").includes("DesignerStudio")
 	);
 	//TODO: get Pega api object
 	// if(pega.desktop.support.isInDesignerDesktop)
@@ -441,18 +409,3 @@ const getObjectFromStorage = async function (key) {
 		}
 	});
 };
-
-browser.runtime.onMessage.addListener(function(msg) {
-	if(msg.purpose == "PingContent") {
-		if (document.querySelector("input#PDTContent")) {
-			//messageServiceWorker('OK');
-		}
-		else if(document.querySelector("body") && document.querySelector("body").hasAttribute("data-PDTskipContent")) {
-			//messageServiceWorker('OK');
-		}
-		else {
-			console.log("PDT requesting content script reload");
-			messageServiceWorker('reloadContentScripts');
-		}
-	}
-})

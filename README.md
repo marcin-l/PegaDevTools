@@ -8,14 +8,14 @@ PDT is a browser-based developer productivity tool for Pega 8, designed to enhan
 ## Installation
 1. Download or clone the extension using the green *Code* button at the top of this page and selecting `Download ZIP`
 <br><img src="https://raw.githubusercontent.com/wiki/marcin-l/PegaDevTools/images/installation.png" />
-1. Extract  downloaded ZIP file
+1. Extract downloaded ZIP file
   
   
-1. Load unpacked extension
+1. Load unpacked extension:
 - For Chrome and Edge:
-  - Navigate to the browser settings and click `Extensions`
+  - Open browser settings and click `Extensions`
   - Enable `Developer mode`
-  - Click `Load Unpacked` and select the extracted ZIP file directory
+  - Click `Load Unpacked` and navigate to the extracted ZIP file directory (containing manifest.json) and click *Select Folder*
 
 - For Firefox
   - Open `about:debugging` URL

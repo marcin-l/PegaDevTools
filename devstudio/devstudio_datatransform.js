@@ -1,3 +1,4 @@
+PDT.setScriptsApplied();
 console.log("PDT: devstudio/devstudio_datatransform.js");
 
 document.arrive("div[data-node-id='pzRuleFormRuleset'] div.primary-navigation-links", {onceOnly: true, existing: true}, (selection) => {

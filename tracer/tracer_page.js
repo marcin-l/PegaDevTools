@@ -89,7 +89,7 @@ function addPageNavigation() {
 			if(pElemText.endsWith("(1)")) {
 				pElemText = pElemText.replace("(1)", "()");
             }
-            linkTag.setAttribute("title", pElemText);
+            linkTag.setAttribute("title", pElem.innerText.trim());
             linkTag.innerHTML = pElemText;
             divTag.appendChild(linkTag);
             divTag.appendChild(document.createElement("br"));
@@ -135,7 +135,7 @@ function addSearch() {
         };
 
         return searchBox;
-      }
+    }
     
     let mainTable = getMainTable();
     if (mainTable) {
@@ -184,7 +184,7 @@ function prepareSQL(sql, inserts) {
 }
 
 //TODO: convert to PDT settings
-function siteConfigCallback(siteConfig, globalConfig) {
+function siteConfigCallback(_siteConfig, globalConfig) {
 	if (! PDT.isTracerEnabled()) {
 		console.log('PDT tracer disabled');
 	} else {      

@@ -2,14 +2,20 @@
     padding-left: 7px !important;
 }
 
-
 .header-layout.flex.content>.flex.content-item.system-search, .header-layout.flex.content>.flex.content-item.with-icon {
     border-right-width: 0 !important;
     margin: 0 !important;
 }
 
-
 /* remove reserved space in recents explorer, giving more space for item description */
 div[node_name='pzRecentExplorer'] div[node_name='pyFatListItems'] div.explorer-list-item > div {
-    padding-left: 0 !important;
+    padding-left: 2px !important;
+}
+
+div[node_name='pzRecentExplorer'] div[node_name='pyFatListItems']  > div {
+    padding: 0 !important;
+}
+
+div.workspace-app-name {
+    margin-right: 4px !important;
 }

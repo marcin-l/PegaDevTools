@@ -1,4 +1,4 @@
-.PegaDevToolsButton {
+/* .PegaDevToolsButton {
 	border: 3px solid;
 	border-radius: 5px;
 	margin-right: 7px;
@@ -14,6 +14,11 @@
 	background: orange;
 }
 
+.PegaDevToolsButtonGrey {
+	border-color: darkgrey;
+	background: darkgrey;
+} */
+
 .pz-pi.pi-clipboard,
 .pi.pi-clipboard,
 .pz-pi.pi-tracer,
@@ -26,6 +31,11 @@
 .PegaDevToolsTextRed {
 	color: red;
 	border: 1px solid red !important;
+}
+
+.PegaDevToolsTextBlue {
+	color: blue;
+	border: 1px solid blue !important;
 }
 
 /*can be moved to tracer-event.css*/
@@ -81,7 +91,6 @@ div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle {
 	transform: rotate(135deg);
 }
 
-
 .transformUp {
 	-webkit-transform: rotate(-135deg);
 	transform: rotate(-135deg);
@@ -120,6 +129,10 @@ div[data-node-id="pzRuntimeToolsTopBar"] div.layout-content-pz-inline-middle {
 
 .greenPDT button {
 	background-color: green;
+}
+
+.greyPDT button {
+	background-color: darkgrey;
 }
 
 /*** 3-column layout ***/
@@ -182,6 +195,32 @@ div#PDTTracerIndicator button {
 	margin-bottom: 4px;
 }
 
+.PDTdropdown {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	background-color: whitesmoke;
+	overflow: auto;
+	min-width: 160px;
+	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+	overflow-y: scroll;
+	height: 400px;
+}
+
+.PDTdropdown a {
+	color: black;
+	padding: 2px;
+	text-decoration: none;
+	display: block;
+}
+
+.PDTdropdown a:hover {
+	background-color: #ddd;
+}
+  
+.initiallyHidden {
+	display: none;
+}
 
 .PegaDevToolsTransparent, .PegaDevToolsTransparent a {
 	color: transparent !important;

@@ -47,7 +47,8 @@ function handleRightPanelChange() {
 			}
 		}
 		//TODO: change to own implementation, like tracer_page, and remove jQuery.filterTable
-		if(jQuery('table.gridTable') && jQuery('table.gridTable').eq(2)) {
+		if(jQuery('table.gridTable')?.eq(2)) {
+		
 			document.querySelectorAll("table.gridTable table tr tr").forEach((e) => { e.classList.add("noFilter") });
 			//immediately invoked function expression to avoid "$" conflicts using plugins
 			(function( $ ) {

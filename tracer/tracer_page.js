@@ -1,6 +1,9 @@
 console.log("PDT: tracer_page");
 
+var isExpandedSQL = false;
+
 document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
+	var expandedSQL = false;
     if(getMainTable()) {
         addPageNavigation();
         addSearch();
@@ -17,18 +20,40 @@ document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
                 insertsRow = tr;
             }
         }
-
+        
         if(sql && inserts) {
-            let fullSQL = prepareSQL(sql, inserts);
+            let fullSQL = prepareSQL(sql, inserts, isExpandedSQL);
             if(fullSQL) {
                 let fullSQLElement = document.createElement('td');
                 fullSQLElement.colSpan = 2;
                 fullSQLElement.style.border = "thin solid black";
                 fullSQLElement.style.padding = "4px";
                 fullSQLElement.style.fontFamily = "monospace";
-                fullSQLElement.innerHTML = fullSQL;
-                insertsRow.insertAdjacentElement("afterend", fullSQLElement);
-            }
+                fullSQLElement.innerHTML = fullSQL;              
+				
+				let expandButtonRow = document.createElement('tr');
+				let expandButtonCell = document.createElement('td');
+				expandButtonCell.colSpan = 2;
+				
+				let expandButton = document.createElement('button');
+				expandButton.id = "sqlExpandButton";
+				expandButton.textContent = "Expand";
+				expandButton.onclick = function() {
+					isExpandedSQL = !isExpandedSQL;
+					if(isExpandedSQL)
+						document.getElementById("sqlExpandButton").textContent = "Collapse";
+					else
+						document.getElementById("sqlExpandButton").textContent = "Expand";
+					let expandedSQL = prepareSQL(sql, inserts, isExpandedSQL);
+					if (expandedSQL) {
+						fullSQLElement.innerHTML = expandedSQL;
+					}
+				};
+				expandButtonRow.appendChild(expandButtonCell);
+				expandButtonCell.appendChild(expandButton);
+				insertsRow.insertAdjacentElement("afterend", expandButtonRow);
+				insertsRow.insertAdjacentElement("afterend", fullSQLElement);
+			}
         }
     }
 });
@@ -151,7 +176,7 @@ function addSearch() {
     }
 }
 
-function prepareSQL(sql, inserts) {
+function prepareSQL(sql, inserts, expand = false) {
     //regex would be much nicer
     // function sanitize(inText) {
     //     if(inText.includes("< ") || inText.includes(" >")) {
@@ -180,6 +205,30 @@ function prepareSQL(sql, inserts) {
     resultSql += sqlSplit[sqlSplit.length - 1];
 
     resultSql = resultSql.replaceAll("''null''", "NULL");
+
+	injectStyles(`.sql-keyword { font-weight: bold; color: navy; }`);
+	const sqlKeywords = ["SELECT", "FROM", "WHERE", "LEFT JOIN", "RIGHT JOIN", "INNER JOIN", "OUTER JOIN", "GROUP BY", "ORDER BY", "AND", "OR", "UNION", "UNION ALL", "ON", "AS"];
+	sqlKeywords.forEach(keyword => {
+		const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
+		resultSql = resultSql.replace(regex, `<span class="sql-keyword">${keyword}</span>`);
+	});	
+
+	if(expand) {
+		resultSql = resultSql.replace(/ FROM /gi, "<br>FROM ")
+			.replace(/ WHERE /gi, "<br>WHERE ")
+			.replace(/ LEFT JOIN /gi, "<br>LEFT JOIN ")
+			.replace(/ RIGHT JOIN /gi, "<br>RIGHT JOIN ")
+			.replace(/ INNER JOIN /gi, "<br>INNER JOIN ")
+			.replace(/ OUTER JOIN /gi, "<br>OUTER JOIN ")
+			.replace(/ GROUP BY /gi, "<br>GROUP BY ")
+			.replace(/ ORDER BY /gi, "<br>ORDER BY ")
+			.replace(/ AND /gi, "<br>AND ")
+			.replace(/ OR /gi, "<br>OR ")
+			.replace(/ UNION /gi, "<br>UNION ")
+			.replace(/ UNION ALL /gi, "<br>UNION ALL ")
+			.replace(/ ON /gi, "<br>ON ")
+			.replace(/, /gi, ",<br>");
+	}						 
     return resultSql;
 }
 

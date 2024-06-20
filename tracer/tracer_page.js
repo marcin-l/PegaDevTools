@@ -1,9 +1,8 @@
 console.log("PDT: tracer_page");
 
-var isExpandedSQL = false;
+let isExpandedSQL = false;
 
 document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
-	var expandedSQL = false;
     if(getMainTable()) {
         addPageNavigation();
         addSearch();
@@ -12,7 +11,7 @@ document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
         //FEATURE: full SQL query
         let sql = "", inserts = "", insertsRow;
 
-        for (tr of document.querySelectorAll("div.dialogDataContainer tr.eventTable")) {
+        for (let tr of document.querySelectorAll("div.dialogDataContainer tr.eventTable")) {
             if (tr.children[0].textContent.trim() == "SQL") {
                 sql = tr.children[1].textContent.trim();
             } else if (tr.children[0].textContent.trim() == "SQL Inserts") {
@@ -22,6 +21,7 @@ document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
         }
         
         if(sql && inserts) {
+            
             let fullSQL = prepareSQL(sql, inserts, isExpandedSQL);
             if(fullSQL) {
                 let fullSQLElement = document.createElement('td');
@@ -48,6 +48,7 @@ document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
 					if (expandedSQL) {
 						fullSQLElement.innerHTML = expandedSQL;
 					}
+                    fullSQLElement.scrollIntoView({ behavior: 'smooth' });
 				};
 				expandButtonRow.appendChild(expandButtonCell);
 				expandButtonCell.appendChild(expandButton);
@@ -144,8 +145,7 @@ function addSearch() {
             let row = rows[i];
             let cells = row.getElementsByTagName('td');
             let found = false;
-            for (let j = 0; j < cells.length; j++) {
-                let cell = cells[j];
+            for (let cell of cells) {
                 if (cell.innerHTML.toLowerCase().indexOf(searchText) > -1) {
                     found = true;
                     break;
@@ -205,30 +205,35 @@ function prepareSQL(sql, inserts, expand = false) {
     resultSql += sqlSplit[sqlSplit.length - 1];
 
     resultSql = resultSql.replaceAll("''null''", "NULL");
+	
+	if(expand) {        
+		resultSql = resultSql.replace(/ FROM /g, "<br>FROM ")
+			.replace(/ WHERE /g, "<br>WHERE ")
+			.replace(/ LEFT JOIN /g, "<br>LEFT JOIN ")
+			.replace(/ RIGHT JOIN /g, "<br>RIGHT JOIN ")
+			.replace(/ INNER JOIN /g, "<br>INNER JOIN ")
+			.replace(/ OUTER JOIN /g, "<br>OUTER JOIN ")
+			.replace(/ GROUP BY /g, "<br>GROUP BY ")
+			.replace(/ ORDER BY /g, "<br>ORDER BY ")
+			.replace(/ AND /g, "<br>AND ")
+			.replace(/ OR /g, "<br>OR ")
+			.replace(/ UNION ALL /g, "<br>UNION ALL ")
+			.replace(/ UNION /g, "<br>UNION ")
+			.replace(/ ON /g, "<br>ON ")
+			.replace(/ \(SELECT /g, "<br>(SELECT ")
+			.replace(/ \( SELECT /g, "<br>(SELECT ")		
+			.replace(/ With /gi, "With<br> ")		
+			.replace(/, /g, ",<br>");
+	}		
 
 	injectStyles(`.sql-keyword { font-weight: bold; color: navy; }`);
-	const sqlKeywords = ["SELECT", "FROM", "WHERE", "LEFT JOIN", "RIGHT JOIN", "INNER JOIN", "OUTER JOIN", "GROUP BY", "ORDER BY", "AND", "OR", "UNION", "UNION ALL", "ON", "AS"];
+	const sqlKeywords = ["SELECT", "FROM", "WHERE", "LEFT JOIN", "RIGHT JOIN", "INNER JOIN", "OUTER JOIN", "GROUP BY", "ORDER BY", "AND", "OR", "UNION ALL", "UNION", "ON", "AS", "IN", "NOT", "ROW_NUMBER", "OVER", "PARTITION BY", "CAST", "Date_Part", "ASC", "DESC", "With", "WITH", "RANK", "DENSE_RANK"];
 	sqlKeywords.forEach(keyword => {
-		const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
+		const regex = new RegExp(`\\b${keyword}\\b`, 'g');
 		resultSql = resultSql.replace(regex, `<span class="sql-keyword">${keyword}</span>`);
 	});	
 
-	if(expand) {
-		resultSql = resultSql.replace(/ FROM /gi, "<br>FROM ")
-			.replace(/ WHERE /gi, "<br>WHERE ")
-			.replace(/ LEFT JOIN /gi, "<br>LEFT JOIN ")
-			.replace(/ RIGHT JOIN /gi, "<br>RIGHT JOIN ")
-			.replace(/ INNER JOIN /gi, "<br>INNER JOIN ")
-			.replace(/ OUTER JOIN /gi, "<br>OUTER JOIN ")
-			.replace(/ GROUP BY /gi, "<br>GROUP BY ")
-			.replace(/ ORDER BY /gi, "<br>ORDER BY ")
-			.replace(/ AND /gi, "<br>AND ")
-			.replace(/ OR /gi, "<br>OR ")
-			.replace(/ UNION /gi, "<br>UNION ")
-			.replace(/ UNION ALL /gi, "<br>UNION ALL ")
-			.replace(/ ON /gi, "<br>ON ")
-			.replace(/, /gi, ",<br>");
-	}						 
+					 
     return resultSql;
 }
 

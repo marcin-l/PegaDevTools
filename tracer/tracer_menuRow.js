@@ -113,7 +113,7 @@ function siteConfigCallback(siteConfig, _globalConfig) {
 		console.log("PDT tracer");
 		messageServiceWorker("registerTracer"); //register with Service Worker
 
-		if (siteConfig && siteConfig.label) {
+		if (siteConfig?.label) {
 			let headerButtonsElement = document.querySelector("table.tracertop tr");
 			if (headerButtonsElement) {
 				headerButtonsElement.insertAdjacentHTML(

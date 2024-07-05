@@ -38,3 +38,10 @@ removeAllColumnsBtn.click(function () {
     this.remove();
 });
 $('td.eventTitleBarStyle[title="Line"]').prev().append(removeAllColumnsBtn);
+
+//FEATURE: floating headers
+let tracerHeader = document.querySelector("table#traceEvent-TABLE");
+if(tracerHeader) {
+    tracerHeader.style.position = "sticky";
+    tracerHeader.style.top = "0";
+}

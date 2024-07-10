@@ -1,7 +1,7 @@
 {
 	"name": "PegaDevTools",
 	"description": "Pega Developer Productivity Tools",
-	"version": "0.9.8",
+	"version": "0.9.9",
 	"manifest_version": 3,
 	"author": "Marcin Leśniak",
 	"permissions": [
@@ -38,7 +38,7 @@
 			],
 			"js": [
 				"resources/jquery-3.4.1.min.js",
-				"resources/arrive.min.js",				
+				"resources/arrive.min.js",
 				"resources/shared.js",
 				"resources/tinycon.min.js"
 		
@@ -95,7 +95,8 @@
 				"*://*/prweb/*action=openRuleSpecific*portalName=Developer*",
 				"*://*/prweb/*action=createNewWork*portalName=Developer*",
 				"*://*/prweb/*/*eventSrcSection=Embed-PropertyValidation*",
-				"*://*/prweb/*/*action=openRuleByClassAndName*"
+				"*://*/prweb/*/*action=openRuleByClassAndName*",
+				"*://*/prweb/*/*action=openRuleByKeys*"
 			],
 			"all_frames": true,
 			"js": [
@@ -261,7 +262,8 @@
 				"tracer/tracer_options.js"
 			],
 			"all_frames": true,
-			"match_about_blank": true
+			"match_about_blank": true,
+			"run_at": "document_idle"
 		},
 		{
 			"matches": [

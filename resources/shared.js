@@ -7,21 +7,32 @@ browser = window.browser || window.chrome;
 // 	return window.msBrowser || window.browser || window.browser;
 // })();
 
+//TODO: get settings from Service Worker
 class PDT {
 	static {
+		this.init();
+	}
+
+	static async settings() {
+		if(PDT.isObjectEmpty(this._settings) !==  false) {
+			const response = await chrome.runtime.sendMessage(
+				{ purpose: "getSettings" } ); 
+				this._settings = response;
+		}
+		return this._settings;
 	}
 
 	static init() {
-		this.settings = {};
+		this._settings = {};
 		
 		browser.storage.sync.get(["settings", "siteConfig"], (data) => {
 			//this.settings = await getObjectFromLocalStorage("settings");
 
-			this.settings = data.settings;
-			if(typeof this.settings === "undefined") this.settings = {};
-			if(typeof this.settings.tracer === "undefined") this.settings.tracer = {};
-			if(typeof this.settings.clipboard === "undefined") this.settings.clipboard = {};
-			if(typeof this.settings.devstudio === "undefined") this.settings.devstudio = {};
+			this._settings = data.settings;
+			if(typeof this._settings === "undefined") this._settings = {};
+			if(typeof this._settings.tracer === "undefined") this._settings.tracer = {};
+			if(typeof this._settings.clipboard === "undefined") this._settings.clipboard = {};
+			if(typeof this._settings.devstudio === "undefined") this._settings.devstudio = {};
 
 			//var siteConfigs = await getObjectFromLocalStorage("siteConfig");
 
@@ -56,28 +67,29 @@ class PDT {
 		return this.settings[key];
 	}
 
-	static isTracerEnabled() {
-		return !(this.settings.tracer.disabled);
+	static async isTracerEnabled() {
+		const settings = await this.settings();
+		return !(settings.tracer.disabled);
 	}
 
 	static isClipboardEnabled() {
-		return !(this.settings.clipboard.disabled);
+		return !(this._settings.clipboard.disabled);
 	}
 
 	static isDevstudioEnabled() {
-		return !(this.settings.devstudio && this.settings.devstudio.disabled);
+		return !(this._settings?.devstudio?.disabled);
 	}
 
 	static isAgilestudioEnabled() {
-		return (this.settings.agilestudio && this.settings.agilestudio.enabled);
+		return (this._settings.agilestudio && this._settings.agilestudio.enabled);
 	}
 
 	static isDeploymentManagerEnabled() {
-		return (this.settings.deploymentmanager && this.settings.deploymentmanager.enabled);
+		return (this._settings.deploymentmanager && this._settings.deploymentmanager.enabled);
 	}
 
 	static isDebugEnabled() {
-		return this.settings.debug;
+		return this._settings.debug;
 	}
 
 	static isInTracer() {
@@ -93,6 +105,14 @@ class PDT {
 	static log(msg) {
 		console.log(msg);
 	}
+
+	static isObjectEmpty(obj) {
+		return (
+			obj &&
+		  	Object.keys(obj).length === 0 &&
+		  	obj.constructor === Object
+		);
+	  };
 
 	static isDigit(n) {
 		return !!([!0, !0, !0, !0, !0, !0, !0, !0, !0, !0][n]);
@@ -137,7 +157,7 @@ class PDT {
 		}
 
 		if(this.hasConfigForSite || forceColor) {
-			if(forceLargeLabel || (this.settings.favicon == "large" && this.siteConfig.label && !forceSmall)) {
+			if(forceLargeLabel || (this._settings.favicon == "large" && this.siteConfig.label && !forceSmall)) {
 				Tinycon.setOptions({
 					width: 16,
 					height: 16,
@@ -171,9 +191,28 @@ class PDT {
 	static makeFullscreen() {
 		window.resizeTo(screen.width, screen.height);
 	}
+
+	static setScriptsApplied() {
+		if(!document.querySelector("input#PDTContent"))
+			document.querySelector("div[data-node-id='RuleFormHeader'], body").insertAdjacentHTML("beforeend",'<input type="hidden" id="PDTContent" value="loaded" />');
+	}
+
+	//TODO: not really working, probably CKE starts with empty body
+	static shouldSkipContentForDocument(document){ 
+		//CKE editor loads a body element which causes hidden input to be appended to paragraph source
+		let skip = false;
+		document.classList.forEach((className) => { if(className.includes("cke")) skip = true; });
+		if(skip) {
+			if(document.querySelector("body"))
+				document.querySelector("body").setAttribute("data-PDTskipContent", true);
+			else
+				PDT.debug("could not set data-PDTskipContent");
+		}
+		return skip;
+	}
 }
 
-if(typeof PDT.settings ===  "undefined")
+if(typeof PDT._settings ===  "undefined")
 	PDT.init();
 
 function getFrameId() {
@@ -409,3 +448,18 @@ const getObjectFromStorage = async function (key) {
 		}
 	});
 };
+
+browser.runtime.onMessage.addListener(function(msg) {
+	if(msg.purpose == "PingContent") {
+		if (document.querySelector("input#PDTContent")) {
+			//messageServiceWorker('OK');
+		}
+		else if(document.querySelector("body") && document.querySelector("body").hasAttribute("data-PDTskipContent")) {
+			//messageServiceWorker('OK');
+		}
+		else {
+			console.log("PDT requesting content script reload");
+			messageServiceWorker('reloadContentScripts');
+		}
+	}
+})

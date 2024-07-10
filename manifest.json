@@ -200,8 +200,16 @@
 		},
 		{
 			"matches": [
-				"*://*/prweb/*pyStream=TraceMain*",
 				"*://*/prweb/*Data-TRACERSettings.pzStartTracerSession*"
+			],
+			"js": [
+				"tracer/tracer.js"
+			],
+			"all_frames": true
+		},		
+		{
+			"matches": [
+				"*://*/prweb/*pyStream=TraceMain*"
 			],
 			"js": [
 				"resources/jquery-3.4.1.min.js",

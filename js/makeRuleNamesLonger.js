@@ -22,12 +22,12 @@ const containerTabListCallbackNames = function (mutationsList, _observer) {
 	});
 };
 
-const containerTabListNamesObserver = new MutationObserver(containerTabListCallbackNames);
-containerTabListNamesObserver.observe(containerTabListNames, 
-    { 
-        attributeFilter: [ "aria-label"],
-        subtree: true
-    }
-);
+//const containerTabListNamesObserver = new MutationObserver(containerTabListCallbackNames);
+//containerTabListNamesObserver.observe(containerTabListNames, 
+//    { 
+//        attributeFilter: [ "aria-label"],
+//      subtree: true
+//    }
+//);
 
 console.log("PDT: makeRuleNamesLonger.js loaded");

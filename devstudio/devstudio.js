@@ -4,61 +4,51 @@ function applyPDTCustomization() {
   function siteConfigCallback(siteConfig, globalConfig) {
     messageServiceWorker("registerDevStudio");  //register with Service Worker
 
-    if (siteConfig && siteConfig.label) {
-      if (
-        globalConfig.settings &&
-        globalConfig.settings.useSiteLabelForBrowserTitle
-      ) {
-        var newTitle = siteConfig.label + " Pega";
+    if (siteConfig?.label) {
+      if (globalConfig.settings?.useSiteLabelForBrowserTitle) {
+        let newTitle = siteConfig.label + " Pega";
         if (siteConfig.version)
           newTitle += " " + siteConfig.version.slice(0, 1) + "." + siteConfig.version.slice(1, 2);
         parent.document.title = newTitle;
       }
     
       //FEATURE: environment header
-      var productionEnvElement = document.querySelector(
+      let productionEnvElement = document.querySelector(
         "div[data-ui-meta*='D_pzGetCurrentSystemRecord.pyActiveProductionLevelName']"
       );
+	    const cleanColor = siteConfig.color.replace("#", '');
       if (productionEnvElement) {
         productionEnvElement.insertAdjacentHTML(
-          "afterend",
-          "<div style='color: white; text-shadow: black 0px 0px 6px;background-color:#" +
-            siteConfig.color.replace("#", '') +
-            ";border:2px solid; border-top-style:none; border-right-style:none; font-weight:bold; border-color:#" +
-            siteConfig.color.replace("#", '') +
-            "; padding:6px'>" + siteConfig.label + "</ div>"
+			    "afterend",
+			    `<div style='color: white; text-shadow: black 0px 0px 6px;background-color:#${cleanColor};border:2px solid; border-top-style:none; border-right-style:none; font-weight:bold; border-color:#${cleanColor}; padding:6px'> 
+				    ${siteConfig.label}
+			    </ div>`
         );
         productionEnvElement.closest('div[bsimplelayout="true"]').style.paddingRight = "0";
         document.querySelector("div.env-name").style.borderLeft = "none";
       } else {
         document
-          .querySelector("div#PegaDevToolsSearchAllOptionsLink")
-          .insertAdjacentHTML(
-            "beforebegin",
-            "<div style='color:#" +
-              siteConfig.color.replace("#", '') +
-              ";border:2px solid; margin:inherit; margin-right:7px; padding:3px'>" +
-              siteConfig.color.replace("#", '') +
-              "</ div>"
+			    .querySelector("div#PegaDevToolsSearchAllOptionsLink")
+			    .insertAdjacentHTML(
+				    "beforebegin",
+				    `<div style='color:#${cleanColor};border:2px solid; margin:inherit; margin-right:7px; padding:3px'>
+              ${siteConfig.label}
+            </ div>`
           );
       }
 
-      if (
-        globalConfig.settings && globalConfig.settings.hideEnvironmentHeader
-      ) {
+      if (globalConfig.settings?.hideEnvironmentHeader) {
         if (productionEnvElement) productionEnvElement.style.display = "none";
       }
 
       if (siteConfig.useColorTop) {
         document.querySelector(
           'div[data-portalharnessinsname="Data-Portal-DesignerStudio!pzStudio"]'
-        ).style.cssText =
-          "border-top:2px; border-top-style:solid; border-color:#" +
-          siteConfig.color.replace("#", '');
+        ).style.cssText = `border-top:2px; border-top-style:solid; border-color:#${cleanColor}`;
       }
     }
     var settings;
-    if (globalConfig && globalConfig.settings) {
+    if (globalConfig?.settings) {
       settings = globalConfig.settings;
     }
     if (! PDT.isDevstudioEnabled()) {
@@ -66,15 +56,15 @@ function applyPDTCustomization() {
     } else {
       if (PDT.isTracerEnabled()) {
         //FEATURE: open tracer in tab
-        if (PDT.settings.tracer.openBehavior)
+        if (PDT._settings.tracer.openBehavior)
           alterTracerOpenBehavior(settings.tracer.openBehavior);
       }
 
       //FEATURE: hide close button
-      if (PDT.settings.devstudio.hideCloseButton)
+      if (PDT._settings.devstudio.hideCloseButton)
         injectStyles("div.tStrCntr ul #close {display: none}");
 
-      if (PDT.settings.devstudio.longerRuleNames) {
+      if (PDT._settings.devstudio.longerRuleNames) {
         //inject script which will apply it for newly opened tabs
         injectScript("/js/", "makeRuleNamesLonger.js");
         injectStyles(
@@ -82,12 +72,12 @@ function applyPDTCustomization() {
         );
       }
 
-      if (PDT.settings.devstudio.expandTabOnHover) {
+      if (PDT._settings.devstudio.expandTabOnHover) {
         //inject script which will apply it for newly opened tabs
         injectScript("/js/", "expandTabOnHover.js");
       }      
 
-      if (PDT.settings.devstudio.checkoutIndicator) {
+      if (PDT._settings.devstudio.checkoutIndicator) {
         showCheckoutIndicator();
       }
 
@@ -96,7 +86,7 @@ function applyPDTCustomization() {
       injectSidebarToggle();
 
       //FEATURE: close tab on middle click
-      if (PDT.settings.devstudio.closeTabMiddleClick) {
+      if (PDT._settings.devstudio.closeTabMiddleClick) {
         //inject script which will apply it for newly opened tabs
         injectScript("/js/", "closeTabMiddleClick.js");
 
@@ -150,7 +140,7 @@ function showCheckoutIndicator() {
   if (containerTabListIndicator) {
     const containerTabListCallbackIndicator = function (
       mutationsList,
-      observer
+      _observer
     ) {
       mutationsList.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
@@ -183,20 +173,28 @@ function showCheckoutIndicator() {
 }
 
 function addHeaderShortcuts() {
-	//FEATURE: shortcuts to Search all options
-	$("div.create-case").append(
-	  '<div id="PegaDevToolsSearchAllOptionsLink"><a href="#" onclick="pd(event);" class="Header_nav margin-1x" role="menuitem" data-ctl="" data-click="[[&quot;runScript&quot;,[&quot;pega.ui.commandpalette.toggle()&quot;]]]"><span class="menu-item-title-wrap" data-click="."><span class="menu-item-title" data-click="..">Search</span></span></a></div>'
-	);
-  
-	//FEATURE: shortcuts to Operators in header
-	$("div.create-case").append(
-	  '<div id="PegaDevToolsOperatorLink"><a href="#" onclick="pd(event);" class="Header_nav margin-1x" data-ctl="Link" name="pyStudioHome_pyDisplayHarness_10" data-click="[[&quot;openLandingPage&quot;,[&quot;Organization and Security: Organization&quot;,&quot;Display&quot;,{&quot;harnessName&quot;:&quot;pzLPOrganizationAndSecurityOrganization&quot;,&quot;className&quot;:&quot;Pega-Landing-Org&quot;,&quot;model&quot;:&quot;&quot;,&quot;page&quot;:&quot;&quot;,&quot;readOnly&quot;:&quot;false&quot;,&quot;contentID&quot;:&quot;b7d85aff-de9d-4a4d-9e1e-3b742e74078c&quot;,&quot;dynamicContainerID&quot;:&quot;&quot;,&quot;customParam&quot;:{}},{&quot;levelA&quot;:&quot;&quot;,&quot;levelB&quot;:&quot;&quot;,&quot;levelC&quot;:&quot;Operators&quot;}]]]" class=""><span class="menu-item-title-wrap" data-click=".">Op<span></a></div>'
-	);
-  
-	//FEATURE: shortcuts to Logs in header
-	$("div.create-case").append(
-	  '<div id="PegaDevToolsLogLink"><a href="#" onclick="pd(event);" class="Header_nav margin-1x" role="menuitem" data-ctl="" data-click="[[&quot;openLandingPage&quot;,[&quot;System: Operations&quot;,&quot;Display&quot;,{&quot;harnessName&quot;:&quot;pzLPSystemOperationsClusterManagement&quot;,&quot;className&quot;:&quot;Pega-Landing-System-Operations&quot;,&quot;model&quot;:&quot;pzInitializeSystemOperationsLandingPage&quot;,&quot;page&quot;:&quot;&quot;,&quot;readOnly&quot;:&quot;false&quot;,&quot;contentID&quot;:&quot;a61bd6ee-9e44-4219-814e-2ba0edb7f7c1&quot;,&quot;dynamicContainerID&quot;:&quot;&quot;},{&quot;levelA&quot;:&quot;&quot;,&quot;levelB&quot;:&quot;&quot;,&quot;levelC&quot;:&quot;Logs&quot;}]]]"><span class="menu-item-title-wrap" data-click=".">Logs<span></a></div>'
-	);
+  let createCaseDiv = document.querySelector("div.create-case");
+  if(createCaseDiv) {
+    //FEATURE: shortcuts to Search all options
+    createCaseDiv.insertAdjacentHTML(
+      "beforeend",
+      '<div id="PegaDevToolsSearchAllOptionsLink"><a href="#" onclick="pd(event);" class="Header_nav margin-1x" role="menuitem" data-ctl="" data-click="[[&quot;runScript&quot;,[&quot;pega.ui.commandpalette.toggle()&quot;]]]"><span class="menu-item-title-wrap" data-click="."><span class="menu-item-title" data-click="..">Search</span></span></a></div>'
+    );
+
+    //FEATURE: shortcuts to Operators in header
+    createCaseDiv .insertAdjacentHTML(
+      "beforeend",
+      '<div id="PegaDevToolsOperatorLink"><a href="#" onclick="pd(event);" class="Header_nav margin-1x" data-ctl="Link" name="pyStudioHome_pyDisplayHarness_10" data-click="[[&quot;openLandingPage&quot;,[&quot;Organization and Security: Organization&quot;,&quot;Display&quot;,{&quot;harnessName&quot;:&quot;pzLPOrganizationAndSecurityOrganization&quot;,&quot;className&quot;:&quot;Pega-Landing-Org&quot;,&quot;model&quot;:&quot;&quot;,&quot;page&quot;:&quot;&quot;,&quot;readOnly&quot;:&quot;false&quot;,&quot;contentID&quot;:&quot;b7d85aff-de9d-4a4d-9e1e-3b742e74078c&quot;,&quot;dynamicContainerID&quot;:&quot;&quot;,&quot;customParam&quot;:{}},{&quot;levelA&quot;:&quot;&quot;,&quot;levelB&quot;:&quot;&quot;,&quot;levelC&quot;:&quot;Operators&quot;}]]]" class=""><span class="menu-item-title-wrap" data-click=".">Op<span></a></div>'
+    );
+ 
+	  //FEATURE: shortcuts to Logs in header
+    createCaseDiv .insertAdjacentHTML(
+      "beforeend",
+	    '<div id="PegaDevToolsLogLink"><a href="#" onclick="pd(event);" class="Header_nav margin-1x" role="menuitem" data-ctl="" data-click="[[&quot;openLandingPage&quot;,[&quot;System: Operations&quot;,&quot;Display&quot;,{&quot;harnessName&quot;:&quot;pzLPSystemOperationsClusterManagement&quot;,&quot;className&quot;:&quot;Pega-Landing-System-Operations&quot;,&quot;model&quot;:&quot;pzInitializeSystemOperationsLandingPage&quot;,&quot;page&quot;:&quot;&quot;,&quot;readOnly&quot;:&quot;false&quot;,&quot;contentID&quot;:&quot;a61bd6ee-9e44-4219-814e-2ba0edb7f7c1&quot;,&quot;dynamicContainerID&quot;:&quot;&quot;},{&quot;levelA&quot;:&quot;&quot;,&quot;levelB&quot;:&quot;&quot;,&quot;levelC&quot;:&quot;Logs&quot;}]]]"><span class="menu-item-title-wrap" data-click=".">Logs<span></a></div>'
+	  );
+  } else {
+    console.log("PDT: no div.create-case");  
+  }
 }
 
 function customizeText() {
@@ -225,7 +223,7 @@ function customizeText() {
   document.querySelector("div.alerts a").innerHTML = document.querySelector("div.alerts a").innerHTML.replace(document.querySelector("div.alerts a").textContent, '');
 
   //FEATURE: shorten Live Data
-  var DataInspectorButton = document.querySelector(
+  let DataInspectorButton = document.querySelector(
     "div a[data-test-id='DataInspectorButton']"
   );
   if (DataInspectorButton) {

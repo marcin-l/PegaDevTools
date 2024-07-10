@@ -10,13 +10,13 @@ var titleTimerId;
 var counter = 0;
 
 async function backgroundNotify(state) {
-	if (PDT.settings.debug) {
+	if (PDT._settings.debug) {
 		browser.runtime.sendMessage({ purpose: "tracerState", tracerIsOn: state });
 	}
 }
 
 async function backgroundHeartbeat() {
-	if (PDT.settings.debug) {
+	if (PDT._settings.debug) {
 		browser.runtime.sendMessage({ purpose: "tracerHeartbeat" });
 		console.log("PDT sending heartbeat " + Math.floor(Date.now() / 1000));
 	}
@@ -55,10 +55,10 @@ function setTitle() {
 	}
 }
 
-var errorIndex = 0,
+let errorIndex = 0,
 	messageIndex = 0,
 	accessDeniedIndex;
-var errorList = [],
+let errorList = [],
 	messagesList = [],
 	accessDeniedList = [];
 
@@ -82,7 +82,7 @@ function getAccessDeniedList() {
 
 function updateErrorCount(count, index) {
 	let newTextContent = "Errors";
-	if (!(count === undefined)) {
+	if (count !== undefined) {
 		newTextContent = "Errors" + String.fromCharCode(160);
 		if (index) newTextContent += "" + index + "/" + count;
 		else newTextContent += "" + count;
@@ -110,8 +110,7 @@ function siteConfigCallback(siteConfig, _globalConfig) {
 	if (!PDT.isTracerEnabled()) {
 		console.log("PDT tracer disabled");
 	} else {
-		console.log("PDT tracer");
-		messageServiceWorker("registerTracer"); //register with Service Worker
+		console.log("PDT tracer_menuRow.js");
 
 		if (siteConfig?.label) {
 			let headerButtonsElement = document.querySelector("table.tracertop tr");
@@ -279,12 +278,12 @@ function waitUntilRenderTracerButtons() {
 
 var tries = 0;
 
-//make sure we are in the right frame, script can be loaded with tracer page popup
+//TODO?: make sure we are in the right frame, script can be loaded with tracer page popup
 if(document.querySelector("table.tracertop")) {
 	siteConfig(siteConfigCallback);
 }
 
-PDT.alterFavicon();
+
 
 //TODO:
 //displayPage = new Function('pageXML','pageName','pagePropertyName', displayPage.toString().match(/{([\s\S]*)}/)[1].replace('window.open(strURL,strForm,"status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=yes"  + strFeatures)', "window.open(strURL,'_blank')"));

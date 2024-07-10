@@ -237,25 +237,23 @@ function prepareSQL(sql, inserts, expand = false) {
     return resultSql;
 }
 
-//TODO: convert to PDT settings
-function siteConfigCallback(siteConfig, globalConfig) {
-	if (! PDT.isTracerEnabled()) {
-		console.log('PDT tracer disabled');
-	} else {      
+PDT.isTracerEnabled().then(isTracerEnabled => {
+	if (!isTracerEnabled) {
+		console.log("PDT tracer disabled");
+	} else {		
         document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
             if(getMainTable()) {
                 //FEATURE: Sort properties alphabetically in page view
-                if (globalConfig.settings.tracer.pagesort) {
+                if (PDT._settings.tracer.pagesort) {
+                    console.log("PDT: sorting page");
                     sortTopLevel();
                 }
 
                 //FEATURE: Always expand step page messages 
-                if (globalConfig.settings.tracer.pageMessagesExpand) {
+                if (PDT._settings.tracer.pageMessagesExpand) {
                     injectScript("/js/", "expandTracerMessagesOnLoad.js");
                 }
             }
         });
 	}
-}
-
-siteConfig(siteConfigCallback);
+});

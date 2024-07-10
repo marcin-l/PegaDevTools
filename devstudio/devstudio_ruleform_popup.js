@@ -60,4 +60,5 @@ function waitUntilRender() {
 	}
 }
 
+//TODO: use arrive.js
 waitUntilRender();

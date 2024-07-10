@@ -46,6 +46,7 @@ function saveSettings() {
   settings.tracer.pagesort = document.querySelector("input#tracerPageSort").checked;
   settings.tracer.settingsFullscreen = document.querySelector("input#tracerSettingsFullscreen").checked;
   settings.tracer.pageMessagesExpand = document.querySelector("input#tracerPageMessagesExpand").checked;
+  settings.tracer.restorePosition = document.querySelector("input#tracerRestorePosition").checked;
   settings.tracer.openBehavior = (document.querySelector("input[name=tracerOpenBehavior]:checked") ?  document.querySelector("input[name=tracerOpenBehavior]:checked").id : "");
 
   settings.devstudio = new Object();
@@ -101,7 +102,8 @@ function restoreOptions() {
     document.querySelector("input#disableTracer").checked = (data.settings.tracer.disabled)?data.settings.tracer.disabled:"";
     document.querySelector("input#tracerPageSort").checked = (data.settings.tracer.pagesort)?data.settings.tracer.pagesort:"";
     document.querySelector("input#tracerSettingsFullscreen").checked = (data.settings.tracer.settingsFullscreen)?data.settings.tracer.settingsFullscreen:"";
-    document.querySelector("input#tracerPageMessagesExpand").checked = (data.settings.tracer.settingsFullscreen)?data.settings.tracer.pageMessagesExpand:"";
+    document.querySelector("input#tracerPageMessagesExpand").checked = (data.settings.tracer.pageMessagesExpand)?data.settings.tracer.pageMessagesExpand:"";
+    document.querySelector("input#tracerRestorePosition").checked = (data.settings.tracer.restorePosition)?data.settings.tracer.restorePosition:"";    
     //if(data.settings.tracer.openBehavior) document.getElementById(data.settings.tracer.openBehavior).checked = true;
 
     if(typeof data.settings.devstudio === "undefined") data.settings.devstudio = {};
@@ -120,8 +122,6 @@ function restoreOptions() {
 
     onDebugModeChange();
   });
-
-
 }
 
 function addSite() {
@@ -133,8 +133,8 @@ function addSite() {
   newOptionsHtml += '<select id="version"><option value="" disabled selected hidden>Version:</option><option value=""></option><option value="7">Pega 7</option><option value="81">Pega 8.1</option><option value="82">Pega 8.2</option><option value="83">Pega 8.3</option><option value="84">Pega 8.4</option><option value="85">Pega 8.5</option><option value="86">Pega 8.6</option><option value="87">Pega 8.7</option><option value="88">Pega 8.8</option></select>';
   newOptionsHtml += '&nbsp;&nbsp;<a href="#" class="siteRem">remove</a></div>';
   $("#siteConfig").append(newOptionsHtml);
-  let hueb = new Huebee($("button#color").last()[0], { notation: 'hex', saturations: 1, setBGColor: true, shades: 7, hue0: 80, customColors: [ '#FFF', '#0E0', '#FFA30F', '#C25', '#FFF000', '#19F' ]});
-  hueb.on('change', function(color) { //sets text color to chosen color so hex is not visible
+  let huebee = new Huebee($("button#color").last()[0], { notation: 'hex', saturations: 1, setBGColor: true, shades: 7, hue0: 80, customColors: [ '#FFF', '#0E0', '#FFA30F', '#C25', '#FFF000', '#19F' ]});
+  huebee.on('change', function(color) { //sets text color to chosen color so hex is not visible
     this.anchor.style.color = color;
   });
 }
@@ -145,7 +145,7 @@ document.getElementById('saveSettings').addEventListener('click', saveSettings);
 document.getElementById('addSite').addEventListener('click', addSite);
 
 //event delegation
-$("div#siteConfig").on("click", "a", function (event) {
+$("div#siteConfig").on("click", "a", function (_event) {
   //event.preventDefault();
   $(this).closest("div#siteRow").remove();
 });

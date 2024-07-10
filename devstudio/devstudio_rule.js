@@ -24,7 +24,7 @@ function siteConfigCallback(siteConfig, globalConfig) {
 
         //FEATURE: copy rule info (name, class, ruleset) in a format to be pasted into a table
         document.arrive("a.custom_RuleOpener", {onceOnly: true, existing: true}, function() {
-            $('a.custom_RuleOpener').eq(0).after('<a class="rule-details" style="margin-top:0; margin-bottom:0;padding-left: 4px;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopyNameAndClass()" title="Copy name, class and ruleset"><i  class="icons pi pi-copy" id="CopyNameAndClass"></i></a>');
+            $('a.custom_RuleOpener').eq(0).after('<a class="rule-details" style="margin-top:0; margin-bottom:0;padding-left: 4px;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopyNameAndClass()" title="Copy name, class and ruleset"><i class="icons pi pi-copy" id="CopyNameAndClass"></i></a>');
         });
         
         //FEATURE: copy class name
@@ -38,8 +38,33 @@ function siteConfigCallback(siteConfig, globalConfig) {
         
         //FEATURE: show button to copy pzInskey to clipboard
         document.arrive('div[node_name="pzRuleFormKeysAndDescription"] span.workarea_header_titles', {onceOnly: true, existing: true}, function() {
-            document.querySelectorAll('div[node_name="pzRuleFormKeysAndDescription"] span.workarea_header_titles')[0].insertAdjacentHTML('beforebegin', '<a style="margin-top:0; margin-bottom:0;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopypzInsKey()" title="Copy pzInsKey"><i  class="icons pi pi-copy" style="color: white" id="CopypzInsKey"></i></a>')
+            document.querySelectorAll('div[node_name="pzRuleFormKeysAndDescription"] span.workarea_header_titles')[0].insertAdjacentHTML('beforebegin', '<a style="margin-top:0; margin-bottom:0;padding-bottom: 3px;padding-top: 0;" href="#" onclick="return CopypzInsKey()" title="Copy pzInsKey"><i class="icons pi pi-copy" style="color: white" id="CopypzInsKey"></i></a>')
         });    
+		
+		if (siteConfig?.label) {
+			document.arrive('div.hd#modaldialog_hd', {onceOnly: false, existing: true}, (modaldialog) => {
+				console.log('start: ' + modaldialog);
+				let elem = document.querySelector('div[node_name="ActionCheckIn"][node_type="MAIN_RULE"], div[node_name="pyDeleteCheckOutWarning"][node_type="MAIN_RULE"], div[node_name="pyDeleteRulePrompt"][node_type="MAIN_RULE"]');
+				let modalWrapperHeader = document.querySelector('div#PDTmodalWrapperHeader');
+				if(elem) {
+					if(!modalWrapperHeader) {
+						const cleanColor = siteConfig.color.replace("#", '');
+						const styleHTML = `
+							<div id="PDTmodalWrapperHeader" style='color: white; text-shadow: black 0px 0px 6px; background-color: #${cleanColor}; border: 2px solid; border-top-style: none; border-right-style: none; font-weight: bold; border-color: #${cleanColor}; padding: 6px'>
+								${siteConfig.label}
+							</div>`;
+						elem.closest('div#modalWrapper').insertAdjacentHTML("afterbegin", styleHTML);
+						elem.closest('div#modalWrapper').style.border = `6px solid #${cleanColor}`;
+						console.log('apply');
+					}
+				} else if (modalWrapperHeader) {
+					
+					modalWrapperHeader.parentNode.removeChild(modalWrapperHeader);
+					modalWrapper.closest('div#modalWrapper').style.border = "";
+					console.log('remove');
+				}				
+			});
+		}
 
         // //TODO: extra refresh button
         // document.arrive('div[node_name="RuleFormHeader"] > div', {onceOnly: true, existing: true}, function() {

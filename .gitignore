@@ -9,3 +9,5 @@ resources/codemirror/htmlmixed.html
 resources/codemirror/javascript.html
 resources/codemirror/jsxjava.html
 clipboard.experimental.js
+*.bak
+devstudio/devstudio_notes.js

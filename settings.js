@@ -56,6 +56,8 @@ function saveSettings() {
   settings.devstudio.hideCloseButton = document.querySelector("input#devstudioHideCloseButton").checked;
   settings.devstudio.longerRuleNames = document.querySelector("input#devstudioLongerRuleNames").checked;
   settings.devstudio.checkoutIndicator = document.querySelector("input#devstudioCheckoutIndicator").checked && settings.debug;
+  settings.devstudio.datatransform = new Object();
+  settings.devstudio.datatransform.moveSuperclassToTop = document.querySelector("input#devstudioDataTransformMoveSuperclassToTop").checked;
 
   settings.agilestudio = new Object();
   settings.agilestudio.enabled = document.querySelector("input#enableAgilestudio").checked;
@@ -113,6 +115,10 @@ function restoreOptions() {
     document.querySelector("input#devstudioHideCloseButton").checked = (data.settings.devstudio.hideCloseButton)?data.settings.devstudio.hideCloseButton:"";
     document.querySelector("input#devstudioLongerRuleNames").checked = (data.settings.devstudio.longerRuleNames)?data.settings.devstudio.longerRuleNames:"";
     document.querySelector("input#devstudioCheckoutIndicator").checked = (data.settings.devstudio.devstudioCheckoutIndicator && data.settings.debug)?data.settings.devstudio.devstudioCheckoutIndicator:"";
+
+    if(typeof data.settings.devstudio.datatransform === "undefined") data.settings.devstudio.datatransform = {};
+    document.querySelector("input#devstudioDataTransformMoveSuperclassToTop").checked = (data.settings.devstudio.datatransform.moveSuperclassToTop)?data.settings.devstudio.datatransform.moveSuperclassToTop:"";
+
 
     if(typeof data.settings.agilestudio === "undefined") data.settings.agilestudio = {};
     document.querySelector("input#enableAgilestudio").checked = (data.settings.agilestudio.enabled)?data.settings.agilestudio.enabled:"";

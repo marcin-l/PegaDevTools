@@ -35,7 +35,7 @@ function addpyWorkPageLink() {
 }
 
 //FEATURE: add link to newAssignPage to header
-function addnewAssignPage() {
+function addNewAssignPage() {
 	jQuery("#devToolsGoToAssignPage").remove();
 
 	let newAssignPage = jQuery("#gridNode li.gridRow ul li").has("span[title^='newAssignPage']")[0];
@@ -50,7 +50,7 @@ function addnewAssignPage() {
 	}
 }
 
-//get config
+//TODO: change to async
 function siteConfigCallback(siteConfig, globalConfig) {
 	PDT.alterFavicon();
 	
@@ -84,7 +84,7 @@ function siteConfigCallback(siteConfig, globalConfig) {
 		}
 
 		addpyWorkPageLink();
-		addnewAssignPage();
+		addNewAssignPage();
 		injectScript("/clipboard/", "inject_clipboard.js");
 
 		//FEATURE: remove unnecessary space in right panel
@@ -115,3 +115,178 @@ function siteConfigCallback(siteConfig, globalConfig) {
 }
 
 siteConfig(siteConfigCallback);
+
+
+// FEATURE: pin User Pages pages to top
+const userPagesParent = document.querySelector("div#gridBody_left > ul#gridNode0 > li > ul#gridNode");
+const userPages = document.querySelectorAll("div#gridBody_left > ul#gridNode0 > li > ul > li.gridRow > ul.rowContent li.dataValueRead div.oflowDiv");
+let pinnedPagesList = [];
+userPages.forEach(addPinIcon);
+
+function addPinIcon(target) {
+    if (target) {
+        // Create the pin icon element
+        const pinIcon = document.createElement('span');
+        pinIcon.innerHTML = '📌';
+        pinIcon.style.cursor = 'pointer';
+        pinIcon.style.marginLeft = '10px';
+		pinIcon.classList.add('PDTpinIcon');
+		pinIcon.style.display = "none";
+		pinIcon.title = "Pin to top";
+
+        pinIcon.addEventListener('click', (event) => {
+			const listItem = event.target.closest("li").closest("ul").closest("li");			
+            const parent = listItem.parentNode;
+            if (listItem && parent) {
+                //parent.insertBefore(listItem, parent.firstChild);				
+				addUnpinIcon(listItem);
+				sortListItems(parent);
+				savePinnedPages();
+            }
+			event.stopPropagation();
+        });
+
+        target.appendChild(pinIcon);
+    }
+}
+
+// save pin setting to browser storage
+function savePinSetting(listItem) {
+	if(listItem.classList.contains("PDTpinned")) {	// add
+		localStorage.setItem("PDTpinned", listItem.id);
+	} else { //remove
+		localStorage.removeItem("PDTpinned");
+	}
+}
+
+function addUnpinIcon(listItem, skipSort = false) {
+    if (listItem) {
+		listItem.classList.add("PDTpinned");
+		//savePinSetting(listItem);
+        const unpinIcon = document.createElement('span');
+        unpinIcon.innerHTML = '❌';
+        unpinIcon.style.cursor = 'pointer';
+        unpinIcon.style.marginLeft = '10px';
+        unpinIcon.classList.add('PDTunpinIcon');
+		unpinIcon.title = "Unpin";
+
+        unpinIcon.addEventListener('click', (event) => {
+			//move element to top of the list
+            let listItem = event.target.closest("li").closest("ul").closest("li");	
+            //const parent = listItem.parentNode;
+            if (listItem && userPagesParent) {
+                //userPagesParent.appendChild(listItem);		// ??		
+                listItem.classList.remove("PDTpinned");
+                listItem.querySelector('.PDTunpinIcon').remove();
+				if(!skipSort)
+					sortListItems(userPagesParent);
+				//savePinSetting(listItem);
+            }
+            event.stopPropagation();
+        });
+        
+        listItem.querySelector(" ul.rowContent li.dataValueRead div.oflowDiv").appendChild(unpinIcon);
+    }
+}
+
+function sortListItems(list) {
+	console.log('PDT: sortListItems');
+    const listItems = Array.from(list.children);
+
+    // Separate pinned and unpinned items
+    const pinnedItems = listItems.filter(item => item.classList.contains('PDTpinned'));
+    const unpinnedItems = listItems.filter(item => !item.classList.contains('PDTpinned'));
+	if(pinnedItems.length > 0) {
+		// Sort unpinned items based on the pl_index attribute
+		unpinnedItems.sort((a, b) => {
+			const aIndex = parseInt(a.getAttribute('pl_index'), 10);
+			const bIndex = parseInt(b.getAttribute('pl_index'), 10);
+			return aIndex - bIndex;
+		});
+
+		// Clear the ul and append sorted items
+		list.innerHTML = '';
+		pinnedItems.forEach(item => list.appendChild(item));
+		unpinnedItems.forEach(item => list.appendChild(item));
+	}
+}
+
+
+injectStyles(`ul.cellHover span.PDTpinIcon {
+    display: inline !important;
+}`);
+
+injectStyles(`li.PDTpinned > ul div.oflowDiv {
+    font-weight: bold;
+}`);
+
+injectStyles(`li.PDTpinned span.PDTpinIcon {
+    display: none !important;
+}`);
+
+function restorePinnedPages(userPages) {
+	console.log('PDT: restorePinnedPages');
+    browser.storage.local.get('pinnedPagesList', (data) => {
+        if (data.pinnedPagesList) {
+            pinnedPagesList = data.pinnedPagesList;
+			userPages.forEach(restorePinnedPage);
+			sortListItems(userPagesParent);
+            console.log('PDT: pinned pages restored:', pinnedPagesList);			
+        } else {
+            console.log('PDT pinned pages could not be restored');		
+        }
+    });
+}
+
+function restorePinnedPage(item) {
+	let title = item.querySelector("span:first-child")?.title;
+	if(title && pinnedPagesList.includes(title)) {
+		const listItem = item.closest("li").closest("ul").closest("li");	
+		addUnpinIcon(listItem, true);
+	}
+}
+
+function savePinnedPages() {
+    const pinnedElemList = document.querySelectorAll("div#gridBody_left > ul#gridNode0 > li > ul > li.gridRow.PDTpinned > ul.rowContent li.dataValueRead div.oflowDiv > span:first-child");
+	let newPinnedPagesList = Array.from(pinnedElemList).map(item => item.title);
+	newPinnedPagesList = [...new Set([...newPinnedPagesList, ...pinnedPagesList])]; // array union
+
+
+    if(pinnedPagesList != newPinnedPagesList) {
+        browser.storage.local.set({ pinnedPagesList: newPinnedPagesList }, () => {
+            console.log('PDT: pinned pages list state saved:', newPinnedPagesList);
+        });
+        pinnedPagesList = newPinnedPagesList;
+    }
+}
+
+restorePinnedPages(userPages);
+
+userPagesParent.arrive("li.gridRow", {onceOnly: false, existing: false}, (elem) => {
+	console.log("arrive ", elem);
+    restorePinnedPage(elem);
+});
+
+//observe userPages li items replacement
+const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+            mutation.addedNodes.forEach((node) => {
+                if (node.nodeType === Node.ELEMENT_NODE && node.matches('li.gridRow')) {
+                    console.log('Observed new li.gridRow:', node);
+                    restorePinnedPage(node);
+                }
+            });
+        }
+    });
+});
+
+const userPagesParentNode = document.querySelector(userPagesParent);
+
+if (userPagesParentNode instanceof Node) {
+    observer.observe(userPagesParentNode, { childList: true, subtree: true });
+} else {
+    console.error("TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'.");
+}
+
+

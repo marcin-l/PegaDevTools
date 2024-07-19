@@ -171,7 +171,7 @@
 						Known issue: might not work for already opened tabs when you reload the browser window.
 					</span>
 				</label>
-				<br /> 
+				<br />
 				<input type="checkbox" id="devstudioHideCloseButton" data-pdt-setting-name="hideCloseButton" />
 				<label for="devstudioHideCloseButton" class="tooltip">Hide close button
 					<span class="tooltipText">
@@ -189,23 +189,43 @@
 					</span>
 				</label>				
 				<br />
-				<div>
-					<input type="checkbox" id="devstudioExpandTabOnHover" data-pdt-setting-name="expandTabOnHover" />
-					<label for="devstudioExpandTabOnHover" class="tooltip">Expand rule names in tab on hover (BETA)
+				<input type="checkbox" id="devstudioMouseScrollTabs" data-pdt-setting-name="mouseScrollTabs" />
+				<label for="devstudioMouseScrollTabs" class="tooltip">Scrollable tab list
+					<span class="tooltipText">
+						Allows to scroll through tabs using the mouse wheel they no longer fit
+					</span>
+				</label>
+				<br />	
+				<input type="checkbox" id="devstudioUseTabMenu" data-pdt-setting-name="useTabMenu" />
+				<label for="devstudioUseTabMenu" class="tooltip">Tab menu
+					<span class="tooltipText">
+						Tab menu allows you to rearrange and mark tabs
+					</span>
+				</label>
+				<br />
+					<div>Experimental<br>
+						<input type="checkbox" id="devstudioExpandTabOnHover" data-pdt-setting-name="expandTabOnHover" />
+						<label for="devstudioExpandTabOnHover" class="tooltip">Expand rule names in tab on hover (BETA)
+							<span class="tooltipText">
+								Known issue: might not work for already opened tabs when you reload the browser window.
+							</span>
+						</label>
+					<br />
+						<input type="checkbox" id="devstudioCheckoutIndicator" data-pdt-setting-name="checkoutIndicator" />
+						<label for="devstudioCheckoutIndicator" class="tooltip">Indicate checked-out rules (ALPHA)
+							<span class="tooltipText">Shows asterisk (*) prefix in tab
+								rule name - feature in Alpha
+								stage</span>
+						</label>
+						<br />					
+					<input type="checkbox" id="devstudioTabColorCoding" data-pdt-setting-name="tabColorCoding" />
+					<label for="devstudioTabColorCoding" class="tooltip">Color coding (IN DEVELOPMENT)
 						<span class="tooltipText">
-							Known issue: might not work for already opened tabs when you reload the browser window.
+							Color tabs based on rule type
 						</span>
 					</label>
 					<br />
-				</div>
-				<div>
-					<input type="checkbox" id="devstudioCheckoutIndicator" data-pdt-setting-name="checkoutIndicator" />
-					<label for="devstudioCheckoutIndicator" class="tooltip">Indicate checked-out rules (ALPHA)
-						<span class="tooltipText">Shows asterisk (*) prefix in tab
-							rule name - feature in Alpha
-							stage</span>
-					</label>
-					<br />
+					</div>
 				</div>
 
 				<div><b>Data transform:</b></div>
@@ -262,18 +282,18 @@
 				</label>				
 				<br />		
 				
-				<!-- 
-					Open:
-					<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenDefault" data-pdt-setting-name="openBehavior"><label
-							for="tracerOpenDefault">in a <b>popup</b> (default Pega behavior)</label></div>
-					<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenTab"><label for="tracerOpenTab">in
-							new <b>tab</b></label> and open property windows in <select id="tracerOpenPagesBehavior">
-							<option value="popup">popup (default)</option>
-							<option value="tab">tab</option>
-						</select></div>
-					<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenWindowedTab" disabled><label
-							for="tracerOpenWindowedTab">in new window with tabs</label></div>
-					 -->
+
+				Open:
+				<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenDefault" data-pdt-setting-name="openBehavior"><label
+						for="tracerOpenDefault">in a <b>popup</b> (default Pega behavior)</label></div>
+				<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenTab"><label for="tracerOpenTab">in
+						new <b>tab</b></label> and open property windows in <select title="Open behavior" id="tracerOpenPagesBehavior">
+						<option value="popup">popup (default)</option>
+						<option value="tab">tab</option>
+					</select></div>
+				<div><input type="radio" name="tracerOpenBehavior" id="tracerOpenWindowedTab" disabled><label
+						for="tracerOpenWindowedTab">in new window with tabs</label></div>
+
 			</span>
 
 			<h3>

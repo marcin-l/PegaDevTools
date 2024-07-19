@@ -6,8 +6,7 @@ function isTracerActive() {
 		document.getElementById("Pause").innerText == "Pause"
 	);
 }
-var titleTimerId;
-var counter = 0;
+let titleTimerId, countsTimerId, counter = 0;
 
 async function backgroundNotify(state) {
 	if (PDT._settings.debug) {
@@ -80,6 +79,12 @@ function getAccessDeniedList() {
 	);
 }
 
+	function getBookmarksList() {
+		return window.parent.frames[1].document.querySelectorAll(
+			'td[data-PDTbookmark]'
+		);
+	}
+
 function updateErrorCount(count, index) {
 	let newTextContent = "Errors";
 	if (count !== undefined) {
@@ -100,6 +105,15 @@ function updateMessageCount(count, index) {
 	document.querySelector("button#btnPDTMessages").textContent = newTextContent;
 }
 
+	function updateButtonCount(buttonElement, text, count, index) {
+		if (count !== undefined) {
+			text = text + String.fromCharCode(160);
+			if (index) text += "" + index + "/" + count;
+			else text += "" + count;
+		}
+		buttonElement.textContent = text;
+	}
+
 function updateAccessDeniedCount(count) {
 	document.querySelector("button#btnPDTAccessDenied").textContent =
 		" AccessDeny(" + count + ")";
@@ -113,25 +127,22 @@ function siteConfigCallback(siteConfig, _globalConfig) {
 		console.log("PDT tracer_menuRow.js");
 
 		if (siteConfig?.label) {
+			const cleanColor = siteConfig.color.replace("#", '');
 			let headerButtonsElement = document.querySelector("table.tracertop tr");
 			if (headerButtonsElement) {
 				headerButtonsElement.insertAdjacentHTML(
 					"beforeend",
-					"<td style='width:30px;font-size:11pt; color: white; text-shadow: black 0px 0px 6px;background-color:#" +
-						siteConfig.color.replace("#", "") +
-						";border:2px solid;border-top-style:none; border-right-style:none;margin: 0 0 4px 0;font-weight: bold;border-color:#" +
-						siteConfig.color.replace("#", "") +
-						"; padding:6px'>" +
-						siteConfig.label +
-						"</ td>"
+					//TODO create css
+					`<td style='width:30px;font-size:11pt; color: white; text-shadow: black 0px 0px 6px;background-color:#${cleanColor};border:2px solid;border-top-style:none; border-right-style:none;margin: 0 0 4px 0;font-weight: bold;border-color:#${cleanColor};padding:6px'>
+						${siteConfig.label}
+					</ td>`
 				);
 			}
 
-			if (siteConfig.useColorTop) {
-				document.querySelector("table.tracertop").style.cssText =
-					"border-top: #" + siteConfig.color.replace("#", "") + " 2px solid";
-			}
+			if (siteConfig.useColorTop)
+				document.querySelector("table.tracertop").style.cssText = `border-top: #${cleanColor} 2px solid`;
 		}
+
 		$("#Pause").click(function () {
 			setTitle();
 		});
@@ -145,16 +156,67 @@ function siteConfigCallback(siteConfig, _globalConfig) {
 			//add buttons from html
 			$("table.tracertop table tr").eq(2).prepend(data);
 
-			waitUntilRenderTracerButtons();
+			//waitUntilRenderTracerButtons();
 		});
 	}
 }
 
+	function addDropdownHandler(dropdown, itemList, offset) {
+		if (dropdown && itemList) {
+			Array.prototype.forEach.call(
+				dropdown.querySelectorAll("a"),
+				function (node) {
+					node.parentNode.removeChild(node);
+				}
+			);
+
+			if(itemList.length === 0)
+				return false;
+
+			dropdown.style.display = "block";
+			dropdown.style.left = offset;
+
+			itemList.forEach((element) => {
+				let newElem = document.createElement("a");
+				newElem.value = element.parentNode.querySelector("td#eventLineNumber").innerText;
+				newElem.textContent = newElem.value;
+				if(element.parentNode.querySelector("td#elementInstanceName"))
+					newElem.textContent += ' - ' + element.parentNode.querySelector("td#elementInstanceName").title;
+				newElem.onclick = function () {
+					window.parent.frames[1].document.querySelector("td#eventLineNumber[title='" + this.value + "']").scrollIntoView(false, { behavior: "smooth" });
+				};
+				dropdown.appendChild(newElem);
+			})
+			
+			let elem = document.createElement("a");
+			elem.style = "border-top: 1px solid #aaa;"
+			elem.textContent = "Close";
+			elem.onclick = function () {
+				dropdown.style.display = "none";
+			};
+			dropdown.appendChild(elem);
+			return false;
+		} else console.log("[PDT] addDropdownHandler - wrong arguments");
+	}
+
 function addEventHandlers() {
-	document.querySelector("button#btnPDTErrors");
 
-	//setTitle();
-
+		function navigateTo(itemList, nextOrPrev, currentIndex, text, clickedButton) {
+			let buttonElement = (nextOrPrev === "next" ? clickedButton.previousElementSibling : clickedButton.nextElementSibling);
+			if (itemList.length) {
+				currentIndex += (nextOrPrev === "next" ? -1 : 1);
+				// if(nextOrPrev === "next")
+				// 	currentIndex -= 1;
+				// else
+				// 	currentIndex += 1;				
+				if (currentIndex < 0) {
+					currentIndex = itemList.length - 1;
+				}
+				itemList[currentIndex].scrollIntoView(false, { behavior: "smooth" });
+				updateButtonCount(buttonElement, text, itemList.length, currentIndex + 1);
+			} else updateButtonCount(buttonElement, text, itemList.length);
+			return currentIndex;
+		}
 	//TODO: !!!!!!!
 	document.querySelector("button#btnPDTErrors").oncontextmenu = function () {
 		let offset = this.getBoundingClientRect().left;
@@ -225,6 +287,14 @@ function addEventHandlers() {
 	/* #endregion */
 
 	/* #region Messages buttons */
+
+//FEATURE:Warningsbuttoncontextmenu
+document.querySelector("button#btnPDTMessages").oncontextmenu=(e)=>{
+letmessagesListDropdown=window.parent.frames[1].document.querySelector("div.PDTdropdown.warnings");
+returnaddDropdownHandler(messagesListDropdown,getMessagesList(),e.clientX-e.offsetX);
+};
+
+//FEATURE:Gotofirstwarning/messageinstance
 	document.querySelector("button#btnPDTMessages").onclick = function () {
 		messagesList = getMessagesList();
 		if (messagesList.length) {
@@ -234,6 +304,7 @@ function addEventHandlers() {
 		messageIndex = 0;
 	};
 
+	//FEATURE: Go to previous warning
 	document.querySelector("button#btnPDTMessagesPrev").onclick = function () {
 		messagesList = getMessagesList();
 		if (messagesList.length) {
@@ -246,6 +317,7 @@ function addEventHandlers() {
 		} else updateMessageCount(messagesList.length);
 	};
 
+	//FEATURE: Go to next warning
 	document.querySelector("button#btnPDTMessagesNext").onclick = function () {
 		messagesList = getMessagesList();
 		if (messagesList.length) {
@@ -261,30 +333,22 @@ function addEventHandlers() {
 }
 
 //make sure buttons are part of the DOM before adding event handlers
-//TODO: use arrive.js
-function waitUntilRenderTracerButtons() {
-	let expectedElement = document.querySelector("button#btnPDTErrors");
-	if (expectedElement) {
-		addEventHandlers();
-	} else {
-		tries = tries + 1;
-		console.log(tries);
-		//if (tries > 10) return;
-		setTimeout(() => {
-			waitUntilRenderTracerButtons();
-		}, 500);
-	}
-}
-
-var tries = 0;
+document.arrive("button#btnPDTErrors", { once: true, existing: true }, function () {
+    addEventHandlers();
+	countsTimerId = setInterval(function () {
+		updateCounts();
+	}, 1000);
+});
 
 //TODO?: make sure we are in the right frame, script can be loaded with tracer page popup
 if(document.querySelector("table.tracertop")) {
 	siteConfig(siteConfigCallback);
 }
 
-
-
+	window.parent.frames[1].document.body.insertAdjacentHTML('afterbegin', '<div class="PDTdropdown warnings"></div>');
+	window.parent.frames[1].document.body.insertAdjacentHTML('afterbegin', '<div class="PDTdropdown errors"></div>');
+	window.parent.frames[1].document.body.insertAdjacentHTML('afterbegin', '<div class="PDTdropdown bookmarks"></div>');
+	
 //TODO:
 //displayPage = new Function('pageXML','pageName','pagePropertyName', displayPage.toString().match(/{([\s\S]*)}/)[1].replace('window.open(strURL,strForm,"status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=yes"  + strFeatures)', "window.open(strURL,'_blank')"));
 //TODO:  Access Deny list

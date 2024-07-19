@@ -1,3 +1,5 @@
+
+//TODO: use fetch API
 $.get(browser.runtime.getURL("tracer/tracerOptionSets.html"), function (data) {
 	//add html
 	document.querySelectorAll("div#ProfileDiv div.dialogDataContainer table table td")[2].querySelectorAll("table")[0].insertAdjacentHTML("afterend", data);

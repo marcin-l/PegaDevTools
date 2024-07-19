@@ -1,4 +1,4 @@
-var browser = (browser) ? browser : chrome;
+let browser = (browser) ? browser : chrome;
 
 //TODO: modularize
 // try {
@@ -52,7 +52,7 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 		if(request.url != "about:blank" && !loadedFrames.has(sender.tab.id + "-" + sender.frameId)) {
 			loadedFrames.set(sender.tab.id + "-" + sender.frameId, request.url);
 			console.log("Registered " + sender.tab.id + "-" + sender.frameId + ": " + request.url);
-		} 
+		}
 		// else {
 		// 	if(loadedFrames.has(sender.tab.id + "-" + sender.frameId) && (request.url.includes("DeleteCheckOut") || request.url.includes("ReloadHarness"))) {
 		// 		reloadContentScripts(sender.tab.id, sender.frameId, loadedFrames.get(sender.tab.id + "-" + sender.frameId));
@@ -63,7 +63,7 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 		// }
 
 	} else if (request.purpose == "tracerState" && arrDevTabs.get(sender.origin)) {
-	//TODO: try Long-lived connections https://developer.chrome.com/docs/extensions/mv3/messaging/#connect 
+	//TODO: try Long-lived connections https://developer.chrome.com/docs/extensions/mv3/messaging/#connect
 
 		if (request.tracerIsOn && !tracerIsRunningAppended) {
 			arrTracerTabs.set(sender.origin, sender.tab.id);
@@ -72,7 +72,7 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 			tracerIsRunningAppended = true;
 		}
 		else
-			appendScript(tracerIsOff, arrDevTabs.get(sender.origin), 0);      
+			appendScript(tracerIsOff, arrDevTabs.get(sender.origin), 0);
 	} else if (request.purpose == "tracerHeartbeat" && arrDevTabs.get(sender.origin)) {
 		appendScript(tracerHeartbeat, arrDevTabs.get(sender.origin), 0);
 	} else if (request.purpose == "registerDevStudio") {
@@ -88,7 +88,7 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 		} else {
 			sendResponse("NOK");
 		}
-	}  else if (request.purpose == "getManifest") {		
+	}  else if (request.purpose == "getManifest") {
 		sendResponse(browser.runtime.getManifest());
 	}
 
@@ -102,7 +102,7 @@ function tracerIsRunning() {
 	document.querySelector("div.create-case span").insertAdjacentHTML("afterend", "<div id='PDTTracerIndicator'><button id='PDTDevTracerPlayPause' type='button'>ıı</button><div id='PDTTracerState' class='Header_nav margin-1x'>Tracer&nbsp;active!</div></div>");
 	let tracerIndicator	= document.querySelector("div#PDTTracerIndicator");
 	document.querySelector("button#PDTDevTracerPlayPause").addEventListener("click", function(event) { browser.runtime.sendMessage({ purpose: "tracerStop"}) });
-	
+
 	let _titleTimerId = setInterval(function () {
 		heartbeat = document.querySelector("input#PDTTracerHeartbeat").value;
 		if (hasHeartbeat && (heartbeat === "off" || (Math.floor(Date.now() / 1000) - heartbeat) > 4)) {
@@ -112,7 +112,7 @@ function tracerIsRunning() {
 				tracerIndicator.style.display = "none";
 			hasHeartbeat = false;
 		} else if(tracerIndicator && heartbeat !== "off") {
-			tracerIndicator.style.display = "block";				
+			tracerIndicator.style.display = "block";
 			console.log("PDT Tracer heartbeat read " + heartbeat + " at " + Math.floor(Date.now() / 1000));
 			document.querySelector('button#PDTDevTracerPlayPause').innerText = '►';
 			counter++;
@@ -156,6 +156,7 @@ function matchToRegEx(match) {
 	return regEx;
 }
 
+//TODO: needed?
 const injectScriptsToIframe = (tabId, frameId, scriptList) => {
 	browser.scripting.executeScript({
 		files: scriptList,
@@ -169,6 +170,73 @@ const injectScriptsToIframe = (tabId, frameId, scriptList) => {
 	//     files: [injectedScript],
 	//     target: { tabId: tabId, frameIds: [frameId] },
 	//     world: "MAIN"
+
+// watchdog: variables
+let arrDevTabs = new Map(), arrTracerTabs = new Map(), loadedFrames = new Map(), processedFrames = new Map(), settings = {}, siteConfig = new Map();
+
+// watchdog: reloadContentScripts
+function reloadContentScripts(tabId, frameId, url) {
+	let frameIndex = tabId + "-" + frameId;
+	// if(processedFrames.has(frameIndex)) {
+	// 	console.log("frameIndex " + frameIndex + " " + processedFrames.get(frameIndex) + " " + Date.now());
+	// }
+	if(processedFrames.has(frameIndex) && (Math.floor(Date.now() - processedFrames.get(frameIndex))/1000) < 2 )
+		return false;
+	processedFrames.set(frameIndex, Date.now());
+	console.log("PDT reloadContentScripts tabId " + tabId + ", frameId" + frameId + ", URL " + url);
+	let manifest = browser.runtime.getManifest();
+	let contentScripts = manifest.content_scripts;
+	if(contentScripts.length == 0)
+		return false;
+
+	contentScripts.forEach(contentScript => {
+		let isAMatch = false;
+
+		contentScript.matches.forEach(match => {
+			if(!isAMatch) {
+				let matchRegEx = matchToRegEx(match);
+				let regEx = new RegExp(matchRegEx);
+				isAMatch = regEx.test(url);
+			}
+		});
+
+		// contentScript.js = contentScript.js.filter(function(value){
+		// 	return !value.includes("registerWithServiceWorker");
+		// });
+
+		if(contentScript.js.includes("resources/shared.js") || contentScript.js.includes("resources/registerWithServiceWorker.js"))
+			isAMatch = false;
+
+		if(isAMatch && contentScript.js.length>0) {
+			console.log(contentScript);
+
+			browser.scripting.executeScript({
+				files: contentScript.js,
+				target: { tabId: tabId, frameIds: [frameId] },
+				world: "ISOLATED",
+			});
+
+			// if(contentScript.css) {
+			// 	contentScript.css.forEach(css =>
+			// 		chrome.scripting.insertCSS(tabId, {
+			// 			file: css.value
+			// 		})
+			// 	)
+			// }
+		}
+	})
+
+}
+
+// watchdog: ping frame
+function pingFrame(tabId, frameId) {
+	browser.tabs.sendMessage(
+		tabId,
+		{ purpose: "PingContent" },
+		{ frameId: 	frameId }
+	);
+	console.log("Pinging content tab " + tabId + " frameId " + frameId);
+}
 
 function initSettings() {
 	browser.storage.sync.get(["settings", "siteConfig"], (data) => {
@@ -188,7 +256,7 @@ function initSettings() {
 							return hex + hex;
 						}).join('');
 					}
-					if(data.siteConfig[i].color[0] != "#") 
+					if(data.siteConfig[i].color[0] != "#")
 						data.siteConfig[i].color = "#" + data.siteConfig[i].color;
 				}
 
@@ -198,7 +266,7 @@ function initSettings() {
 	});
 }
 
-//listen to browser storage change
+// listen to browser storage change
 browser.storage.onChanged.addListener((changes, area) => {
 	if (area === "sync" && changes.settings) {
 		settings = changes.settings.newValue;
@@ -207,7 +275,7 @@ browser.storage.onChanged.addListener((changes, area) => {
 });
 
 function getSettings(site) {
-	let settingsForSite = settings;		
+	let settingsForSite = settings;
 	if(site && siteConfig.has(site))
 		settingsForSite.siteConfig = siteConfig.get(site);
 	else
@@ -216,23 +284,21 @@ function getSettings(site) {
 	return settingsForSite;
 }
 
-let arrDevTabs = new Map(), arrTracerTabs = new Map(), loadedFrames = new Map(), processedFrames = new Map(), settings = {}, siteConfig = new Map();
-
 async function setup() {
 	browser.runtime.onInstalled.addListener(async () => {
 		let url = browser.runtime.getURL("settings.html");
 		await browser.tabs.create({ url });
 	});
 
-	// browser.webRequest.onCompleted.addListener(
-	// 	function(details) {
-	// 		console.debug(details);
-	// 		if(details.frameType == "sub_frame" && details.frameId && loadedFrames.has(details.tabId + "-" + details.frameId)) 
-	// 			pingFrame(details.tabId, details.frameId);
-	// 	},
-	// 	{urls: ["<all_urls>"]},
-	// 	["responseHeaders"]
-	// );
+	browser.webRequest.onCompleted.addListener(
+		function(details) {
+			console.debug("browser.webRequest.onCompleted", details);
+			if(details.frameType == "sub_frame" && details.frameId && loadedFrames.has(details.tabId + "-" + details.frameId))
+				pingFrame(details.tabId, details.frameId);
+		},
+		{urls: ["<all_urls>"]},
+		["responseHeaders"]
+	);
 
 	// initSettings();
 
@@ -248,7 +314,6 @@ async function setup() {
 	// 	"contexts": ["all"],
 	// 	parentId: "toggleMenu"
 	// });
-
 };
 	//   });
 
@@ -260,7 +325,6 @@ async function setup() {
 	//     //It's a mistake. There is no other complicated logic in this example. You don't need to record the tab of successful injection. You can fool it like this.
 	//   }, () => void browser.runtime.lastError);
 	// });
-
 
 // async function setup() {
 // 	browser.runtime.onInstalled.addListener(async () => {

@@ -56,6 +56,10 @@ function saveSettings() {
   settings.devstudio.hideCloseButton = document.querySelector("input#devstudioHideCloseButton").checked;
   settings.devstudio.longerRuleNames = document.querySelector("input#devstudioLongerRuleNames").checked;
   settings.devstudio.checkoutIndicator = document.querySelector("input#devstudioCheckoutIndicator").checked && settings.debug;
+  settings.devstudio.mouseScrollTabs = document.querySelector("input#devstudioMouseScrollTabs").checked;
+  settings.devstudio.useTabMenu = document.querySelector("input#devstudioUseTabMenu").checked;
+  settings.devstudio.tabColorCoding = document.querySelector("input#devstudioTabColorCoding").checked;
+  
   settings.devstudio.datatransform = new Object();
   settings.devstudio.datatransform.moveSuperclassToTop = document.querySelector("input#devstudioDataTransformMoveSuperclassToTop").checked;
 
@@ -115,7 +119,9 @@ function restoreOptions() {
     document.querySelector("input#devstudioHideCloseButton").checked = (data.settings.devstudio.hideCloseButton)?data.settings.devstudio.hideCloseButton:"";
     document.querySelector("input#devstudioLongerRuleNames").checked = (data.settings.devstudio.longerRuleNames)?data.settings.devstudio.longerRuleNames:"";
     document.querySelector("input#devstudioCheckoutIndicator").checked = (data.settings.devstudio.devstudioCheckoutIndicator && data.settings.debug)?data.settings.devstudio.devstudioCheckoutIndicator:"";
-
+(data.settings.devstudio.mouseScrollTabs)?data.settings.devstudio.mouseScrollTabs:"";
+    document.querySelector("input#devstudioUseTabMenu").checked = (data.settings.devstudio.useTabMenu)?data.settings.devstudio.useTabMenu:"";
+    document.querySelector("input#devstudioTabColorCoding").checked = (data.settings.devstudio.tabColorCoding)?data.settings.devstudio.tabColorCoding:"";
     if(typeof data.settings.devstudio.datatransform === "undefined") data.settings.devstudio.datatransform = {};
     document.querySelector("input#devstudioDataTransformMoveSuperclassToTop").checked = (data.settings.devstudio.datatransform.moveSuperclassToTop)?data.settings.devstudio.datatransform.moveSuperclassToTop:"";
 

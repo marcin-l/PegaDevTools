@@ -15,6 +15,7 @@ class PDT {
 
 	static async settings() {
 		if(PDT.isObjectEmpty(this._settings) !==  false) {
+			console.log("PDT: getting settings");
 			const response = await chrome.runtime.sendMessage(
 				{ purpose: "getSettings" } ); 
 				this._settings = response;
@@ -56,6 +57,17 @@ class PDT {
 					}
 				}
 			}
+
+			document.arrive("body", { onceOnly: true, existing: true}, (elem) => {
+				let skip = PDT.shouldSkipContentForDocument(elem);
+				if(!skip)
+					elem.setAttribute("data-PDTSettings", "loaded");
+				else
+					PDT.debug("skipped data-PDTSettings");
+			});
+
+			PDT.debug("storage settings load");
+
 		});
 	}
 
@@ -68,8 +80,8 @@ class PDT {
 	}
 
 	static async isTracerEnabled() {
-		const settings = await this.settings();
-		return !(settings.tracer.disabled);
+		await this.settings();
+		return !(this._settings.tracer.disabled);
 	}
 
 	static isClipboardEnabled() {
@@ -145,6 +157,13 @@ class PDT {
 		return (L > contrastThreshold) ? "#000000" : "#FFFFFF";
 	}
 
+	static tabColorCoding = new Map([
+		['RULE-HTML-SECTION', 'green'],
+		['RULE-OBJ-ACTIVITY', 'red'],
+		['RULE-OBJ-MODEL', 'blue'],
+	  ]);
+
+
 	static alterFavicon(forceSmall = false, forceLargeLabel = "", forceColor = "") {
 		//favicon fallback
 		let favicon = document.querySelector("link[rel~='icon']");
@@ -209,6 +228,38 @@ class PDT {
 				PDT.debug("could not set data-PDTskipContent");
 		}
 		return skip;
+	}
+
+	static copyToClipboard(textContent) {
+		// create hidden text element, if it doesn't already exist
+		let targetId = "_hiddenCopyText_";
+		let target = document.createElement("textarea");
+		target.style.position = "absolute";
+		target.style.left = "-9999px";
+		target.style.top = "0";
+		target.id = targetId;
+		document.body.appendChild(target);
+		target.textContent = textContent;
+
+		// select the content
+		let currentFocus = document.activeElement;
+		target.focus();
+		target.setSelectionRange(0, target.value.length);
+
+		// copy the selection
+		let succeed;
+		try {
+			succeed = document.execCommand("copy");
+		} catch (e) {
+			succeed = false;
+		}
+		// restore original focus
+		if (currentFocus && typeof currentFocus.focus === "function") {
+			currentFocus.focus();
+		}
+
+		target.textContent = "";
+		return succeed;
 	}
 }
 
@@ -275,36 +326,9 @@ if ($('body[class^="channels-express"] div[data-node-id="pzRuntimeToolsTopBar"] 
 	).append("Live UI");
 }
 
+//TODO: change all references to PDT class
 var copyToClipboard = function copyToClipboard(textContent) {
-	// create hidden text element, if it doesn't already exist
-	let targetId = "_hiddenCopyText_";
-	let target = document.createElement("textarea");
-	target.style.position = "absolute";
-	target.style.left = "-9999px";
-	target.style.top = "0";
-	target.id = targetId;
-	document.body.appendChild(target);
-	target.textContent = textContent;
-
-	// select the content
-	let currentFocus = document.activeElement;
-	target.focus();
-	target.setSelectionRange(0, target.value.length);
-
-	// copy the selection
-	let succeed;
-	try {
-		succeed = document.execCommand("copy");
-	} catch (e) {
-		succeed = false;
-	}
-	// restore original focus
-	if (currentFocus && typeof currentFocus.focus === "function") {
-		currentFocus.focus();
-	}
-
-	target.textContent = "";
-	return succeed;
+	return PDT.copyToClipboard(textContent)
 };
 
 function messageServiceWorker(purpose) {
@@ -348,7 +372,7 @@ function injectCloseShortcut() {
 	injectScript("/js/", "closeShortcut.js");
 }
 
-// deprecated?
+//TODO: deprecated?
 function executeScript(injectedCode) {
 	let scriptEl = document.createElement("script");
 	scriptEl.appendChild(document.createTextNode("(" + injectedCode + ")();"));
@@ -449,6 +473,7 @@ const getObjectFromStorage = async function (key) {
 	});
 };
 
+// watchdog: act on Service Worker ping, ask to reload scripts if necessary
 browser.runtime.onMessage.addListener(function(msg) {
 	if(msg.purpose == "PingContent") {
 		if (document.querySelector("input#PDTContent")) {

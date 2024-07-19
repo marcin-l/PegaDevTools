@@ -10,8 +10,10 @@ PDT.isTracerEnabled().then(isTracerEnabled => {
 });
 
 function applyPDTCustomization() {
+	console.log("PDT tracer_event.js applyPDTCustomization");
+
 	//FEATURE: Mark row on right-click
-	$("div#traceEvent-CONTAINER").on("contextmenu", "td#eventLineNumber", function (evt) { evt.preventDefault(); $(this).parent().toggleClass("PegaDevToolsTextRed"); });
+	//$("div#traceEvent-CONTAINER").on("contextmenu", "td#eventLineNumber", function (evt) { evt.preventDefault(); $(this).parent().toggleClass("PegaDevToolsTextRed"); });
 
 	//FEATURE: Remove columns
 	const removeThreadNameButton = $('<span title="Remove column" class="removeColumn">x</span>');
@@ -49,14 +51,15 @@ function applyPDTCustomization() {
 	});
 	$('td.eventTitleBarStyle[title="Line"]').prev().append(removeAllColumnsBtn);
 
+
 	//FEATURE: pin icon in header to toggle floating headers
-	let pin = document.createElement("td");
-	pin.setAttribute("title", "toggle floating header");
-	pin.style.width = "1%";
-	pin.style.minWidth = "18px";
-	let pinButton = document.createElement("span");
+	let pinButton = document.createElement("div");
+	pinButton.setAttribute("title", "toggle floating header");
 	pinButton.innerText = "📌";
 	pinButton.style.cursor = "pointer";
+	pinButton.style.minWidth = "16px";
+	pinButton.style.float = "right";
+	pinButton.style.backgroundColor = "white";
 
 	function toggleHeaderFloat(elem, skipSave = false) {
 		let tracerHeader = document.querySelector("table#traceEvent-TABLE");
@@ -83,8 +86,8 @@ function applyPDTCustomization() {
 	pinButton.addEventListener("click", function (event) {
 		toggleHeaderFloat(event.target);
 	});
-	pin.appendChild(pinButton);
-	document.querySelector('table#traceEvent-TABLE tr').appendChild(pin);
+
+	document.querySelector('table#traceEvent-TABLE tr td:last-child').appendChild(pinButton);
 
     browser.storage.local.get('tracerPinHeader', (data) => {
         if (data.tracerPinHeader) {
@@ -96,8 +99,6 @@ function applyPDTCustomization() {
             console.log('PDT floating header could not be restored');		
         }
     });
-
+	
 	//TODO FEATURE: override browser search. show options to highlight all, find last
-
-
 }

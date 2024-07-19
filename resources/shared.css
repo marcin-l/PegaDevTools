@@ -1,3 +1,10 @@
+@font-face {
+	font-family: "PDTPegaIcons";
+	src: url("px-font-pega-icons_13741597605.woff2!!.woff2") format("woff2"), url("px-font-pega-icons_173036744.woff!!.woff") format("woff");
+	font-weight: normal;
+	font-style: normal;
+  }
+
 .PegaDevToolsButton {
 	border: 3px solid;
 	border-radius: 5px;
@@ -215,6 +222,10 @@ div#PDTTracerIndicator button {
   
 .initiallyHidden {
 	display: none;
+}
+
+.PDThideRow {
+	visibility: collapse;
 }
 
 .PegaDevToolsTransparent, .PegaDevToolsTransparent a {

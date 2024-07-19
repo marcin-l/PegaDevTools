@@ -60,45 +60,9 @@ function applyPDTCustomization() {
           alterTracerOpenBehavior(settings.tracer.openBehavior);
       }
 
-      //FEATURE: hide close button
-      if (PDT._settings.devstudio.hideCloseButton)
-        injectStyles("div.tStrCntr ul #close {display: none}");
-
-      if (PDT._settings.devstudio.longerRuleNames) {
-        //inject script which will apply it for newly opened tabs
-        injectScript("/js/", "makeRuleNamesLonger.js");
-        injectStyles(
-          ".Temporary_top_tabs .Temporary_top_tabsList LI span#TABANCHOR { padding-right: 4px !important; padding-left: 4px; !important}"
-        );
-      }
-
-      if (PDT._settings.devstudio.expandTabOnHover) {
-        //inject script which will apply it for newly opened tabs
-        injectScript("/js/", "expandTabOnHover.js");
-      }      
-
-      if (PDT._settings.devstudio.checkoutIndicator) {
-        showCheckoutIndicator();
-      }
-
       addHeaderShortcuts();
       customizeText();
       injectSidebarToggle();
-
-      //FEATURE: close tab on middle click
-      if (PDT._settings.devstudio.closeTabMiddleClick) {
-        //inject script which will apply it for newly opened tabs
-        injectScript("/js/", "closeTabMiddleClick.js");
-
-        // apply for existing tabs
-        document.querySelectorAll("div.tStrCntr ul table#RULE_KEY span[data-stl='1'], div.tStrCntr ul table#RULE_KEY svg").forEach(function (elem) {
-          elem.addEventListener("mousedown", function (e) {
-            console.log(e);
-            if (e && (e.which == 2 || e.button == 4))
-              this.parentNode.parentNode.querySelector('#close').click();
-          })
-        })
-      }
     }
     PDT.alterFavicon();
   }
@@ -207,7 +171,7 @@ function customizeText() {
 
   //FEATURE: shorten Application label and make it bold
   if (document.querySelector("div.current-application") && 
-      document.querySelector("div.current-application label").innerText) {
+      document.querySelector("div.current-application label")?.innerText) {
     document.querySelector("div.current-application label").innerText = "App:";
     document.querySelector("div.current-application div a").style.fontWeight = "bolder";
   }
@@ -237,6 +201,7 @@ if(!PDT.isInTracer()) {
   if (isInDevStudio()) {
     console.log("In DEV studio - applying customizations");
     applyPDTCustomization();
+    PDT.setScriptsApplied();
   } else {
     // apply favicon color to other portals
     PDT.alterFavicon(true);

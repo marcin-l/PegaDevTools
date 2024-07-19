@@ -5,18 +5,19 @@ let userPagesParent;
 let userPages;
 let pinnedPagesList = [];
 
-//wait for document onload has already fired by using the document.readyState property
+// wait for document onload has already fired by using the document.readyState property
 function waitForDocumentReady(callback) {
     if (document.readyState === 'complete') {
-        // Document is already ready, call the callback immediately
+        // document is already ready, call the callback immediately
         callback();
     } else {
-        // Wait for the document to be fully loaded
+        // wait for the document to be fully loaded
         window.addEventListener('load', callback);
     }
 }
 
 // watch in DOM if item lost it's pinned style on blur
+//TODO: use mutation observers or proxy https://stackoverflow.com/questions/4956935/how-to-observe-value-changes-in-js-variables
 function checkPinnedPagesStyle() {
     setInterval(() => {
         pinnedPagesList.forEach(page => {
@@ -34,14 +35,15 @@ function checkPinnedPagesStyle() {
 }
 
 waitForDocumentReady(() => {
-    document.arrive("div#gridBody_left  ul#gridNode0  li  ul  li.gridRow[pl_index='1']", {onceOnly: true, existing: true}, () => {
+    document.arrive("div#gridBody_left ul#gridNode0 li ul li.gridRow[pl_index='1']", {onceOnly: true, existing: true}, () => {
         console.log("PDT: document ready");
         userPagesParent = document.querySelector("div#gridBody_left > ul#gridNode0 > li > ul#gridNode");
         userPages = document.querySelectorAll("div#gridBody_left > ul#gridNode0 > li > ul > li.gridRow > ul.rowContent li.dataValueRead div.oflowDiv");
         restorePinnedPages(userPages);
         userPages.forEach(addPinIcon);
         checkPinnedPagesStyle();
-}});
+    });
+});
 
 function addPinIcon(target) {
     if (target) {
@@ -120,7 +122,7 @@ function sortListItems(list) {
 	}
 }
 
-injectStyles(`ul.cellHover span.PDTpinIcon {  display: inline !important; }
+injectStyles(`ul.cellHover span.PDTpinIcon { display: inline !important; }
     li.PDTpinned > ul div.oflowDiv { font-weight: bold; }
     li.PDTpinned span.PDTpinIcon { display: none !important;}`);
 

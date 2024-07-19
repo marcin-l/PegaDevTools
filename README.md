@@ -60,7 +60,7 @@ Tracer feature to navigate to first Error and Message is based on Piotr Olejnicz
 ### Third-party libraries (MIT license)
 - [arrive.js](https://github.com/uzairfarooq/arrive)
 - [CodeMirror](https://codemirror.net/)
-- [ContextmenuJS](https://github.com/m-thalmann/contextmenujs)
+- [ctxmenu.js](https://github.com/nkappler/ctxmenu)
 - [Huebee](https://huebee.buzz)
 - [jQuery](https://jquery.com/)
 - [jQuery.FilterTable](https://github.com/sunnywalker/jQuery.FilterTable)

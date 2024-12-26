@@ -6,6 +6,7 @@ PDT is a browser-based developer productivity tool for Pega 8, designed to enhan
 **[Explore the PDT Wiki](https://github.com/marcin-l/PegaDevTools/wiki)** to learn about the available features.
 
 ## Recent changes
+- 2024.12.26 Clipboard - fix for deprecated js API breaking functionality
 - 2024.06.20 SQL queries in Tracer - added simple syntax highlighting for improved readability and ability to see the query in a formatted view
 
 ## Installation

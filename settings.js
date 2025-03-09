@@ -130,7 +130,7 @@ function addSite() {
   newOptionsHtml += '<input id="label" placeholder="DEV, STG, UAT, etc."></input>';
   newOptionsHtml += '<button id="color" class="color-button" data-huebee>Pick a color</button>';
   newOptionsHtml += '<input id="useColorTop" type="checkbox" /><span class="tooltip helper">?<span class="tooltipText">Show thin color bar at the top of Dev Studio, Tracer and Clipboard</span></span>&nbsp;';
-  newOptionsHtml += '<select id="version"><option value="" disabled selected hidden>Version:</option><option value=""></option><option value="7">Pega 7</option><option value="81">Pega 8.1</option><option value="82">Pega 8.2</option><option value="83">Pega 8.3</option><option value="84">Pega 8.4</option><option value="85">Pega 8.5</option><option value="86">Pega 8.6</option><option value="87">Pega 8.7</option><option value="88">Pega 8.8</option></select>';
+  newOptionsHtml += '<select id="version"><option value="" disabled selected hidden>Version:</option><option value=""></option><option value="7">Pega 7</option><option value="81">Pega 8.1</option><option value="82">Pega 8.2</option><option value="83">Pega 8.3</option><option value="84">Pega 8.4</option><option value="85">Pega 8.5</option><option value="86">Pega 8.6</option><option value="87">Pega 8.7</option><option value="88">Pega 8.8</option><option value="23">Pega \'23</option><option value="24">Pega \'24</option></select>';
   newOptionsHtml += '&nbsp;&nbsp;<a href="#" class="siteRem">remove</a></div>';
   $("#siteConfig").append(newOptionsHtml);
   let hueb = new Huebee($("button#color").last()[0], { notation: 'hex', saturations: 1, setBGColor: true, shades: 7, hue0: 80, customColors: [ '#FFF', '#0E0', '#FFA30F', '#C25', '#FFF000', '#19F' ]});

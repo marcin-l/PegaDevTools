@@ -59,36 +59,38 @@ function handleRightPanelChange() {
 				addedFilterInput.focus();
 		}	
 		
-		document.querySelectorAll("div#gridBody_right table.gridTable")[1].querySelectorAll("tr.cellCont").forEach(
-			(e) => {
-				if(e.querySelector("tr a")) {
-					let eTextProp = e.querySelector("tr a").innerText;
-					let eTextValue;
-					let eValue = e.querySelector("td div.oflowDivM span");
-					if(eValue) {
-						eTextValue = eValue.innerText.replace(/\n/g, "\\n")
-						.replace(/</g, "\\<")
-						.replace(/>/g, "\\>")
-						.replace(/"/g, "&quot;")
-						.replace(/'/g, "\\'");
+		if (document.querySelectorAll("div#gridBody_right table.gridTable").length > 1) {
+			document.querySelectorAll("div#gridBody_right table.gridTable")[1].querySelectorAll("tr.cellCont").forEach(
+				(e) => {
+					if(e.querySelector("tr a")) {
+						let eTextProp = e.querySelector("tr a").innerText;
+						let eTextValue;
+						let eValue = e.querySelector("td div.oflowDivM span");
+						if(eValue) {
+							eTextValue = eValue.innerText.replace(/\n/g, "\\n")
+							.replace(/</g, "\\<")
+							.replace(/>/g, "\\>")
+							.replace(/"/g, "&quot;")
+							.replace(/'/g, "\\'");
+						}
+						
+						//FEATURE: copy property name to clipboard
+						if(eTextProp)
+							e.querySelector("tr a").insertAdjacentHTML('beforebegin', '<a onclick="copyToClipboard(\'.' + eTextProp + '\')"><i class="icons pi pi-copy"></i></a>&nbsp;');
+						
+						//FEATURE: copy property value to clipboard
+						if(eTextValue)
+							e.querySelector("td div.oflowDivM span").insertAdjacentHTML('beforebegin', '<a onclick="copyToClipboard(\'' + eTextValue + '\')"><i class="icons pi pi-copy"></i></a>&nbsp;')
+						
+						//FEATURE: copy property name and value to clipboard
+						if(eTextProp && eTextValue) {
+							let eText = "." + eTextProp + " = &quot;" + eTextValue + "&quot;";
+							e.querySelector("td div.oflowDivM").insertAdjacentHTML('beforeend', '<div style="float:right"><a onclick="copyToClipboard(\'' + eText + '\')"><i class="icons pi pi-copy"></i></a></div>')
+						}					
 					}
-					
-					//FEATURE: copy property name to clipboard
-					if(eTextProp)
-						e.querySelector("tr a").insertAdjacentHTML('beforebegin', '<a onclick="copyToClipboard(\'.' + eTextProp + '\')"><i class="icons pi pi-copy"></i></a>&nbsp;');
-					
-					//FEATURE: copy property value to clipboard
-					if(eTextValue)
-						e.querySelector("td div.oflowDivM span").insertAdjacentHTML('beforebegin', '<a onclick="copyToClipboard(\'' + eTextValue + '\')"><i class="icons pi pi-copy"></i></a>&nbsp;')
-					
-					//FEATURE: copy property name and value to clipboard
-					if(eTextProp && eTextValue) {
-						let eText = "." + eTextProp + " = &quot;" + eTextValue + "&quot;";
-						e.querySelector("td div.oflowDivM").insertAdjacentHTML('beforeend', '<div style="float:right"><a onclick="copyToClipboard(\'' + eText + '\')"><i class="icons pi pi-copy"></i></a></div>')
-					}					
 				}
-			}
-		);
+			);
+		}
     });
 }
 
@@ -96,7 +98,6 @@ function stripeTable(table) {
 	jQuery(table).find('tr').removeClass('striped').filter(':visible:even').addClass('striped');
 };
 
-//TODO: inject from shared file?
 function copyToClipboard(textContent) {
 	// create hidden text element, if it doesn't already exist
 	let targetId = "_hiddenCopyText_";

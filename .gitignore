@@ -10,3 +10,4 @@ resources/codemirror/javascript.html
 resources/codemirror/jsxjava.html
 clipboard.experimental.js
 *.bak
+/noMerge

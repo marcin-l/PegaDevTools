@@ -320,6 +320,15 @@
 		},
 		{
 			"matches": [
+				"*://*/prweb/*FlowType=RefactorClass*"
+			],
+			"all_frames": true,
+			"js": [
+				"devstudio/refactorClass.js"
+			]
+		},		
+		{
+			"matches": [
 				"*://*.pegacloud.net/prweb/*/*"
 			],
 			"js": [

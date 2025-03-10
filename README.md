@@ -11,10 +11,9 @@ PDT is a browser-based developer productivity tool for Pega 8, designed to enhan
 - 2024.06.20 SQL queries in Tracer - added simple syntax highlighting for improved readability and ability to see the query in a formatted view 
 
 ## Installation
-1. Download or clone the extension using the green *Code* button at the top of this page and selecting `Download ZIP`
-<br><img src="https://raw.githubusercontent.com/wiki/marcin-l/PegaDevTools/images/installation.png" />
+1. To use a stable version (recommended) download zip file from the [Releases page](https://github.com/marcin-l/PegaDevTools/releases/tag/1.0).
+
 1. Extract downloaded ZIP file
-  
   
 1. Load unpacked extension:
 - For Chrome and Edge:

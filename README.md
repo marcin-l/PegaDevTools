@@ -1,6 +1,6 @@
 # **PegaDevTools (PDT)**
 
-PDT is a browser-based developer productivity tool for Pega 8, designed to enhance your development experience without the need for ruleset deployment. The extension primarily targets Chromium-based browsers (Chrome, Edge, Opera, etc.).
+PDT is a browser-based developer productivity tool for Pega Platform, designed to enhance your development experience without the need for ruleset deployment. The extension primarily targets Chromium-based browsers (Chrome, Edge, Opera, etc.).
 
 
 **[Explore the PDT Wiki](https://github.com/marcin-l/PegaDevTools/wiki)** to learn about the available features.

@@ -1,7 +1,7 @@
 {
 	"name": "PegaDevTools",
 	"description": "Pega Developer Productivity Tools",
-	"version": "0.9.9",
+	"version": "1.0.0",
 	"manifest_version": 3,
 	"author": "Marcin Leśniak",
 	"permissions": [
@@ -31,7 +31,8 @@
 				"*://*/prweb/*"
 			],
 			"exclude_globs": [
-				"*blank.htm*"
+				"*blank.htm*",
+				"*://*pdc*.pegacloud.com/prweb/*"
 			],
 			"css": [
 				"resources/shared.css"

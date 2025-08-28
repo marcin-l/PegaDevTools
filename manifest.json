@@ -9,7 +9,6 @@
 		"tabs",
 		"contextMenus",
 		"storage",
-		"notifications",
 		"scripting"
 	],
 	"host_permissions": ["<all_urls>"],

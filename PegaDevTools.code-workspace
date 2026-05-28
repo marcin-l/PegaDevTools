@@ -53,6 +53,14 @@
 			{
 				"filePath": "manifest.json",
 				"group": "Default"
+			},
+			{
+				"filePath": "",
+				"group": "Default"
+			},
+			{
+				"filePath": "resources\\arrive.min.js",
+				"group": "Default"
 			}
 		]
 	}

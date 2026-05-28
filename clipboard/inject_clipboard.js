@@ -59,8 +59,10 @@ function handleRightPanelChange() {
 				addedFilterInput.focus();
 		}	
 		
-		if (document.querySelectorAll("div#gridBody_right table.gridTable").length > 1) {
-			document.querySelectorAll("div#gridBody_right table.gridTable")[1].querySelectorAll("tr.cellCont").forEach(
+		let rightTable = document.querySelectorAll("div#gridBody_right table.gridTable");
+		if(rightTable?.length > 1) {
+			rightTable = rightTable[1];
+			rightTable.querySelectorAll("tr.cellCont").forEach(
 				(e) => {
 					if(e.querySelector("tr a")) {
 						let eTextProp = e.querySelector("tr a").innerText;

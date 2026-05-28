@@ -2,63 +2,6 @@ console.log("PDT: tracer_page");
 
 let isExpandedSQL = false;
 
-document.arrive("div#MainDiv", {onceOnly: true, existing: true}, () => 	{
-    if(getMainTable()) {
-        addPageNavigation();
-        addSearch();
-	    injectScript("/js/", "expandTracerMessagesOnLoad.js");
-    } else {
-        //FEATURE: full SQL query
-        let sql = "", inserts = "", insertsRow;
-
-        for (let tr of document.querySelectorAll("div.dialogDataContainer tr.eventTable")) {
-            if (tr.children[0].textContent.trim() == "SQL") {
-                sql = tr.children[1].textContent.trim();
-            } else if (tr.children[0].textContent.trim() == "SQL Inserts") {
-                inserts = tr.children[1].textContent.trim();
-                insertsRow = tr;
-            }
-        }
-        
-        if(sql && inserts) {
-            
-            let fullSQL = prepareSQL(sql, inserts, isExpandedSQL);
-            if(fullSQL) {
-                let fullSQLElement = document.createElement('td');
-                fullSQLElement.colSpan = 2;
-                fullSQLElement.style.border = "thin solid black";
-                fullSQLElement.style.padding = "4px";
-                fullSQLElement.style.fontFamily = "monospace";
-                fullSQLElement.innerHTML = fullSQL;              
-				
-				let expandButtonRow = document.createElement('tr');
-				let expandButtonCell = document.createElement('td');
-				expandButtonCell.colSpan = 2;
-				
-				let expandButton = document.createElement('button');
-				expandButton.id = "sqlExpandButton";
-				expandButton.textContent = "Expand";
-				expandButton.onclick = function() {
-					isExpandedSQL = !isExpandedSQL;
-					if(isExpandedSQL)
-						document.getElementById("sqlExpandButton").textContent = "Collapse";
-					else
-						document.getElementById("sqlExpandButton").textContent = "Expand";
-					let expandedSQL = prepareSQL(sql, inserts, isExpandedSQL);
-					if (expandedSQL) {
-						fullSQLElement.innerHTML = expandedSQL;
-					}
-                    fullSQLElement.scrollIntoView({ behavior: 'smooth' });
-				};
-				expandButtonRow.appendChild(expandButtonCell);
-				expandButtonCell.appendChild(expandButton);
-				insertsRow.insertAdjacentElement("afterend", expandButtonRow);
-				insertsRow.insertAdjacentElement("afterend", fullSQLElement);
-			}
-        }
-    }
-});
-
 //sorting based on https://stackoverflow.com/questions/14267781/sorting-html-table-with-javascript by Nick Grealy
 const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
 const comparer = (idx) => (a, b) => ((v1, v2) => 
@@ -176,6 +119,57 @@ function addSearch() {
     }
 }
 
+function addFullSQL() {
+    //FEATURE: full SQL query
+    let sql = "", inserts = "", insertsRow;
+
+    for (let tr of document.querySelectorAll("div.dialogDataContainer tr.eventTable")) {
+        if (tr.children[0].textContent.trim() == "SQL") {
+            sql = tr.children[1].textContent.trim();
+        } else if (tr.children[0].textContent.trim() == "SQL Inserts") {
+            inserts = tr.children[1].textContent.trim();
+            insertsRow = tr;
+        }
+    }
+    
+    if(sql && inserts) {
+        
+        let fullSQL = prepareSQL(sql, inserts, isExpandedSQL);
+        if(fullSQL) {
+            let fullSQLElement = document.createElement('td');
+            fullSQLElement.colSpan = 2;
+            fullSQLElement.style.border = "thin solid black";
+            fullSQLElement.style.padding = "4px";
+            fullSQLElement.style.fontFamily = "monospace";
+            fullSQLElement.innerHTML = fullSQL;              
+            
+            let expandButtonRow = document.createElement('tr');
+            let expandButtonCell = document.createElement('td');
+            expandButtonCell.colSpan = 2;
+            
+            let expandButton = document.createElement('button');
+            expandButton.id = "sqlExpandButton";
+            expandButton.textContent = "Expand";
+            expandButton.onclick = function() {
+                isExpandedSQL = !isExpandedSQL;
+                if(isExpandedSQL)
+                    document.getElementById("sqlExpandButton").textContent = "Collapse";
+                else
+                    document.getElementById("sqlExpandButton").textContent = "Expand";
+                let expandedSQL = prepareSQL(sql, inserts, isExpandedSQL);
+                if (expandedSQL) {
+                    fullSQLElement.innerHTML = expandedSQL;
+                }
+                fullSQLElement.scrollIntoView({ behavior: 'smooth' });
+            };
+            expandButtonRow.appendChild(expandButtonCell);
+            expandButtonCell.appendChild(expandButton);
+            insertsRow.insertAdjacentElement("afterend", expandButtonRow);
+            insertsRow.insertAdjacentElement("afterend", fullSQLElement);
+        }
+    }
+}
+
 function prepareSQL(sql, inserts, expand = false) {
     //regex would be much nicer
     // function sanitize(inText) {
@@ -253,8 +247,12 @@ function siteConfigCallback(siteConfig, globalConfig) {
                 if (globalConfig.settings.tracer.pageMessagesExpand) {
                     injectScript("/js/", "expandTracerMessagesOnLoad.js");
                 }
-            }
-        });
+
+                addPageNavigation();
+                addSearch();
+        } else {
+            addFullSQL();
+        }});
 	}
 }
 

@@ -1,4 +1,16 @@
 //TODO: remove jQuery
+console.log("PDT tracer_event.js");
+PDT.isTracerEnabled().then(isTracerEnabled => {
+
+	if (!isTracerEnabled) {
+		console.log("PDT tracer disabled");
+	} else {		
+		applyPDTCustomization();
+	}
+});
+
+function applyPDTCustomization() {
+	console.log("PDT tracer_event.js applyPDTCustomization");
 
 //FEATURE: Mark row on right-click
 $("div#traceEvent-CONTAINER").on("contextmenu", "td#eventLineNumber", function (evt) { evt.preventDefault(); $(this).parent().toggleClass("PegaDevToolsTextRed"); });
@@ -39,9 +51,53 @@ removeAllColumnsBtn.click(function () {
 });
 $('td.eventTitleBarStyle[title="Line"]').prev().append(removeAllColumnsBtn);
 
-//FEATURE: floating headers
+	//FEATURE: pin icon in header to toggle floating headers
+	let pinButton = document.createElement("div");
+	pinButton.setAttribute("title", "toggle floating header");
+	pinButton.innerText = "??";
+	pinButton.style.cursor = "pointer";
+	pinButton.style.minWidth = "16px";
+	pinButton.style.float = "right";
+	pinButton.style.backgroundColor = "white";
+
+	function toggleHeaderFloat(elem, skipSave = false) {
 let tracerHeader = document.querySelector("table#traceEvent-TABLE");
-if(tracerHeader) {
+		if (tracerHeader.style.position === "sticky") {
+			tracerHeader.style.position = "static";			
+			elem.style.textDecoration = "line-through";
+			elem.style.opacity = "0.6";
+			if(!skipSave)
+				browser.storage.local.set({ tracerPinHeader: false }, () => {
+					//console.log('PDT tracer floating header saved: false');
+				});
+		} else {
     tracerHeader.style.position = "sticky";
     tracerHeader.style.top = "0";
+			elem.style.textDecoration = "initial";
+			elem.style.opacity = "1";
+			if(!skipSave)
+				browser.storage.local.set({ tracerPinHeader: true }, () => {
+					//console.log('PDT tracer floating header saved: true');
+				});
+		}
+	}
+
+	pinButton.addEventListener("click", function (event) {
+		toggleHeaderFloat(event.target);
+	});
+
+	document.querySelector('table#traceEvent-TABLE tr td:last-child').appendChild(pinButton);
+
+    browser.storage.local.get('tracerPinHeader', (data) => {
+        if (data.tracerPinHeader) {
+            if(data.tracerPinHeader) {
+				toggleHeaderFloat(pinButton, true);
+            	console.log('PDT floating header restored: true');
+			}
+        } else {
+            console.log('PDT floating header could not be restored');		
+        }
+    });
+	
+	//TODO FEATURE: override browser search. show options to highlight all, find last
 }

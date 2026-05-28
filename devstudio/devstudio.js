@@ -4,12 +4,9 @@ function applyPDTCustomization() {
   function siteConfigCallback(siteConfig, globalConfig) {
     messageServiceWorker("registerDevStudio");  //register with Service Worker
 
-    if (siteConfig && siteConfig.label) {
-      if (
-        globalConfig.settings &&
-        globalConfig.settings.useSiteLabelForBrowserTitle
-      ) {
-        var newTitle = siteConfig.label + " Pega";
+    if (siteConfig?.label) {
+      if (globalConfig.settings?.useSiteLabelForBrowserTitle) {
+        let newTitle = siteConfig.label + " Pega";
         if (siteConfig.version) {
           if (siteConfig.version.startsWith('2')) {
             newTitle += "'"+siteConfig.version;
@@ -21,7 +18,7 @@ function applyPDTCustomization() {
       }
     
       //FEATURE: environment header
-      var productionEnvElement = document.querySelector(
+      let productionEnvElement = document.querySelector(
         "div[data-ui-meta*='D_pzGetCurrentSystemRecord.pyActiveProductionLevelName']"
       );
       if (productionEnvElement) {
@@ -48,9 +45,7 @@ function applyPDTCustomization() {
           );
       }
 
-      if (
-        globalConfig.settings && globalConfig.settings.hideEnvironmentHeader
-      ) {
+      if (globalConfig.settings?.hideEnvironmentHeader) {
         if (productionEnvElement) productionEnvElement.style.display = "none";
       }
 
@@ -63,7 +58,7 @@ function applyPDTCustomization() {
       }
     }
     var settings;
-    if (globalConfig && globalConfig.settings) {
+    if (globalConfig?.settings) {
       settings = globalConfig.settings;
     }
     if (! PDT.isDevstudioEnabled()) {
@@ -155,7 +150,7 @@ function showCheckoutIndicator() {
   if (containerTabListIndicator) {
     const containerTabListCallbackIndicator = function (
       mutationsList,
-      observer
+      _observer
     ) {
       mutationsList.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
@@ -188,20 +183,28 @@ function showCheckoutIndicator() {
 }
 
 function addHeaderShortcuts() {
+  let createCaseDiv = document.querySelector("div.create-case");
+  if(createCaseDiv) {
 	//FEATURE: shortcuts to Search all options
-	$("div.create-case").append(
+    createCaseDiv.insertAdjacentHTML(
+      "beforeend",
 	  '<div id="PegaDevToolsSearchAllOptionsLink"><a href="#" onclick="pd(event);" class="Header_nav margin-1x" role="menuitem" data-ctl="" data-click="[[&quot;runScript&quot;,[&quot;pega.ui.commandpalette.toggle()&quot;]]]"><span class="menu-item-title-wrap" data-click="."><span class="menu-item-title" data-click="..">Search</span></span></a></div>'
 	);
   
 	//FEATURE: shortcuts to Operators in header
-	$("div.create-case").append(
+    createCaseDiv .insertAdjacentHTML(
+      "beforeend",
 	  '<div id="PegaDevToolsOperatorLink"><a href="#" onclick="pd(event);" class="Header_nav margin-1x" data-ctl="Link" name="pyStudioHome_pyDisplayHarness_10" data-click="[[&quot;openLandingPage&quot;,[&quot;Organization and Security: Organization&quot;,&quot;Display&quot;,{&quot;harnessName&quot;:&quot;pzLPOrganizationAndSecurityOrganization&quot;,&quot;className&quot;:&quot;Pega-Landing-Org&quot;,&quot;model&quot;:&quot;&quot;,&quot;page&quot;:&quot;&quot;,&quot;readOnly&quot;:&quot;false&quot;,&quot;contentID&quot;:&quot;b7d85aff-de9d-4a4d-9e1e-3b742e74078c&quot;,&quot;dynamicContainerID&quot;:&quot;&quot;,&quot;customParam&quot;:{}},{&quot;levelA&quot;:&quot;&quot;,&quot;levelB&quot;:&quot;&quot;,&quot;levelC&quot;:&quot;Operators&quot;}]]]" class=""><span class="menu-item-title-wrap" data-click=".">Op<span></a></div>'
 	);
   
 	//FEATURE: shortcuts to Logs in header
-	$("div.create-case").append(
+    createCaseDiv .insertAdjacentHTML(
+      "beforeend",
 	  '<div id="PegaDevToolsLogLink"><a href="#" onclick="pd(event);" class="Header_nav margin-1x" role="menuitem" data-ctl="" data-click="[[&quot;openLandingPage&quot;,[&quot;System: Operations&quot;,&quot;Display&quot;,{&quot;harnessName&quot;:&quot;pzLPSystemOperationsClusterManagement&quot;,&quot;className&quot;:&quot;Pega-Landing-System-Operations&quot;,&quot;model&quot;:&quot;pzInitializeSystemOperationsLandingPage&quot;,&quot;page&quot;:&quot;&quot;,&quot;readOnly&quot;:&quot;false&quot;,&quot;contentID&quot;:&quot;a61bd6ee-9e44-4219-814e-2ba0edb7f7c1&quot;,&quot;dynamicContainerID&quot;:&quot;&quot;},{&quot;levelA&quot;:&quot;&quot;,&quot;levelB&quot;:&quot;&quot;,&quot;levelC&quot;:&quot;Logs&quot;}]]]"><span class="menu-item-title-wrap" data-click=".">Logs<span></a></div>'
 	);
+  } else {
+    console.log("PDT: no div.create-case");  
+  }
 }
 
 function customizeText() {
@@ -214,7 +217,7 @@ function customizeText() {
 
   //FEATURE: shorten Application label and make it bold
   if (document.querySelector("div.current-application") && 
-      document.querySelector("div.current-application label").innerText) {
+      document.querySelector("div.current-application label")?.innerText) {
     document.querySelector("div.current-application label").innerText = "App:";
     document.querySelector("div.current-application div a").style.fontWeight = "bolder";
   }
@@ -230,7 +233,7 @@ function customizeText() {
   document.querySelector("div.alerts a").innerHTML = document.querySelector("div.alerts a").innerHTML.replace(document.querySelector("div.alerts a").textContent, '');
 
   //FEATURE: shorten Live Data
-  var DataInspectorButton = document.querySelector(
+  let DataInspectorButton = document.querySelector(
     "div a[data-test-id='DataInspectorButton']"
   );
   if (DataInspectorButton) {

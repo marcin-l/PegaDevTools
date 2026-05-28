@@ -35,7 +35,7 @@ function addpyWorkPageLink() {
 }
 
 //FEATURE: add link to newAssignPage to header
-function addnewAssignPage() {
+function addNewAssignPage() {
 	jQuery("#devToolsGoToAssignPage").remove();
 
 	let newAssignPage = jQuery("#gridNode li.gridRow ul li").has("span[title^='newAssignPage']")[0];
@@ -84,7 +84,7 @@ function siteConfigCallback(siteConfig, globalConfig) {
 		}
 
 		addpyWorkPageLink();
-		addnewAssignPage();
+		addNewAssignPage();
 		injectScript("/clipboard/", "inject_clipboard.js");
 
 		//FEATURE: remove unnecessary space in right panel

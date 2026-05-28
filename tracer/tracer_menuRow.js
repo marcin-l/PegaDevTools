@@ -6,8 +6,8 @@ function isTracerActive() {
 		document.getElementById("Pause").innerText == "Pause"
 	);
 }
-var titleTimerId;
-var counter = 0;
+
+let titleTimerId, countsTimerId, counter = 0;
 
 async function backgroundNotify(state) {
 	if (PDT.settings.debug) {
@@ -55,10 +55,10 @@ function setTitle() {
 	}
 }
 
-var errorIndex = 0,
+let errorIndex = 0,
 	messageIndex = 0,
 	accessDeniedIndex;
-var errorList = [],
+let errorList = [],
 	messagesList = [],
 	accessDeniedList = [];
 
@@ -80,9 +80,15 @@ function getAccessDeniedList() {
 	);
 }
 
+	function getBookmarksList() {
+		return window.parent.frames[1].document.querySelectorAll(
+			'td[data-PDTbookmark]'
+		);
+	}
+
 function updateErrorCount(count, index) {
 	let newTextContent = "Errors";
-	if (!(count === undefined)) {
+	if (count !== undefined) {
 		newTextContent = "Errors" + String.fromCharCode(160);
 		if (index) newTextContent += "" + index + "/" + count;
 		else newTextContent += "" + count;
@@ -114,24 +120,20 @@ function siteConfigCallback(siteConfig, _globalConfig) {
 		messageServiceWorker("registerTracer"); //register with Service Worker
 
 		if (siteConfig?.label) {
+			const cleanColor = siteConfig.color.replace("#", '');
 			let headerButtonsElement = document.querySelector("table.tracertop tr");
 			if (headerButtonsElement) {
 				headerButtonsElement.insertAdjacentHTML(
 					"beforeend",
-					"<td style='width:30px;font-size:11pt; color: white; text-shadow: black 0px 0px 6px;background-color:#" +
-						siteConfig.color.replace("#", "") +
-						";border:2px solid;border-top-style:none; border-right-style:none;margin: 0 0 4px 0;font-weight: bold;border-color:#" +
-						siteConfig.color.replace("#", "") +
-						"; padding:6px'>" +
-						siteConfig.label +
-						"</ td>"
+					//TODO create css
+					`<td style='width:30px;font-size:11pt; color: white; text-shadow: black 0px 0px 6px;background-color:#${cleanColor};border:2px solid;border-top-style:none; border-right-style:none;margin: 0 0 4px 0;font-weight: bold;border-color:#${cleanColor};padding:6px'>
+						${siteConfig.label}
+					</ td>`
 				);
 			}
 
-			if (siteConfig.useColorTop) {
-				document.querySelector("table.tracertop").style.cssText =
-					"border-top: #" + siteConfig.color.replace("#", "") + " 2px solid";
-			}
+			if (siteConfig.useColorTop)
+				document.querySelector("table.tracertop").style.cssText = `border-top: #${cleanColor} 2px solid`;
 		}
 		$("#Pause").click(function () {
 			setTitle();
@@ -146,7 +148,7 @@ function siteConfigCallback(siteConfig, _globalConfig) {
 			//add buttons from html
 			$("table.tracertop table tr").eq(2).prepend(data);
 
-			waitUntilRenderTracerButtons();
+			//waitUntilRenderTracerButtons();
 		});
 	}
 }
@@ -235,6 +237,7 @@ function addEventHandlers() {
 		messageIndex = 0;
 	};
 
+	//FEATURE: Go to previous warning
 	document.querySelector("button#btnPDTMessagesPrev").onclick = function () {
 		messagesList = getMessagesList();
 		if (messagesList.length) {
@@ -247,6 +250,7 @@ function addEventHandlers() {
 		} else updateMessageCount(messagesList.length);
 	};
 
+	//FEATURE: Go to next warning
 	document.querySelector("button#btnPDTMessagesNext").onclick = function () {
 		messagesList = getMessagesList();
 		if (messagesList.length) {
@@ -262,24 +266,14 @@ function addEventHandlers() {
 }
 
 //make sure buttons are part of the DOM before adding event handlers
-//TODO: use arrive.js
-function waitUntilRenderTracerButtons() {
-	let expectedElement = document.querySelector("button#btnPDTErrors");
-	if (expectedElement) {
+document.arrive("button#btnPDTErrors", { once: true, existing: true }, function () {
 		addEventHandlers();
-	} else {
-		tries = tries + 1;
-		console.log(tries);
-		//if (tries > 10) return;
-		setTimeout(() => {
-			waitUntilRenderTracerButtons();
-		}, 500);
-	}
-}
+	countsTimerId = setInterval(function () {
+		updateCounts();
+	}, 1000);
+});
 
-var tries = 0;
-
-//make sure we are in the right frame, script can be loaded with tracer page popup
+//TODO?: make sure we are in the right frame, script can be loaded with tracer page popup
 if(document.querySelector("table.tracertop")) {
 	siteConfig(siteConfigCallback);
 }

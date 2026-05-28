@@ -7,7 +7,6 @@
 	"permissions": [
 		"activeTab",
 		"tabs",
-		"contextMenus",
 		"storage",
 		"scripting"
 	],
@@ -31,7 +30,7 @@
 			],
 			"exclude_globs": [
 				"*blank.htm*",
-				"*://*pdc*.pegacloud.com/prweb/*"
+				"*://*pdc*.pega.*/prweb/*"
 			],
 			"css": [
 				"resources/shared.css"

@@ -2,8 +2,8 @@
 
 function copyRuleTableContent() {
 
-    var arrOfArr = [];
-    var arrOfRow = [];
+    let arrOfArr = [];
+    let arrOfRow = [];
 
     arrOfRow.push("");
 
@@ -17,8 +17,8 @@ function copyRuleTableContent() {
 
     arrOfArr.push(arrOfRow);
 
-    var indexSkipped = 0;
-    var indexList = document.querySelectorAll("table#bodyTbl_gbl div.dataValueRead");
+    let indexSkipped = 0;
+    let indexList = document.querySelectorAll("table#bodyTbl_gbl div.dataValueRead");
 
     document
         .querySelector("table#bodyTbl_right")
